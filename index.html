@@ -1,0 +1,2166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>NADHIR — PROTOCOLE ÉLITE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060810;--bg2:#0b0e16;--bg3:#10141f;
+  --glass:rgba(255,255,255,0.028);--glass2:rgba(255,255,255,0.055);
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --g:#00e676;--g2:#00c853;--g3:rgba(0,230,118,0.12);
+  --a:#ffb300;--a2:#ff8f00;--a3:rgba(255,179,0,0.12);
+  --r:#ff4444;--r3:rgba(255,68,68,0.12);
+  --b:#40c4ff;--b3:rgba(64,196,255,0.12);
+  --p:#ce93d8;
+  --t:#e2e8f0;--t2:#7a8fa0;--t3:#384858;--t4:#1e2a38;
+  --glow-g:0 0 20px rgba(0,230,118,0.3);
+  --glow-a:0 0 20px rgba(255,179,0,0.3);
+  --glow-r:0 0 20px rgba(255,68,68,0.3);
+  --r-card:18px;--r-sm:10px;
+  --nav-h:68px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;background:var(--bg);}
+body{font-family:'DM Sans',sans-serif;color:var(--t);-webkit-font-smoothing:antialiased;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 60% 50% at 20% 10%,rgba(0,230,118,0.04) 0%,transparent 60%),
+  radial-gradient(ellipse 50% 60% at 80% 85%,rgba(255,179,0,0.035) 0%,transparent 60%),
+  radial-gradient(ellipse 40% 30% at 65% 25%,rgba(64,196,255,0.02) 0%,transparent 55%);}
+
+#app{position:fixed;inset:0;z-index:1;display:flex;flex-direction:column;}
+
+/* ── TOPBAR ── */
+#topbar{flex-shrink:0;height:58px;background:rgba(6,8,16,0.95);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);display:flex;align-items:center;
+  justify-content:space-between;padding:0 14px;gap:8px;}
+.logo-wrap .logo{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:5px;
+  background:linear-gradient(90deg,var(--g),var(--a));-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;}
+.logo-wrap .logo-sub{font-size:8px;color:var(--t3);letter-spacing:3px;display:block;margin-top:-3px;}
+.top-chips{display:flex;gap:6px;align-items:center;}
+.top-chip{display:flex;align-items:center;gap:5px;background:var(--glass2);
+  border:1px solid var(--border);border-radius:20px;padding:5px 10px;cursor:pointer;transition:all .2s;}
+.top-chip:hover{border-color:var(--g);}
+.tc-dot{width:6px;height:6px;border-radius:50%;background:var(--t3);}
+.tc-dot.green{background:var(--g);animation:pulse 2s infinite;}
+.tc-dot.amber{background:var(--a);}
+.tc-dot.red{background:var(--r);}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.8);}}
+.tc-val{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t2);}
+
+/* ── NAV ── */
+#nav{flex-shrink:0;height:var(--nav-h);background:rgba(6,8,16,0.97);backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);display:flex;justify-content:space-around;align-items:center;
+  padding-bottom:env(safe-area-inset-bottom);}
+.nb{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px;
+  border-radius:10px;cursor:pointer;border:none;background:transparent;
+  color:var(--t3);font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.3px;
+  transition:all .2s;min-width:48px;}
+.nb .ni{font-size:19px;line-height:1;transition:all .2s;}
+.nb:hover{color:var(--t2);}
+.nb.active{color:var(--g);}
+.nb.active .ni{filter:drop-shadow(0 0 5px var(--g));}
+
+/* ── MAIN ── */
+#main{flex:1 1 0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;
+  scroll-behavior:smooth;}
+.tab{display:none;padding:14px 14px 110px;animation:fin .28s ease;}
+.tab.active{display:block;}
+@keyframes fin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ── CARDS ── */
+.card{background:var(--glass);border:1px solid var(--border);border-radius:var(--r-card);
+  padding:16px;margin-bottom:12px;backdrop-filter:blur(10px);position:relative;overflow:hidden;}
+.card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.06),transparent);}
+.card.cg{border-color:rgba(0,230,118,0.2);background:linear-gradient(135deg,rgba(0,230,118,0.05),rgba(0,0,0,0));}
+.card.ca{border-color:rgba(255,179,0,0.2);background:linear-gradient(135deg,rgba(255,179,0,0.05),rgba(0,0,0,0));}
+.card.cb{border-color:rgba(64,196,255,0.2);background:linear-gradient(135deg,rgba(64,196,255,0.05),rgba(0,0,0,0));}
+.card.cr{border-color:rgba(255,68,68,0.2);background:linear-gradient(135deg,rgba(255,68,68,0.05),rgba(0,0,0,0));}
+.ct{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2.5px;color:var(--a);
+  margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.ct .ico{font-size:16px;}
+
+/* ── OBJECTIF CARDS ── */
+.obj-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:12px;}
+.obj-card{border-radius:14px;padding:14px 16px;border:1px solid;position:relative;overflow:hidden;}
+.obj-card::before{content:'';position:absolute;top:-20px;right:-20px;width:80px;height:80px;
+  border-radius:50%;opacity:.15;pointer-events:none;}
+.obj-sprint{background:linear-gradient(135deg,rgba(0,230,118,0.1),rgba(0,230,118,0.03));
+  border-color:rgba(0,230,118,0.3);}
+.obj-sprint::before{background:var(--g);}
+.obj-detente{background:linear-gradient(135deg,rgba(255,179,0,0.1),rgba(255,179,0,0.03));
+  border-color:rgba(255,179,0,0.3);}
+.obj-detente::before{background:var(--a);}
+.obj-bd{background:linear-gradient(135deg,rgba(255,68,68,0.1),rgba(255,68,68,0.03));
+  border-color:rgba(255,68,68,0.3);}
+.obj-bd::before{background:var(--r);}
+.obj-label{font-size:9px;letter-spacing:2px;opacity:.7;margin-bottom:3px;}
+.obj-value{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:2px;line-height:1;}
+.obj-current{font-size:10px;opacity:.6;margin-top:3px;}
+.obj-bar{height:4px;background:rgba(255,255,255,0.06);border-radius:10px;margin-top:8px;overflow:hidden;}
+.obj-fill{height:100%;border-radius:10px;transition:width 1.2s cubic-bezier(.4,0,.2,1);}
+
+/* ── STATS GRID ── */
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.sg3{grid-template-columns:1fr 1fr 1fr;}
+.sb{background:var(--glass2);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;}
+.sv{font-family:'JetBrains Mono',monospace;font-size:22px;color:var(--g);font-weight:700;line-height:1;}
+.sl{font-size:9px;color:var(--t2);margin-top:4px;letter-spacing:.5px;}
+.ss{font-size:9px;color:var(--t3);margin-top:2px;}
+
+/* ── PROGRESS BAR ── */
+.pb-wrap{margin:6px 0;}
+.pb-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--t2);margin-bottom:4px;}
+.pb-track{height:5px;background:rgba(255,255,255,0.05);border-radius:10px;overflow:hidden;}
+.pb-fill{height:100%;border-radius:10px;transition:width 1.2s cubic-bezier(.4,0,.2,1);}
+.pf-g{background:linear-gradient(90deg,var(--g2),var(--g));}
+.pf-a{background:linear-gradient(90deg,var(--a2),var(--a));}
+.pf-b{background:linear-gradient(90deg,#0091ea,var(--b));}
+.pf-r{background:linear-gradient(90deg,#c62828,var(--r));}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;
+  font-size:9px;font-weight:700;letter-spacing:.5px;}
+.bg{background:rgba(0,230,118,.12);color:var(--g);border:1px solid rgba(0,230,118,.2);}
+.ba{background:rgba(255,179,0,.12);color:var(--a);border:1px solid rgba(255,179,0,.2);}
+.br{background:rgba(255,68,68,.12);color:var(--r);border:1px solid rgba(255,68,68,.2);}
+.bb{background:rgba(64,196,255,.12);color:var(--b);border:1px solid rgba(64,196,255,.2);}
+.bdim{background:var(--glass2);color:var(--t3);border:1px solid var(--border);}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 16px;border-radius:10px;
+  border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;
+  transition:all .2s;white-space:nowrap;}
+.btn-g{background:linear-gradient(135deg,var(--g2),var(--g));color:#000;box-shadow:0 3px 12px rgba(0,230,118,.25);}
+.btn-g:active{transform:scale(.97);}
+.btn-a{background:linear-gradient(135deg,var(--a2),var(--a));color:#000;}
+.btn-r{background:linear-gradient(135deg,#c62828,var(--r));color:#fff;}
+.btn-b{background:linear-gradient(135deg,#0091ea,var(--b));color:#000;}
+.btn-o{background:transparent;color:var(--t);border:1px solid var(--border);}
+.btn-o:hover{border-color:var(--g);color:var(--g);}
+.btn-sm{padding:6px 12px;font-size:11px;border-radius:8px;}
+.btn-full{width:100%;justify-content:center;margin-bottom:7px;}
+
+/* ── INPUTS ── */
+.ig{margin-bottom:11px;}
+.il{font-size:10px;color:var(--t2);margin-bottom:4px;display:block;letter-spacing:.5px;}
+.inp{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);
+  border-radius:9px;padding:9px 12px;color:var(--t);font-family:'DM Sans',sans-serif;
+  font-size:13px;outline:none;transition:border-color .2s;}
+.inp:focus{border-color:var(--g);box-shadow:0 0 0 2px rgba(0,230,118,.1);}
+.inp-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+select.inp option{background:var(--bg2);}
+
+/* ── SNC STATUS ── */
+.snc-banner{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:11px;
+  margin-bottom:10px;border:1px solid;font-size:11px;font-weight:600;}
+.snc-ok{background:rgba(0,230,118,.07);border-color:rgba(0,230,118,.3);color:var(--g);}
+.snc-warn{background:rgba(255,179,0,.07);border-color:rgba(255,179,0,.3);color:var(--a);}
+.snc-bad{background:rgba(255,68,68,.07);border-color:rgba(255,68,68,.3);color:var(--r);}
+.snc-none{background:rgba(255,255,255,.03);border-color:var(--border);color:var(--t3);}
+
+/* ── EX LIST ── */
+.ex-item{display:flex;justify-content:space-between;align-items:flex-start;
+  padding:9px 0;border-bottom:1px solid var(--border);}
+.ex-item:last-child{border-bottom:none;}
+.ex-name{font-size:12px;font-weight:500;flex:1;padding-right:10px;}
+.ex-det{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;
+  color:var(--a);white-space:nowrap;}
+.ex-sub{font-size:9px;color:var(--t3);margin-top:2px;}
+.ex-charge{font-size:10px;color:var(--g);margin-top:2px;font-family:'JetBrains Mono',monospace;}
+.ex-ok{background:rgba(0,230,118,.04);border-radius:8px;padding:9px 8px;margin:2px -8px;}
+.ex-reduced{background:rgba(255,179,0,.04);border-radius:8px;padding:9px 8px;margin:2px -8px;}
+.ex-cancelled{opacity:.35;}
+
+/* ── PHASE BADGE ── */
+.phase-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;
+  font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;margin-bottom:10px;}
+.pt-prep{background:rgba(0,230,118,.12);border:1px solid rgba(0,230,118,.3);color:var(--g);}
+.pt-charge{background:rgba(255,179,0,.12);border:1px solid rgba(255,179,0,.3);color:var(--a);}
+.pt-pic{background:rgba(255,68,68,.12);border:1px solid rgba(255,68,68,.3);color:var(--r);}
+.pt-dech{background:rgba(100,100,100,.12);border:1px solid rgba(100,100,100,.3);color:var(--t3);}
+
+/* ── MESO DOTS ── */
+.meso-row{display:flex;gap:5px;align-items:center;margin:8px 0;}
+.mdot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:8px;font-weight:700;border:2px solid transparent;flex-shrink:0;}
+.mdot.prep{background:rgba(0,230,118,.15);color:var(--g);border-color:rgba(0,230,118,.3);}
+.mdot.charge{background:rgba(255,179,0,.15);color:var(--a);border-color:rgba(255,179,0,.3);}
+.mdot.pic{background:rgba(255,68,68,.15);color:var(--r);border-color:rgba(255,68,68,.3);}
+.mdot.dech{background:rgba(100,100,100,.12);color:var(--t3);border-color:rgba(100,100,100,.3);}
+.mdot.cur{width:34px;height:34px;font-size:10px;font-weight:900;
+  box-shadow:0 0 14px currentColor;animation:glow 2s infinite alternate;}
+@keyframes glow{from{transform:scale(1)}to{transform:scale(1.09)}}
+
+/* ── COACH MSG ── */
+.cm{background:linear-gradient(135deg,rgba(0,230,118,.04),rgba(255,179,0,.02));
+  border:1px solid rgba(0,230,118,.15);border-radius:12px;padding:13px;margin-bottom:10px;
+  position:relative;}
+.cm::before{content:'🤖';font-size:16px;position:absolute;top:-9px;left:12px;
+  background:var(--bg2);padding:0 4px;}
+.cm p{font-size:11px;line-height:1.8;color:var(--t);}
+.cm-warn{background:rgba(255,179,0,.04);border-color:rgba(255,179,0,.2);}
+.cm-warn::before{content:'💡';}
+.cm-bad{background:rgba(255,68,68,.04);border-color:rgba(255,68,68,.2);}
+.cm-bad::before{content:'⚠️';}
+
+/* ── TIMER ── */
+#timer-ov{position:fixed;inset:0;background:rgba(0,0,0,.9);backdrop-filter:blur(14px);
+  z-index:200;display:none;place-items:center;animation:fin .2s;}
+#timer-ov.show{display:grid;}
+#timer-box{background:var(--bg2);border:1px solid var(--border);border-radius:20px;
+  padding:32px 24px;text-align:center;min-width:260px;max-width:320px;width:90%;}
+#t-lbl{font-size:9px;color:var(--t3);letter-spacing:2px;margin-bottom:4px;}
+#t-ex{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;
+  color:var(--a);margin-bottom:14px;line-height:1.2;}
+#t-num{font-family:'JetBrains Mono',monospace;font-size:58px;color:var(--g);
+  text-shadow:var(--glow-g);margin-bottom:10px;line-height:1;transition:color .3s;}
+#t-num.urgent{color:var(--r);text-shadow:var(--glow-r);}
+#t-prog{height:4px;background:rgba(255,255,255,.05);border-radius:10px;overflow:hidden;margin-bottom:18px;}
+#t-pf{height:100%;background:linear-gradient(90deg,var(--g2),var(--g));border-radius:10px;transition:width 1s linear;}
+.t-btns{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;}
+.t-quick{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;margin-bottom:12px;}
+.tq{padding:5px 10px;border-radius:16px;font-size:10px;font-weight:700;cursor:pointer;
+  border:1px solid var(--border);background:var(--glass2);color:var(--t2);transition:all .15s;}
+.tq:active{background:var(--g3);border-color:var(--g);color:var(--g);}
+
+/* ── MODAL ── */
+#modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.84);backdrop-filter:blur(8px);
+  z-index:150;display:none;place-items:center;padding:16px;}
+#modal-ov.show{display:grid;}
+#modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-card);
+  padding:22px;width:100%;max-width:460px;max-height:88vh;overflow-y:auto;
+  animation:slideup .3s cubic-bezier(.4,0,.2,1);position:relative;}
+#modal-title{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:3px;
+  color:var(--a);margin-bottom:13px;}
+#modal-close{position:absolute;top:18px;right:18px;background:var(--glass2);
+  border:1px solid var(--border);border-radius:7px;padding:4px 8px;color:var(--t2);
+  cursor:pointer;font-size:13px;}
+@keyframes slideup{from{transform:translateY(20px);opacity:0}to{transform:none;opacity:1}}
+
+/* ── NOTIF ── */
+#notif{position:fixed;bottom:calc(var(--nav-h)+10px);left:12px;right:12px;max-width:420px;
+  margin:0 auto;background:var(--bg2);border:1px solid var(--border);border-radius:11px;
+  padding:11px 14px;z-index:300;display:none;gap:9px;}
+#notif.show{display:flex;align-items:center;}
+#notif.success{border-color:rgba(0,230,118,.35);}
+#notif.warn{border-color:rgba(255,179,0,.35);}
+#notif.error{border-color:rgba(255,68,68,.35);}
+#ni{font-size:18px;}#nt{flex:1;font-size:11px;line-height:1.5;}
+@keyframes notifin{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
+
+/* ── CLOUD POPUP ── */
+#cloud-pop{position:fixed;top:62px;right:10px;width:300px;background:var(--bg2);
+  border:1px solid rgba(64,196,255,.3);border-radius:var(--r-card);padding:16px;
+  z-index:120;display:none;box-shadow:0 16px 50px rgba(0,0,0,.5);}
+#cloud-pop.show{display:block;animation:slidedn .22s;}
+@keyframes slidedn{from{transform:translateY(-8px);opacity:0}to{transform:none;opacity:1}}
+.cloud-log-box{background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:8px;
+  padding:8px 10px;font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--t2);
+  max-height:70px;overflow-y:auto;margin-top:8px;line-height:1.7;}
+.log-ok{color:var(--g);}.log-err{color:var(--r);}.log-info{color:var(--b);}
+
+/* ── SNC POPUP ── */
+#snc-pop{position:fixed;top:62px;right:10px;width:270px;background:var(--bg2);
+  border:1px solid rgba(0,230,118,.3);border-radius:var(--r-card);padding:16px;
+  z-index:120;display:none;box-shadow:0 16px 50px rgba(0,0,0,.5),var(--glow-g);}
+#snc-pop.show{display:block;animation:slidedn .22s;}
+
+/* ── CHART ── */
+.chart-wrap{overflow-x:auto;}canvas{display:block;}
+
+/* ── SLIDER ── */
+input[type=range]{width:100%;-webkit-appearance:none;height:5px;
+  background:rgba(255,255,255,.07);border-radius:10px;outline:none;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;
+  border-radius:50%;background:linear-gradient(135deg,var(--g2),var(--g));
+  cursor:pointer;box-shadow:var(--glow-g);}
+.slider-row{display:flex;align-items:center;gap:8px;}
+.wk-badge{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--g);font-weight:700;
+  min-width:32px;text-align:center;background:var(--glass2);border:1px solid var(--border);
+  border-radius:7px;padding:3px 7px;}
+
+/* ── CHECKLIST ── */
+.chk-item{display:flex;align-items:center;gap:10px;padding:8px 0;
+  border-bottom:1px solid var(--border);cursor:pointer;transition:opacity .15s;}
+.chk-item:last-child{border-bottom:none;}
+.chk-box{width:20px;height:20px;border:2px solid var(--border);border-radius:5px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;}
+.chk-box.done{background:var(--g);border-color:var(--g);}
+.chk-box.done::after{content:'✓';font-size:10px;color:#000;font-weight:700;}
+.chk-label{font-size:12px;color:var(--t);transition:color .15s;}
+.chk-item.done .chk-label{color:var(--t3);text-decoration:line-through;}
+
+/* ── HR DIVIDER ── */
+.hr{height:1px;background:var(--border);margin:10px 0;}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;
+  color:var(--a);margin:10px 0 8px;}
+
+/* ── WEEK NAV ── */
+.wk-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.wk-label{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;}
+.wk-sub{font-size:10px;color:var(--t2);margin-top:1px;}
+.wk-btns{display:flex;gap:5px;}
+.wk-btn{width:34px;height:34px;border-radius:8px;background:var(--glass2);
+  border:1px solid var(--border);color:var(--t);cursor:pointer;font-size:14px;
+  display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.wk-btn:active{background:var(--g3);border-color:var(--g);}
+
+/* ── NUTRITION ── */
+.nutri-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.nutri-box{background:var(--glass2);border:1px solid var(--border);border-radius:10px;
+  padding:10px;text-align:center;}
+.nutri-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;line-height:1;}
+.nutri-lbl{font-size:9px;color:var(--t2);margin-top:3px;letter-spacing:.5px;}
+
+/* ── TIMELINE ── */
+.timeline{position:relative;padding-left:24px;}
+.timeline::before{content:'';position:absolute;left:6px;top:4px;bottom:4px;width:2px;
+  background:linear-gradient(180deg,var(--g),var(--a),transparent);}
+.tl-item{position:relative;margin-bottom:16px;}
+.tl-dot{position:absolute;left:-21px;top:4px;width:9px;height:9px;border-radius:50%;
+  background:var(--g);border:2px solid var(--bg);box-shadow:var(--glow-g);}
+.tl-dot.a{background:var(--a);box-shadow:var(--glow-a);}
+.tl-dot.dim{background:var(--t4);box-shadow:none;}
+.tl-yr{font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:2px;color:var(--t3);}
+.tl-title{font-size:12px;font-weight:600;color:var(--t);margin-top:1px;}
+.tl-sub{font-size:10px;color:var(--t2);margin-top:2px;line-height:1.5;}
+
+/* ── AUTO-SAVE ── */
+#autosave-badge{position:fixed;bottom:calc(var(--nav-h)+8px);right:10px;
+  font-size:9px;color:var(--t3);font-family:'JetBrains Mono',monospace;
+  background:rgba(0,0,0,.5);border:1px solid var(--border);border-radius:7px;
+  padding:3px 8px;z-index:50;opacity:0;transition:opacity .3s;pointer-events:none;}
+#autosave-badge.show{opacity:1;}
+#autosave-badge.cloud{color:var(--g);border-color:rgba(0,230,118,.3);}
+
+@media(max-width:380px){
+  .sg3{grid-template-columns:1fr 1fr;}
+  #t-num{font-size:46px;}
+  .obj-value{font-size:24px;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <div class="logo-wrap">
+    <div class="logo">NADHIR</div>
+    <span class="logo-sub">PROTOCOLE ÉLITE</span>
+  </div>
+  <div class="top-chips">
+    <div class="top-chip" onclick="toggleSNC()">
+      <div class="tc-dot green" id="snc-dot"></div>
+      <div class="tc-val" id="snc-val">SNC</div>
+    </div>
+    <div class="top-chip" onclick="toggleCloud()">
+      <div class="tc-dot" id="cloud-dot" style="background:var(--b)">☁</div>
+      <div class="tc-val" id="cloud-val">Sync</div>
+    </div>
+  </div>
+</div>
+
+<!-- SNC POPUP -->
+<div id="snc-pop">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:3px;color:var(--a);margin-bottom:3px;">TEST SNC MATINAL</div>
+  <div style="font-size:9px;color:var(--t2);margin-bottom:11px;">3 sauts verticaux → hauteur moyenne = état SNC</div>
+  <div class="inp-row" style="margin-bottom:8px;">
+    <div class="ig"><label class="il">Saut 1 (cm)</label><input class="inp" type="number" id="s1" placeholder="90"></div>
+    <div class="ig"><label class="il">Saut 2 (cm)</label><input class="inp" type="number" id="s2" placeholder="90"></div>
+  </div>
+  <div class="ig"><label class="il">Saut 3 (cm)</label><input class="inp" type="number" id="s3" placeholder="90"></div>
+  <div class="ig"><label class="il">Sommeil (h)</label><input class="inp" type="number" id="sleep" placeholder="8.0" step="0.5"></div>
+  <button class="btn btn-g btn-full" onclick="saveSNC()">✓ Valider</button>
+  <div id="snc-result" style="margin-top:8px;font-size:10px;color:var(--t2);line-height:1.7;"></div>
+</div>
+
+<!-- CLOUD POPUP -->
+<div id="cloud-pop">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:3px;color:var(--b);margin-bottom:10px;">☁️ CLOUD SYNC</div>
+  <div class="ig"><label class="il">CLÉ API JSONBIN</label>
+    <input class="inp" type="password" id="jb-key" placeholder="$2b$10$..." style="font-size:11px;"></div>
+  <div class="ig"><label class="il">BIN ID</label>
+    <input class="inp" type="text" id="jb-bin" placeholder="(vide = créer nouveau)" style="font-size:11px;"></div>
+  <div style="display:flex;gap:6px;margin-bottom:6px;">
+    <button class="btn btn-b btn-sm btn-full" onclick="cloudSave()">⬆ Sauvegarder</button>
+    <button class="btn btn-o btn-sm btn-full" onclick="cloudLoad()">⬇ Restaurer</button>
+  </div>
+  <button class="btn btn-o btn-sm btn-full" onclick="cloudTest()">🔗 Tester la clé</button>
+  <div class="cloud-log-box" id="cloud-log"><span class="log-info">→ Entrez votre clé API</span></div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+  <div class="tab active" id="tab-today"></div>
+  <div class="tab" id="tab-training"></div>
+  <div class="tab" id="tab-goals"></div>
+  <div class="tab" id="tab-coach"></div>
+  <div class="tab" id="tab-profile"></div>
+</div>
+
+<!-- NAV -->
+<div id="nav">
+  <button class="nb active" onclick="switchTab('today',this)"><span class="ni">🎯</span>Aujourd'hui</button>
+  <button class="nb" onclick="switchTab('training',this)"><span class="ni">💪</span>Séance</button>
+  <button class="nb" onclick="switchTab('goals',this)"><span class="ni">📈</span>Objectifs</button>
+  <button class="nb" onclick="switchTab('coach',this)"><span class="ni">🧠</span>Coach IA</button>
+  <button class="nb" onclick="switchTab('profile',this)"><span class="ni">👤</span>Profil</button>
+</div>
+</div>
+
+<!-- TIMER -->
+<div id="timer-ov">
+  <div id="timer-box">
+    <div id="t-lbl">REPOS</div>
+    <div id="t-ex">—</div>
+    <div class="t-quick">
+      <div class="tq" onclick="startTimer(45,currentTimerEx)">45s</div>
+      <div class="tq" onclick="startTimer(60,currentTimerEx)">1min</div>
+      <div class="tq" onclick="startTimer(90,currentTimerEx)">1:30</div>
+      <div class="tq" onclick="startTimer(120,currentTimerEx)">2min</div>
+      <div class="tq" onclick="startTimer(180,currentTimerEx)">3min</div>
+      <div class="tq" onclick="startTimer(300,currentTimerEx)">5min</div>
+    </div>
+    <div id="t-num">00:00</div>
+    <div id="t-prog"><div id="t-pf" style="width:100%"></div></div>
+    <div class="t-btns">
+      <button class="btn btn-sm btn-o" onclick="addTime(30)">+30s</button>
+      <button class="btn btn-sm btn-g" onclick="closeTimer()">⏭ Passer</button>
+      <button class="btn btn-sm btn-o" onclick="addTime(-15)">−15s</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div id="modal-ov" onclick="closeModal(event)">
+  <div id="modal-box">
+    <div id="modal-title">—</div>
+    <div id="modal-close" onclick="closeModal()">✕</div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- NOTIF -->
+<div id="notif"><div id="ni">ℹ️</div><div id="nt"></div></div>
+
+<!-- AUTOSAVE -->
+<div id="autosave-badge">💾 sauvegardé</div>
+
+<script>
+'use strict';
+// ════════════════════════════════════════════════════════════════
+// ★ NADHIR PROTOCOLE ÉLITE — ENGINE COMPLET ★
+// Science: sprint (Vmax, accél, blocs), pliométrie (RSI, drop jumps),
+// bras de fer (cupping, top-roll, hook, pronation, supination),
+// SNC auto-régulation, nutrition périodisée, JSONbin auto-sync
+// ════════════════════════════════════════════════════════════════
+
+// ── DONNÉES ATHLETE ──
+const ATHLETE = {
+  nom: 'Nadhir',
+  objectifs: {
+    sprint: { cible: 10.0, unite: 's', label: '100m', emoji: '🏁', direction: 'down' },
+    detente: { cible: 120,  unite: 'cm', label: 'Détente 2 pieds', emoji: '⬆️', direction: 'up' },
+    bd:      { cible: '✓',  unite: '', label: 'Battre frère 120kg', emoji: '🤼', direction: 'up' }
+  }
+};
+
+// ══════════════════════════════════════════════
+// MACROCYCLES V10 — Nadhir, 22 ans, 12.6s, 72cm, BD perd vs frère 120kg
+// Trajectoire scientifique 2025→2031
+// ══════════════════════════════════════════════
+const TRAJECTOIRE = {
+  sprint: [
+    {yr:1, cible:12.0, label:'12.0s — technique + accélérations'},
+    {yr:2, cible:11.5, label:'11.5s — Vmax, force max, blocs'},
+    {yr:3, cible:11.0, label:'11.0s — résistance vitesse, 100m complet'},
+    {yr:4, cible:10.7, label:'10.7s — affûtage, volume réduit'},
+    {yr:5, cible:10.4, label:'10.4s — transfert, qualification'},
+    {yr:6, cible:10.2, label:'10.2s — compétition, peak'},
+    {yr:7, cible:10.0, label:'10.0s — OBJECTIF ULTIME'},
+    {yr:8, cible:10.1, label:'10.1s — maintien'},
+  ],
+  detente: [
+    {yr:1, cible:82,  label:'82cm — force de base + pliométrie intro'},
+    {yr:2, cible:90,  label:'90cm — drop jumps, RSI 1.2+'},
+    {yr:3, cible:98,  label:'98cm — RSI 1.5+, squat 1.8×PDC'},
+    {yr:4, cible:105, label:'105cm — RSI 2.0+, force explosive'},
+    {yr:5, cible:111, label:'111cm — RSI 2.3+, élan optimisé'},
+    {yr:6, cible:115, label:'115cm — RSI 2.5+, pic puissance'},
+    {yr:7, cible:120, label:'120cm — OBJECTIF ULTIME'},
+    {yr:8, cible:117, label:'117cm — maintien'},
+  ],
+  bd: [
+    {yr:1, cible:0,  label:'BD — initiation force spécifique'},
+    {yr:2, cible:0,  label:'BD — force max, technique top-roll'},
+    {yr:3, cible:50, label:'BD — 50% de matchs gagnés vs frère'},
+    {yr:4, cible:70, label:'BD — 70% matchs gagnés'},
+    {yr:5, cible:85, label:'BD — dominance régulière'},
+    {yr:6, cible:95, label:'BD — VICTOIRE SYSTÉMATIQUE'},
+    {yr:7, cible:100,label:'BD — OBJECTIF ACCOMPLI'},
+    {yr:8, cible:100,label:'BD — maintien domination'},
+  ],
+};
+
+const MACROS = [
+  {yr:1, label:'Fondations & Technique', sprint:12.0, det:82, sq:90, bdPhase:'intro',
+   focus:['Mécaniques de course: tripode, dorsiflexion, cycle postérieur','Pliométrie: ankling réactif, skips A/B/C, sauts verticaux','Force: squat technique, nordic curl excentrique CRITIQUE, hip thrust','Ischios: nordic 3×4 descente 4s — prévention blessure n°1 sprinteur','BD: anatomie top-roll, wrist curl, pronation/supination élastique'],
+   sprintVol:3,plioVol:2,bdVol:1},
+  {yr:2, label:'Accélération & Force max', sprint:11.5, det:90, sq:110, bdPhase:'dev',
+   focus:['Accélérations 0–30m départ debout, angle 45°','Vmax lancés 20m à 95%+, coordination à haute vitesse','Squat 5RM 85%+, mollets/soléaire lourds, GHR','Pliométrie: drop jump 30cm, bounding horizontal 5×40m','BD: curl marteau lourd, isométrie table 75%, top-roll position haute'],
+   sprintVol:4,plioVol:3,bdVol:2},
+  {yr:3, label:'Vmax & Résistance vitesse', sprint:11.0, det:98, sq:125, bdPhase:'force',
+   focus:['Vmax 20–30m lancés à 98–100%, repos 8–10 min','Résistance vitesse: 80–120m à 90% repos 8 min','Drop jumps 40cm RSI >1.3, bounding 5×50m','Squat 88% 1RM, GHR, hip thrust explosif','BD: force spécifique, simulation match, analyse vidéo'],
+   sprintVol:5,plioVol:3,bdVol:3},
+  {yr:4, label:'100m complet & Puissance', sprint:10.7, det:105, sq:138, bdPhase:'intense',
+   focus:['100m complet chronométré 2×/sem, protocole compétition','Résistance vitesse: 3×120m à 92% repos 8 min','Drop jumps 45cm RSI >1.6, sauts avec élan 5 pas','Power clean 80%, squat jump lesté +20kg','BD: force maximale + simulation match intensif'],
+   sprintVol:4,plioVol:4,bdVol:3},
+  {yr:5, label:'Transfert & Compétition', sprint:10.4, det:111, sq:148, bdPhase:'intense',
+   focus:['100m chrono qualification, départ 4 points optimisé','Résistance vitesse: 2×150m à 92%, 1×200m à 88%','Drop jumps 50cm RSI >1.8, bounding réactif multi-directionnel','Power clean 85%, squat 93% 1RM','BD: match vs frère — analyse et adaptation tactique'],
+   sprintVol:4,plioVol:4,bdVol:4},
+  {yr:6, label:'Pic performance', sprint:10.2, det:115, sq:155, bdPhase:'peak',
+   focus:['100m en condition réelle, qualification nationale','Drop jump altitude variable, RSI >2.0','Volume réduit 30%, intensité max','Résistance vitesse: 1×200m à 94%','BD: domination frère — hook + top-roll combinés'],
+   sprintVol:3,plioVol:3,bdVol:4},
+  {yr:7, label:'APOGÉE 🏆', sprint:10.0, det:120, sq:158, bdPhase:'peak',
+   focus:['OBJECTIF 100m en 10.0s — Vmax >11.8 m/s','OBJECTIF Détente 120cm — RSI >2.5','OBJECTIF Battre frère 120kg en top-roll','Volume minimal — chaque rep est parfaite'],
+   sprintVol:3,plioVol:3,bdVol:4},
+  {yr:8, label:'Maintien élite', sprint:10.1, det:117, sq:150, bdPhase:'maintain',
+   focus:['Maintien 10.0–10.2s, 2 séances piste/sem','Entretien force explosive, 2 muscu/sem','BD: maintien domination, matchs réguliers','Volume -40% vs An 7'],
+   sprintVol:2,plioVol:2,bdVol:3},
+];
+
+// ══════════════════════════════════════════════
+// CALCUL AUTO SEMAINE/ANNÉE + TRAJECTOIRE
+// ══════════════════════════════════════════════
+function calcYrWk(){
+  const startStr = (typeof S !== 'undefined' && S.profil && S.profil.startDate)
+    ? S.profil.startDate
+    : new Date().toISOString().split('T')[0];
+  const start = new Date(startStr);
+  start.setHours(0,0,0,0);
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const diffDays = Math.max(0, Math.floor((today - start) / 86400000));
+  const totalWeeks = Math.floor(diffDays / 7) + 1;
+  const wk = Math.min(400, totalWeeks);
+  const yr = Math.min(8, Math.ceil(wk / 52)) || 1;
+  const mo = today.getMonth() + 1;
+  const hivAuto = (mo >= 11 || mo <= 2);
+  return { yr, wk, hivAuto };
+}
+function isAutoMode(){ return typeof S !== 'undefined' && S._manualYr === null && S._manualWk === null; }
+function resetAuto(){
+  S._manualYr = null; S._manualWk = null;
+  DB.s('manualYr', null); DB.s('manualWk', null);
+  const yw = calcYrWk();
+  S.yr = yw.yr; S.wk = yw.wk;
+  if(yw.hivAuto && S.mode !== 'hiv') S.mode = 'hiv';
+  else if(!yw.hivAuto && S.mode === 'hiv') S.mode = 'std';
+  save();
+  notify('Mode AUTO — An '+S.yr+' · Sem. '+S.wk+(yw.hivAuto?' · ❄️':''), 'success');
+  renderProfile(); renderToday();
+}
+
+// Cibles annuelles pour comparaison
+function getCibleAnnee(yr){
+  const y = Math.min(8, Math.max(1, yr));
+  return {
+    sprint: TRAJECTOIRE.sprint[y-1].cible,
+    detente: TRAJECTOIRE.detente[y-1].cible,
+    bd: TRAJECTOIRE.bd[y-1].cible,
+  };
+}
+
+// Ajustement automatique des volumes selon écart performance
+function getAdjustedVolumes(yr){
+  const cible = getCibleAnnee(yr);
+  const tests = S.tests || [];
+  const lastSprint  = [...tests].reverse().find(t => t.sprint);
+  const lastDetente = [...tests].reverse().find(t => t.detente);
+  const lastBd      = [...tests].reverse().find(t => t.bd !== undefined);
+  let adjSprint = 0, adjPlio = 0, adjBd = 0, adjForce = 0;
+  // Sprint : si en retard → +15% volume Vmax, -10% force
+  if(lastSprint && lastSprint.sprint > cible.sprint + 0.3){
+    adjSprint = +1; adjForce = -1;
+  } else if(lastSprint && lastSprint.sprint < cible.sprint - 0.3){
+    adjSprint = -1;
+  }
+  // Détente : si en retard → +15% plio, +10% force explosive
+  if(lastDetente && lastDetente.detente < cible.detente - 8){
+    adjPlio = +1; adjForce = +1;
+  } else if(lastDetente && lastDetente.detente > cible.detente + 5){
+    adjPlio = -1;
+  }
+  // BD : si en retard → +1 séance BD hivernale
+  if(lastBd && lastBd.bd < cible.bd - 20){
+    adjBd = +1;
+  }
+  const macro = MACROS[yr-1];
+  return {
+    sprint:  Math.max(1, macro.sprintVol + adjSprint),
+    plio:    Math.max(1, macro.plioVol + adjPlio),
+    bd:      Math.max(1, macro.bdVol + adjBd),
+    force:   Math.max(1, 3 + adjForce),
+    message: [
+      adjSprint > 0 ? '⚡ Volume sprint +15% (retard sur trajectoire)' : '',
+      adjSprint < 0 ? '✅ Volume sprint réduit (avance sur trajectoire)' : '',
+      adjPlio   > 0 ? '🦘 Volume plio +15% (détente en retard)' : '',
+      adjForce  > 0 ? '🏋️ Volume force +10% (détente en retard)' : '',
+      adjForce  < 0 ? '🏋️ Volume force -10% (sprint prioritaire)' : '',
+      adjBd     > 0 ? '🤼 BD intensifié (retard vs frère)' : '',
+    ].filter(Boolean),
+  };
+}
+
+// ══════════════════════════════════════════════
+// SÉANCES DYNAMIQUES PAR ANNÉE — Niveau élite mondial
+// ══════════════════════════════════════════════
+function getSemaineStd(yr){
+  const y = Math.min(8, Math.max(1, yr || 1));
+  const adj = getAdjustedVolumes(y);
+
+  // ─ LUNDI : PISTE / SPRINT ─
+  const lundi = {
+    jour:'Lundi', emoji:'🏁', col:'g', int:'haute',
+    type:['PISTE — MÉCANIQUES DE COURSE','PISTE — ACCÉLÉRATION','PISTE — VMAX','PISTE — 100m COMPLET','PISTE — CHRONO QUALIFICATION','PISTE — COMPÉTITION','PISTE — APOGÉE','PISTE — MAINTIEN'][y-1],
+    titre: w => `Piste An${y} · Sem. ${w}`,
+    ex:[
+      {n:'Footing activation',d:'10 min FC<130 + mobilité cheville 5 min',cat:'warmup',repos:null},
+      {n:'Gammes athlétiques',d:'Ankling 2×20m · A-skip 2×20m · B-skip 2×20m · C-skip 1×20m · Montées genoux 2×20m',cat:'warmup',repos:null},
+      {n:'Accélérations progressives',d:'3×20m : 70% → 85% → 95% — éveil neuromusculaire',cat:'sprint',repos:120,sprintCat:'accel'},
+      ...(y===1?[
+        {n:'Accélérations techniques 0–30m',d:'4×30m à 85–88% — focus posture: pente avant 45°, bras puissants, contact sol sous CDG',cat:'sprint',repos:180,sprintCat:'accel'},
+        {n:'Montées en côte 5–6%',d:'5×30m — développement force propulsive sans vitesse excessive',cat:'sprint',repos:150,sprintCat:'accel'},
+        {n:'Skips A réactifs',d:'3×20m — cadence 3–4 contacts/s, dorsiflexion maximale',cat:'sprint',repos:90,sprintCat:'specific'},
+        {n:'Finisher: fartlek',d:'10×10s sprint / 20s récup — adaptation aérobie vitesse',cat:'sprint',repos:null,sprintCat:'endurance'},
+      ]:y===2?[
+        {n:'Accélérations 0–30m',d:'4×30m à 90–93% — départ debout, 3 points appui, angle départ 45°',cat:'sprint',repos:180,sprintCat:'accel'},
+        {n:'Vmax lancés 20m',d:'3×20m à 95–98% — prise de vitesse sur 30m avant, mesure de Vmax',cat:'sprint',repos:360,sprintCat:'vmax'},
+        {n:'Sprints résistance élastique',d:'3×20m avec élastique — surcharge propulsive',cat:'sprint',repos:180,sprintCat:'accel'},
+        {n:'Décélérations contrôlées',d:'2×40m — 0–20m à 95%, 20–40m décélération progressive',cat:'sprint',repos:240,sprintCat:'specific'},
+      ]:y===3?[
+        {n:'Vmax lancés 20m',d:'4×20m à 98–100% — repos 8–10 min, qualité absolue, chrono si possible',cat:'sprint',repos:480,sprintCat:'vmax'},
+        {n:'Accélérations 0–40m',d:'3×40m à 92–95%',cat:'sprint',repos:210,sprintCat:'accel'},
+        {n:'Résistance vitesse 80m',d:'2×80m à 90% — repos 8 min, maintien mécanique en fin de course',cat:'sprint',repos:480,sprintCat:'endurance'},
+        {n:'Départs 4 points sur 20m',d:'3×20m — optimisation phase de départ',cat:'sprint',repos:150,sprintCat:'depart'},
+      ]:y===4?[
+        {n:'100m complet chronométré',d:'2×100m à 96–98% — protocole compétition, chrono manuel, analyse par segments',cat:'sprint',repos:600,sprintCat:'vmax'},
+        {n:'Accélérations 0–40m',d:'3×40m à 93–96%',cat:'sprint',repos:210,sprintCat:'accel'},
+        {n:'Résistance vitesse 120m',d:'2×120m à 90% — repos 8 min',cat:'sprint',repos:480,sprintCat:'endurance'},
+      ]:y===5?[
+        {n:'100m chrono qualification',d:'2×100m — condition compétition, départ 4 points optimisé, chrono électronique',cat:'sprint',repos:600,sprintCat:'vmax'},
+        {n:'Résistance vitesse 150m',d:'2×150m à 90–92% — repos 8 min, focus maintien mécanique',cat:'sprint',repos:480,sprintCat:'endurance'},
+        {n:'Vmax lancés 30m',d:'2×30m à 100% — vitesse de pointe absolue',cat:'sprint',repos:420,sprintCat:'vmax'},
+      ]:y===6?[
+        {n:'100m qualification',d:'2×100m — condition réelle compétition, viser < 10.3s',cat:'sprint',repos:600,sprintCat:'vmax'},
+        {n:'Résistance vitesse 200m',d:'1×200m à 90% — endurance vitesse maximale',cat:'sprint',repos:600,sprintCat:'endurance'},
+        {n:'Vmax 30m lancés',d:'2×30m à 100% — mesure Vmax',cat:'sprint',repos:480,sprintCat:'vmax'},
+      ]:y===7?[
+        {n:'100m OBJECTIF 10.0s',d:'2×100m — performance absolue, conditions parfaites',cat:'sprint',repos:720,sprintCat:'vmax'},
+        {n:'60m lancés',d:'2×60m à 100% — Vmax >11.8 m/s objectif',cat:'sprint',repos:480,sprintCat:'vmax'},
+        {n:'Résistance vitesse',d:'1×150m à 92%',cat:'sprint',repos:480,sprintCat:'endurance'},
+      ]:[
+        {n:'100m maintien',d:'2×100m à 88–92%',cat:'sprint',repos:480,sprintCat:'vmax'},
+        {n:'Accélérations 0–40m',d:'3×40m à 88–92%',cat:'sprint',repos:210,sprintCat:'accel'},
+      ]),
+      {n:'Spanish squat isométrique',d:'3×'+(y<=2?'30':'45')+'s élastiques — protection tendon rotulien + ischios',cat:'muscu',repos:90},
+      {n:'Retour au calme',d:'10 min trot + étirements dynamiques chaîne postérieure',cat:'cooldown',repos:null},
+    ]
+  };
+
+  // ─ MARDI : FORCE MAXIMALE ─
+  const mardi = {
+    jour:'Mardi', emoji:'🏋️', col:'a', int:'haute',
+    type:['FORCE BASE','FORCE MAXIMALE','FORCE MAXIMALE','FORCE EXPLOSIVE','PUISSANCE MAXIMALE','MAINTIEN FORCE','QUALITÉ MAXIMALE','ENTRETIEN'][y-1],
+    titre: w => `Force An${y} · Sem. ${w}`,
+    ex:[
+      {n:'Échauffement CNS',d:'Barre vide 3×5 squat + 2×3 CMJ — activation système nerveux',cat:'warmup',repos:null},
+      ...(y===1?[
+        {n:'Squat barre haute',d:'4×8 à 65–70% 1RM — technique prioritaire: pieds à largeur épaules, genou sur 3e orteil, descent 3s',cat:'muscu',repos:120,chargeKey:'squat'},
+        {n:'Hip Thrust',d:'3×10 à 68% 1RM — squeeze fessier 1s en haut',cat:'muscu',repos:120,chargeKey:'hip'},
+        {n:'Nordic Curl excentrique',d:'3×4 — descente 4–5s contrôlée, remontée aidée — OBLIGATOIRE prévention ischio',cat:'muscu',repos:150},
+        {n:'Soléaire debout assis',d:'3×15 — amplitude maximale, tempo 2/1/2 — raideur tendineuse',cat:'muscu',repos:90},
+        {n:'Tractions pronation',d:'4×max (assistées si nécessaire) — force relative',cat:'muscu',repos:150,chargeKey:'traction'},
+        {n:'Gainage planche',d:'3×30s + 2×15 rollouts — stabilité lombaire',cat:'muscu',repos:60},
+      ]:y===2?[
+        {n:'Squat barre haute',d:'4×5 à 80–85% 1RM — tempo: descente 2s, pause 1s, explosion vers le haut',cat:'muscu',repos:210,chargeKey:'squat'},
+        {n:'Hip Thrust lourd',d:'3×6 à 80% 1RM',cat:'muscu',repos:180,chargeKey:'hip'},
+        {n:'Nordic Curl excentrique',d:'3×5 — descente 3–4s',cat:'muscu',repos:150},
+        {n:'Soléaire et mollets lestés',d:'4×12 full range — poids corporel + charge',cat:'muscu',repos:90},
+        {n:'Tractions lestées',d:'4×4–5 (+2.5kg progression hebdo)',cat:'muscu',repos:210,chargeKey:'traction'},
+        {n:'Good morning',d:'3×8 à 40% squat — chaîne postérieure',cat:'muscu',repos:120},
+        {n:'Gainage planche',d:'3×40s',cat:'muscu',repos:60},
+      ]:y<=3?[
+        {n:'Squat barre haute',d:'4×3 à 87–92% 1RM — force pure',cat:'muscu',repos:240,chargeKey:'squat'},
+        {n:'Glute Ham Raise (GHR)',d:'3×6 — meilleur exercice chaîne post. dynamique',cat:'muscu',repos:180},
+        {n:'Hip Thrust lourd',d:'3×5 à 83% 1RM',cat:'muscu',repos:150,chargeKey:'hip'},
+        {n:'Nordic Curl',d:'3×5 — descente 3s',cat:'muscu',repos:150},
+        {n:'Tractions lestées',d:'4×3 reps (+0.5–1kg/sem)',cat:'muscu',repos:240,chargeKey:'traction'},
+        {n:'Soléaire lourd',d:'4×8 full range avec charge',cat:'muscu',repos:90},
+        {n:'Gainage anti-rotation',d:'3×15 Pallof press + 2×45s planche',cat:'muscu',repos:60},
+      ]:y===4?[
+        {n:'Squat jump lesté +15–20kg',d:'5×3 — puissance explosive, hauteur maximale, repos complet',cat:'muscu',repos:240,chargeKey:'squat'},
+        {n:'Squat lourd',d:'3×3 à 90% 1RM — maintien force max',cat:'muscu',repos:300,chargeKey:'squat'},
+        {n:'GHR',d:'3×5',cat:'muscu',repos:180},
+        {n:'Hip Thrust explosif',d:'4×4 — poussée maximale vitesse',cat:'muscu',repos:180,chargeKey:'hip'},
+        {n:'Nordic Curl',d:'3×4',cat:'muscu',repos:150},
+        {n:'Tractions lestées max',d:'3×2–3 (charge personnelle max)',cat:'muscu',repos:240,chargeKey:'traction'},
+        {n:'Soléaire',d:'3×8 lourd',cat:'muscu',repos:90},
+      ]:y===5?[
+        {n:'Power Clean',d:'5×2 à 82–87% — transfert force→vitesse',cat:'muscu',repos:270,chargeKey:'rdl'},
+        {n:'Squat 92% 1RM',d:'3×2 — force pure',cat:'muscu',repos:300,chargeKey:'squat'},
+        {n:'GHR',d:'3×5',cat:'muscu',repos:180},
+        {n:'Hip Thrust lourd',d:'3×4 à 85%',cat:'muscu',repos:180,chargeKey:'hip'},
+        {n:'Nordic Curl',d:'2×4',cat:'muscu',repos:150},
+        {n:'Tractions lestées',d:'3×2 charge max',cat:'muscu',repos:240,chargeKey:'traction'},
+        {n:'Soléaire lourd',d:'3×8',cat:'muscu',repos:90},
+      ]:y<=7?[
+        {n:'Power Clean',d:'4×2 à 85–90% — qualité explosive maximale',cat:'muscu',repos:300,chargeKey:'rdl'},
+        {n:'Squat 93–95% 1RM',d:'2×2 — pic de force',cat:'muscu',repos:360,chargeKey:'squat'},
+        {n:'GHR',d:'2×5',cat:'muscu',repos:180},
+        {n:'Hip Thrust',d:'3×3 à 88%',cat:'muscu',repos:180,chargeKey:'hip'},
+        {n:'Nordic Curl',d:'2×4',cat:'muscu',repos:150},
+        {n:'Tractions lestées',d:'2×2 charge max',cat:'muscu',repos:240,chargeKey:'traction'},
+      ]:[
+        {n:'Squat modéré',d:'3×6 à 75% — maintien',cat:'muscu',repos:180,chargeKey:'squat'},
+        {n:'GHR',d:'2×5 — entretien chaîne post.',cat:'muscu',repos:150},
+        {n:'Hip Thrust',d:'3×8 à 72%',cat:'muscu',repos:150,chargeKey:'hip'},
+        {n:'Nordic Curl',d:'2×5',cat:'muscu',repos:120},
+        {n:'Tractions',d:'3×4 — entretien',cat:'muscu',repos:180,chargeKey:'traction'},
+        {n:'Soléaire',d:'3×10',cat:'muscu',repos:90},
+      ]),
+      {n:'Mobilité hanches',d:'10 min: pigeon pose, fentes profondes, SLR — préservation amplitude',cat:'cooldown',repos:null},
+    ]
+  };
+
+  // ─ MERCREDI : RÉCUPÉRATION ─
+  const mercredi = {
+    jour:'Mercredi', emoji:'🌿', type:'RÉCUPÉRATION ACTIVE', col:'b', int:'basse',
+    titre: () => 'Récupération active',
+    ex:[
+      {n:'Test SNC — 3 CMJ',d:'Mesure hauteur → si -10% vs baseline → séance réduite',cat:'snc',repos:null},
+      {n:'Footing régénération',d:'20 min FC<120 — activation circulation + élimination lactate',cat:'recup',repos:null},
+      {n:'Mobilité hanche & cheville',d:'15 min: 90/90, SLR passif, cercles cheville — amplitude performance',cat:'recup',repos:null},
+      {n:'Rouleau mousse + lacrosse ball',d:'10 min: IT band, soléaire, fessiers, avant-bras sprinteur',cat:'recup',repos:null},
+      {n:'Dorsiflexion excentrique',d:'2×15 chaque pied — tendinite achilléenne prévention',cat:'prev',repos:null},
+      {n:'Hydratation & nutrition récup',d:'Protéines 30–40g dans 30 min post-entraînement, créatine 5g',cat:'nutri',repos:null},
+      ...(y>=3?[{n:'Bain contraste',d:'3×(2 min chaud → 1 min froid) — récupération neuromusculaire',cat:'recup',repos:null}]:[]),
+    ]
+  };
+
+  // ─ JEUDI : PLIOMÉTRIE + SPRINTS COURTS ─
+  const jeudi = {
+    jour:'Jeudi', emoji:'⚡', col:'a', int:'haute',
+    type:['PLIO INTRO + BOUNDING','PLIO DROP JUMP + BOUNDING','PLIO RSI + SPRINT SPÉCIFIQUE','PLIO HAUTE INTENSITÉ','PLIO ÉLITE','PLIO COMPÉTITION','PLIO APOGÉE','PLIO ENTRETIEN'][y-1],
+    titre: w => `Puissance An${y} · Sem. ${w}`,
+    ex:[
+      {n:'Échauffement dynamique',d:'10 min + 3 CMJ test SNC',cat:'warmup',repos:null},
+      ...(y===1?[
+        {n:'Sauts verticaux max — CMJ',d:'4×3 — repos complet 3 min, hauteur maximale, atterrissage souple',cat:'plio',repos:180,plioKey:'vertical'},
+        {n:'Box Jump 30cm',d:'3×4 — saut explosif, descente pas de boîte, atterrissage absorbé',cat:'plio',repos:150,plioKey:'drop'},
+        {n:'Ankling réactif',d:'3×20m — contacts sol minimaux, jambe raide, dorsiflexion maintenue',cat:'plio',repos:90},
+        {n:'Bounding horizontal',d:'3×5 bonds — amplitude maximale, élan minimal, focus propulsion',cat:'plio',repos:150},
+        {n:'Sprint 20m accélération',d:'3×20m à 85% — coordination sprint + pliométrie',cat:'sprint',repos:150,sprintCat:'accel'},
+        {n:'Pompes standard',d:'4×10 RIR 2 — force poussée membre sup.',cat:'cali',repos:90},
+      ]:y===2?[
+        {n:'Drop Jump 30cm',d:'3×4 — contact sol <0.2s, RSI cible 1.2+ — MESURER RSI si possible',cat:'plio',repos:210,plioKey:'drop'},
+        {n:'Sauts verticaux max CMJ',d:'4×3 — repos 3 min complet',cat:'plio',repos:180,plioKey:'vertical'},
+        {n:'Bounding horizontal',d:'4×5 bonds 40–50m — record distance à chaque série',cat:'plio',repos:180},
+        {n:'Ankling + skip A réactif',d:'3×20m chacun — raideur tendineuse',cat:'plio',repos:90},
+        {n:'Sprint 25–30m',d:'3×30m à 90% — coordination vitesse',cat:'sprint',repos:210,sprintCat:'accel'},
+        {n:'Pompes claquées',d:'4×6 — force explosive membre sup.',cat:'cali',repos:120},
+      ]:y===3?[
+        {n:'Drop Jump 40cm',d:'4×4 — RSI cible >1.3 · contact sol <0.20s · focus raideur tendineuse',cat:'plio',repos:240,plioKey:'drop'},
+        {n:'Sauts verticaux max CMJ',d:'4×3 — repos 4 min',cat:'plio',repos:240,plioKey:'vertical'},
+        {n:'Bounding réactif 50m',d:'4×50m — bonds longs + réactifs alternés',cat:'plio',repos:210},
+        {n:'Sauts en contrebas (depth jump)',d:'3×4 depuis 40cm — atterrissage minimal, rebond immédiat',cat:'plio',repos:180,plioKey:'drop'},
+        {n:'Sprint spécifique 30m',d:'3×30m à 95% — transition plio→sprint',cat:'sprint',repos:300,sprintCat:'specific'},
+        {n:'Pompes claquées',d:'4×8',cat:'cali',repos:120},
+      ]:y===4?[
+        {n:'Drop Jump 45cm',d:'5×4 — RSI cible >1.6 · contact sol <0.18s',cat:'plio',repos:270,plioKey:'drop'},
+        {n:'Sauts avec élan 3–5 pas',d:'4×3 — approche contrôlée, impulsion maximale',cat:'plio',repos:240,plioKey:'vertical'},
+        {n:'Bounding multi-directionnel',d:'3×6 bonds — latéraux + diagonaux + avant',cat:'plio',repos:180},
+        {n:'Depth Jump altitude variable',d:'3×4 — 40cm puis 50cm puis 45cm',cat:'plio',repos:210,plioKey:'drop'},
+        {n:'Sprint 40m spécifique',d:'3×40m à 96%',cat:'sprint',repos:300,sprintCat:'specific'},
+        {n:'Pompes claquées + dips',d:'4 séries',cat:'cali',repos:150},
+      ]:y===5?[
+        {n:'Drop Jump 50cm',d:'5×4 — RSI cible >1.8 · contact sol <0.16s',cat:'plio',repos:300,plioKey:'drop'},
+        {n:'Sauts avec élan 5 pas max',d:'4×3 — impulsion record',cat:'plio',repos:300,plioKey:'vertical'},
+        {n:'Bounding réactif 60m',d:'3×60m — intensité maximale',cat:'plio',repos:240},
+        {n:'Squat jump lesté +10kg',d:'3×3 — transfert force explosive',cat:'plio',repos:210},
+        {n:'Sprint 50m',d:'3×50m à 98%',cat:'sprint',repos:360,sprintCat:'specific'},
+        {n:'Pompes claquées',d:'4 séries RIR 1',cat:'cali',repos:150},
+      ]:y<=7?[
+        {n:'Drop Jump 50cm altitude variable',d:'4×4 — RSI cible >2.0 · contact sol <0.15s',cat:'plio',repos:300,plioKey:'drop'},
+        {n:'Sauts avec élan max',d:'3×3 — tentative record détente',cat:'plio',repos:360,plioKey:'vertical'},
+        {n:'Bounding réactif',d:'3×50m intensité maximale',cat:'plio',repos:240},
+        {n:'Sprint 60m compétition',d:'2×60m à 100%',cat:'sprint',repos:420,sprintCat:'specific'},
+        {n:'Pompes claquées',d:'3 séries RIR 1',cat:'cali',repos:120},
+      ]:[
+        {n:'Drop Jump 40cm',d:'3×3 — entretien RSI',cat:'plio',repos:240,plioKey:'drop'},
+        {n:'Sauts verticaux',d:'3×3 entretien',cat:'plio',repos:180,plioKey:'vertical'},
+        {n:'Bounding 40m',d:'3×40m',cat:'plio',repos:150},
+        {n:'Sprint 30m',d:'3×30m à 88%',cat:'sprint',repos:210,sprintCat:'accel'},
+      ]),
+      {n:'Dorsiflexion élastiques',d:'3×15 chaque pied — prévention tendinopathie Achille',cat:'prev',repos:null},
+      {n:'Extension excentrique poignet',d:'3×15 lent — prévention coude (BD + sprint)',cat:'prev',repos:null},
+    ]
+  };
+
+  // ─ VENDREDI : CHAÎNE POSTÉRIEURE + PUISSANCE ─
+  const vendredi = {
+    jour:'Vendredi', emoji:'🔥', col:'a', int:'haute',
+    type:['CHAÎNE POST. BASE','CHAÎNE POST. + POWER','POWER + TRANSFER','PUISSANCE EXPLOSIVE','PUISSANCE MAXIMALE','MAINTIEN PUISSANCE','QUALITÉ PUISSANCE','ENTRETIEN'][y-1],
+    titre: w => `Chaîne post. An${y} · Sem. ${w}`,
+    ex:[
+      {n:'Échauffement activation fessiers',d:'Monster walks élastique 2×15 + fire hydrant 2×15 + hip circle 2×15',cat:'warmup',repos:null},
+      ...(y===1?[
+        {n:'RDL (Romanian Deadlift)',d:'4×8 à 60–65% — technique: dos plat, rétroversion bassin, descente jusqu\'à tension ischio',cat:'muscu',repos:120,chargeKey:'rdl'},
+        {n:'Bulgarian Split Squat',d:'3×10/jambe à PDC — apprentissage équilibre + force unilatérale',cat:'muscu',repos:90,chargeKey:'split'},
+        {n:'Good Morning',d:'3×10 à 30% — chaîne post. légère',cat:'muscu',repos:90},
+        {n:'Box Jump 30cm',d:'3×4 — introduction pliométrie vendredi',cat:'plio',repos:150},
+        {n:'Gainage rotatoire',d:'2×20 side plank rotation + 2×15 Pallof press',cat:'muscu',repos:60},
+      ]:y===2?[
+        {n:'RDL',d:'4×6 à 72–75% 1RM',cat:'muscu',repos:150,chargeKey:'rdl'},
+        {n:'Bulgarian Split Squat',d:'3×8/jambe chargé',cat:'muscu',repos:90,chargeKey:'split'},
+        {n:'Good Morning',d:'3×8 à 40%',cat:'muscu',repos:90},
+        {n:'Box Jump 35cm gilet +5kg',d:'3×4',cat:'plio',repos:180},
+        {n:'Gainage anti-rotation',d:'3×20 Pallof press',cat:'muscu',repos:60},
+      ]:y<=3?[
+        {n:'Power Clean (ou Trap Bar Jump)',d:'4×3 à 72–78% — explosivité chaîne complète',cat:'muscu',repos:210,chargeKey:'rdl'},
+        {n:'RDL',d:'3×5 à 75%',cat:'muscu',repos:150,chargeKey:'rdl'},
+        {n:'Bulgarian Split Squat',d:'3×6/jambe chargé',cat:'muscu',repos:90,chargeKey:'split'},
+        {n:'Box Jump gilet +10kg',d:'3×4',cat:'plio',repos:180},
+        {n:'Gainage anti-rotation',d:'3×20',cat:'muscu',repos:60},
+      ]:y===4?[
+        {n:'Power Clean',d:'5×2 à 80–85% — puissance chaîne complète',cat:'muscu',repos:240,chargeKey:'rdl'},
+        {n:'RDL lourd',d:'3×4 à 78% 1RM',cat:'muscu',repos:150,chargeKey:'rdl'},
+        {n:'Box Jump gilet +15kg',d:'4×3',cat:'plio',repos:210},
+        {n:'Bulgarian Split Squat',d:'3×5/jambe chargé',cat:'muscu',repos:120,chargeKey:'split'},
+        {n:'Gainage Pallof press',d:'3×15',cat:'muscu',repos:75},
+      ]:y===5?[
+        {n:'Snatch de puissance ou Power Clean',d:'5×2 à 83–88% — transfert élite',cat:'muscu',repos:270,chargeKey:'rdl'},
+        {n:'RDL',d:'3×4 à 80%',cat:'muscu',repos:150,chargeKey:'rdl'},
+        {n:'Box Jump gilet +20kg',d:'3×3',cat:'plio',repos:240},
+        {n:'Split Squat explosif',d:'3×4/jambe',cat:'muscu',repos:120,chargeKey:'split'},
+        {n:'Gainage anti-rotation',d:'3×15 Pallof press',cat:'muscu',repos:75},
+      ]:y<=7?[
+        {n:'Snatch / Power Clean',d:'4×2 à 87–92% — pic puissance',cat:'muscu',repos:300,chargeKey:'rdl'},
+        {n:'RDL',d:'3×3 à 82%',cat:'muscu',repos:150,chargeKey:'rdl'},
+        {n:'Box Jump altitude max',d:'3×3',cat:'plio',repos:270},
+        {n:'Split Squat explosif',d:'3×3/jambe',cat:'muscu',repos:120,chargeKey:'split'},
+        {n:'Gainage planche',d:'2×45s',cat:'muscu',repos:60},
+      ]:[
+        {n:'Power Clean léger',d:'3×3 à 72% — entretien',cat:'muscu',repos:180,chargeKey:'rdl'},
+        {n:'RDL',d:'3×6 à 70%',cat:'muscu',repos:120,chargeKey:'rdl'},
+        {n:'Box Jump 35cm',d:'3×3',cat:'plio',repos:150},
+        {n:'Split Squat',d:'3×6/jambe',cat:'muscu',repos:90,chargeKey:'split'},
+        {n:'Gainage',d:'2×40s',cat:'muscu',repos:60},
+      ]),
+    ]
+  };
+
+  // ─ SAMEDI : BRAS DE FER ─
+  const samedi = {
+    jour:'Samedi', emoji:'🤼', col:'r', int:'moyenne',
+    type:['BD — ANATOMIE & INITIATION','BD — FORCE FONDAMENTALE','BD — FORCE SPÉCIFIQUE','BD — TECHNIQUE AVANCÉE','BD — SIMULATION MATCH','BD — DOMINATION','BD — VICTOIRE','BD — MAINTIEN'][y-1],
+    titre: () => 'Bras de fer An'+y,
+    ex:[
+      {n:'Échauffement coudes & poignets',d:'10 min: cercles poignet, supination/pronation élastique, chaleur tendineuse',cat:'warmup',repos:null},
+      ...(y===1?[
+        {n:'Wrist Curl (flexion poignet)',d:'3×15 — découverte cupping: poignet fléchi vers toi, pouce en haut',cat:'bd',repos:60},
+        {n:'Pronation/Supination haltère',d:'3×15 chaque sens — axe top-roll (pronation) + hook (supination)',cat:'bd',repos:60},
+        {n:'Rising élastique léger',d:'3×15 — élastique sous table simulée, tire vers le haut',cat:'bd',repos:60},
+        {n:'Curl marteau',d:'3×12 — brachioradialis: muscle dominant bras de fer',cat:'muscu',repos:75,chargeKey:'curl'},
+        {n:'Extension poignet excentrique',d:'3×15 lent 4s — prévention épicondylite latérale',cat:'prev',repos:60},
+        {n:'Rotation coude élastique',d:'3×15 chaque sens — stabilisateurs',cat:'prev',repos:45},
+        {n:'Compréhension tactique',d:'Vidéo: observer John Brzenk top-roll + Devon Larratt hook',cat:'bd',repos:null},
+      ]:y===2?[
+        {n:'Wrist Curl pronation lourd',d:'3×10 — prise en pronation (top-roll): plus lourd que supination',cat:'bd',repos:75},
+        {n:'Pronation câble ou élastique résistance',d:'3×10 — moteur principal top-roll: rotation vers dedans',cat:'bd',repos:75},
+        {n:'Rising lourd',d:'3×10 — back pressure contre résistance',cat:'bd',repos:75},
+        {n:'Curl marteau lourd',d:'4×8 — 75–80% 1RM',cat:'muscu',repos:90,chargeKey:'curl'},
+        {n:'Isométrie table simulée',d:'4×5s à 70% — position haute: coude 90°, poignet fléchi',cat:'bd',repos:90},
+        {n:'Extension poignet excentrique',d:'3×12 lent',cat:'prev',repos:60},
+        {n:'Rotation coude élastique',d:'3×15 chaque sens',cat:'prev',repos:45},
+      ]:y===3?[
+        {n:'Isométrie table position haute',d:'5×7s à 80% — pronation + cupping + back pressure simultanés',cat:'bd',repos:120},
+        {n:'Pronation câble lourde',d:'4×8 à 75–80% — top-roll power: tourner la main vers soi',cat:'bd',repos:90},
+        {n:'Rising lourd',d:'4×8 — élévation du poignet contre résistance',cat:'bd',repos:90},
+        {n:'Curl marteau lourd',d:'4×6 à 80% 1RM',cat:'muscu',repos:120,chargeKey:'curl'},
+        {n:'Simulation strap 1 main',d:'4×10s — main attachée, reproduire pression match',cat:'bd',repos:120},
+        {n:'Analyse frère: film la main',d:'Observer: est-ce qu\'il gagne en hook (supination) ou force brute? → adapter',cat:'bd',repos:null},
+        {n:'Extension poignet excentrique',d:'3×10 lent',cat:'prev',repos:60},
+      ]:y===4?[
+        {n:'Isométrie table position pin',d:'5×8s à 83% — coude bas, poignet fléchi, pronation active',cat:'bd',repos:120},
+        {n:'Pronation explosive élastique',d:'4×6 — vitesse de rotation maximale: développe la vitesse d\'attaque',cat:'bd',repos:90},
+        {n:'Curl marteau lourd',d:'4×5 à 83% 1RM',cat:'muscu',repos:150,chargeKey:'curl'},
+        {n:'Rising lourd',d:'4×6',cat:'bd',repos:90},
+        {n:'Simulation match 10 rounds',d:'10×10s — top-roll: coude contre corps, pouce vers le plafond, tir diagonal',cat:'bd',repos:120},
+        {n:'Extension poignet excentrique',d:'3×10 lent',cat:'prev',repos:60},
+      ]:y===5?[
+        {n:'Simulation match vs partenaire',d:'8 rounds complets — analyse: perd-il sur l\'ouverture ou en endurance?',cat:'bd',repos:120},
+        {n:'Isométrie table',d:'5×10s à 85%',cat:'bd',repos:120},
+        {n:'Pronation explosive élastique',d:'4×6 vitesse max',cat:'bd',repos:90},
+        {n:'Curl marteau lourd',d:'4×5 charge record',cat:'muscu',repos:150,chargeKey:'curl'},
+        {n:'Stratégie vs frère 120kg',d:'Top-roll: il a la masse → utiliser sa propre force + contre-rotation. Ne jamais faire de pull isolé',cat:'bd',repos:null},
+        {n:'Extension poignet excentrique',d:'3×10 lent',cat:'prev',repos:60},
+      ]:y===6?[
+        {n:'Match vs frère — 10 rounds',d:'Protocole: 3 top-roll + 3 hook + 4 libre. Analyser vidéo chaque round',cat:'bd',repos:120},
+        {n:'Isométrie table',d:'5×10s à 87%',cat:'bd',repos:120},
+        {n:'Pronation explosive',d:'4×5 vitesse max',cat:'bd',repos:90},
+        {n:'Curl marteau',d:'3×5 — maintien force',cat:'muscu',repos:120,chargeKey:'curl'},
+        {n:'Extension poignet excentrique',d:'3×10 lent',cat:'prev',repos:60},
+      ]:y===7?[
+        {n:'OBJECTIF: Battre frère 120kg',d:'Match 3-0 — stratégie finale: départ explosif top-roll, coude contre corps, back pressure immédiate. Il pèse 120kg → contre-rotation = sa force devient ta force',cat:'bd',repos:null},
+        {n:'Simulation match élite',d:'10 rounds intensité maximale',cat:'bd',repos:120},
+        {n:'Isométrie table',d:'3×10s — position pin finale',cat:'bd',repos:120},
+        {n:'Curl marteau',d:'3×5 — entretien',cat:'muscu',repos:120,chargeKey:'curl'},
+        {n:'Extension poignet excentrique',d:'3×10 lent',cat:'prev',repos:60},
+      ]:[
+        {n:'BD technique maintien',d:'6 rounds — qualité tactique conservée',cat:'bd',repos:90},
+        {n:'Curl marteau modéré',d:'3×10 — entretien brachioradialis',cat:'muscu',repos:75,chargeKey:'curl'},
+        {n:'Isométrie table',d:'3×5s — maintien force',cat:'bd',repos:90},
+        {n:'Extension poignet excentrique',d:'3×12 lent',cat:'prev',repos:60},
+      ]),
+    ]
+  };
+
+  // ─ DIMANCHE : REPOS ─
+  const dimanche = {
+    jour:'Dimanche', emoji:'😴', type:'REPOS TOTAL', col:'d', int:'repos',
+    titre: () => 'Repos & Supercompensation',
+    ex:[
+      {n:'Repos complet',d:'AUCUN entraînement — la progression se fait pendant le repos',cat:'repos',repos:null},
+      {n:'Nutrition supercompensation',d:'2.0–2.2g/kg protéines · 4–6g/kg glucides · créatine 5g · oméga-3 2g',cat:'nutri',repos:null},
+      {n:'Sommeil 9h',d:'22h → 7h — pic GH en sommeil profond phases 3–4',cat:'recup',repos:null},
+      {n:'Hydratation',d:'3L eau minimum — récupération tissu conjonctif',cat:'recup',repos:null},
+    ]
+  };
+
+  return {lundi, mardi, mercredi, jeudi, vendredi, samedi, dimanche};
+}
+
+// Bloc hivernal adapté à l'année
+function getSemaineHiv(yr){
+  const y = Math.min(8, Math.max(1, yr||1));
+  return {
+    lundi: {
+      jour:'Lundi', emoji:'❄️', type:'MAINTIEN SPRINT HIVERNAL', col:'b', int:'haute',
+      titre: () => 'Sprint hivernal An'+y,
+      ex:[
+        {n:'Footing + gammes',d:'10 min + gammes complètes',cat:'warmup',repos:null},
+        {n:'Vmax lancés 20m',d:(y<=2?'2–3':'3–4')+'×20m à '+(y<=2?'88–92':'93–96')+'% — maintien coordination neuromusculaire',cat:'sprint',repos:360,sprintCat:'vmax'},
+        {n:'Accélérations courtes',d:'3×20m à '+(y<=2?'85':'90')+'% — maintien pattern départ',cat:'sprint',repos:180,sprintCat:'accel'},
+        {n:'Ankling + skip A',d:'3×20m chacun',cat:'sprint',repos:90},
+        {n:'Spanish squat isométrique',d:'3×45s',cat:'muscu',repos:90},
+      ]
+    },
+    mardi: {
+      jour:'Mardi', emoji:'🤼', type:'BD LOURD S1 — BLOC HIVERNAL', col:'r', int:'haute',
+      titre: () => 'BD Lourd S1 An'+y+' — Bloc hivernal',
+      ex:[
+        {n:'Échauffement coudes & poignets',d:'12 min — chaleur progressive',cat:'warmup',repos:null},
+        {n:'Isométrie table BD position haute',d:'5×'+(y<=2?'5':'8')+'s à '+(y<=2?'75':'85')+'% — pronation + cupping + back pressure',cat:'bd',repos:120},
+        {n:'Pronation câble explosive',d:'4×'+(y<=2?'10':'6')+' à '+(y<=2?'70':'82')+'% — vitesse de rotation',cat:'bd',repos:90},
+        {n:'Curl marteau lourd',d:'4×'+(y<=2?'8':'5')+' à '+(y<=2?'75':'85')+'% 1RM',cat:'muscu',repos:150,chargeKey:'bd_hiv'},
+        {n:'Rising élastique lourd',d:'3×'+(y<=2?'12':'8'),cat:'bd',repos:90},
+        {n:'Gainage planche',d:'3×45s',cat:'muscu',repos:60},
+        {n:'Extension poignet excentrique',d:'3×12 lent',cat:'prev',repos:60},
+      ]
+    },
+    mercredi: {
+      jour:'Mercredi', emoji:'🌿', type:'RÉCUPÉRATION', col:'b', int:'basse',
+      titre: () => 'Récup active',
+      ex:[
+        {n:'Test SNC matinal',d:'3 CMJ → si -10% vs baseline → repos total',cat:'snc',repos:null},
+        {n:'Footing léger',d:'20 min FC<120',cat:'recup',repos:null},
+        {n:'Mobilité hanche + cheville',d:'15 min',cat:'recup',repos:null},
+        {n:'Massage avant-bras coudes',d:'10 min rouleau + lacrosse ball — récup spécifique BD',cat:'recup',repos:null},
+        {n:'Dorsiflexion excentrique',d:'2×15 — prévention Achille',cat:'prev',repos:null},
+      ]
+    },
+    jeudi: {
+      jour:'Jeudi', emoji:'🦾', type:'SQUAT LOURD + BD S2', col:'r', int:'haute',
+      titre: () => 'Squat + BD S2 An'+y,
+      ex:[
+        {n:'Échauffement articulaire',d:'10 min',cat:'warmup',repos:null},
+        {n:'Squat partiel (0–60°)',d:'4×'+(y<=2?'5':'3')+'à '+(y<=2?'82':'90')+'% — maintien force max hiver',cat:'muscu',repos:240,chargeKey:'squat'},
+        {n:'GHR ou Nordic Curl',d:'3×5 — chaîne postérieure',cat:'muscu',repos:180},
+        {n:'Hip Thrust',d:'3×'+(y<=2?'8':'5')+' à '+(y<=2?'75':'85')+'%',cat:'muscu',repos:150,chargeKey:'hip'},
+        {n:'Isométrie table BD',d:'5×'+(y<=2?'6':'8')+'s — même protocole mardi',cat:'bd',repos:120},
+        {n:'Curl marteau',d:'4×'+(y<=2?'8':'5')+' — lourd',cat:'muscu',repos:150,chargeKey:'bd_hiv'},
+        {n:'Trap Bar Deadlift',d:'3×4 à '+(y<=2?'75':'82')+'%',cat:'muscu',repos:180,chargeKey:'rdl'},
+      ]
+    },
+    vendredi: {
+      jour:'Vendredi', emoji:'⚡', type:'PLIO + SPRINTS COURTS', col:'a', int:'haute',
+      titre: () => 'Plio + Accél An'+y,
+      ex:[
+        {n:'Échauffement dynamique',d:'10 min + 3 CMJ test SNC',cat:'warmup',repos:null},
+        {n:'Drop Jump '+(y<=2?'30':'35–40')+'cm',d:'3×4 — contact sol minimal, RSI maintenu',cat:'plio',repos:210,plioKey:'drop'},
+        {n:'Sauts verticaux max',d:'3×3 — repos complet',cat:'plio',repos:300,plioKey:'vertical'},
+        {n:'Bounding horizontal',d:'3×5 bonds — maintien force propulsive',cat:'plio',repos:180},
+        {n:'Accélérations '+(y<=2?'20':'25')+'m',d:'3×'+(y<=2?'20':'25')+'m à '+(y<=2?'88':'92')+'%',cat:'sprint',repos:210,sprintCat:'accel'},
+        {n:'Dorsiflexion élastiques',d:'3×15 — prévention Achille',cat:'prev',repos:null},
+      ]
+    },
+    samedi: {
+      jour:'Samedi', emoji:'🤼', type:'BD TECHNIQUE', col:'r', int:'moyenne',
+      titre: () => 'BD Technique An'+y,
+      ex:[
+        {n:'Échauffement coudes & poignets',d:'10 min',cat:'warmup',repos:null},
+        {n:'Top-roll technique',d:'3 séries — pronation + rising + back pressure'+(y>=4?' → attaque en diagonale, pas droit':''),cat:'bd',repos:90},
+        {n:'Hook technique',d:'3 séries — supination + cupping + fermeture coude',cat:'bd',repos:90},
+        {n:'Curl marteau modéré',d:'3×'+(y<=2?'12':'10'),cat:'muscu',repos:75,chargeKey:'curl'},
+        {n:'Extension poignet excentrique',d:'3×12 lent',cat:'prev',repos:60},
+        ...(y>=3?[{n:'Analyse vidéo frère',d:'Ses patterns de force — adapte ta stratégie top-roll/hook selon ce que tu vois',cat:'bd',repos:null}]:[]),
+        ...(y>=5?[{n:'Match vs frère',d:'3 rounds + analyse — note ses réactions à ton top-roll',cat:'bd',repos:null}]:[]),
+      ]
+    },
+    dimanche: {
+      jour:'Dimanche', emoji:'😴', type:'REPOS TOTAL', col:'d', int:'repos',
+      titre: () => 'Repos total',
+      ex:[
+        {n:'Repos complet',d:'AUCUN entraînement',cat:'repos',repos:null},
+        {n:'Sommeil 9h',d:'22h → 7h',cat:'recup',repos:null},
+        {n:'Nutrition',d:'2.0g/kg protéines · créatine 5g',cat:'nutri',repos:null},
+      ]
+    }
+  };
+}
+
+function getSemaine(yr, mode){
+  return mode==='hiv' ? getSemaineHiv(yr) : getSemaineStd(yr);
+}
+
+// ── RÈGLES SCIENCE ──
+
+const REGLES = [
+  {id:'snc', e:'🧠', titre:'Auto-régulation SNC',
+   desc:'3 sauts verticaux chaque matin. Si < 90% moyenne 7j → sprint & plio annulés. Si < 85% → séance entière annulée. Basé sur la recherche Prilepin & sport science moderne.'},
+  {id:'sommeil', e:'😴', titre:'Sommeil 8–9h minimum',
+   desc:'Si sommeil < 7h30 → séance sprint/plio annulée automatiquement. GH sécrétée à 95% la nuit. Seuil critique validé par la littérature scientifique.'},
+  {id:'coudes', e:'💪', titre:'Protection coudes — RÈGLE ABSOLUE',
+   desc:'JAMAIS tractions lestées ET bras de fer le même jour. Mardi = tractions uniquement. Samedi = BD uniquement. Bloc hivernal: squat partiel remplace tractions — zéro conflit.'},
+  {id:'rir', e:'🏋️', titre:'RIR 1–2 (Reps In Reserve)',
+   desc:'Ne jamais aller à l\'échec musculaire. Toujours garder 1–2 reps en réserve. Préserve le système nerveux et réduit le risque de blessure.'},
+  {id:'plio', e:'⬆️', titre:'Qualité pliométrique — pas d\'échec',
+   desc:'Arrêt immédiat si perte de hauteur > 3–5% sur les sauts. La pliométrie est 100% qualitative. RSI cible > 1.5.'},
+  {id:'sprint', e:'🏁', titre:'Sprint = qualité absolue',
+   desc:'Jamais de sprint fatigué. 4–6 min de repos entre répétitions Vmax. Volume limité: qualité > quantité.'},
+];
+
+const BD_TECHNIQUES = {
+  toproll: {
+    nom:'Top-roll',
+    desc:'Technique extérieure — pronation + rising. Force les doigts adverses à s\'ouvrir. Idéal vs adversaire + fort en cupping.',
+    muscles:['Pronateur rond','Extenseurs doigts','Brachioradialis','Deltoïde latéral'],
+    cles:'Monter le pouce, supiner légèrement, puis proner en tirant. Coude dedans, épaule vers poche.',
+    vs120kg:'Technique RECOMMANDÉE vs frère 120kg — exploite la technique vs la masse brute.',
+  },
+  hook: {
+    nom:'Hook',
+    desc:'Technique intérieure — supination + cupping. Force pure. Idéal si on est + fort que l\'adversaire en raw.',
+    muscles:['Biceps','Brachialis','Pronateur teres','Fléchisseurs poignet'],
+    cles:'Couper le poignet en dedans (cupping), amener le coude vers soi, supiner. Hanche sous la table.',
+    vs120kg:'Possible si force bras > adversaire. Risque: il est + lourd donc + stable.',
+  },
+  press: {
+    nom:'Press (Triceps)',
+    desc:'Style extérieur — épaule + triceps + pectoraux. Pression latérale massive.',
+    muscles:['Triceps','Pectoraux','Rotateurs épaule','Core'],
+    cles:'Aligner corps derrière le bras, pression en diagonale vers le pad. Jambe d\'appui forte.',
+    vs120kg:'Risqué seul — combiner avec top-roll pour finition.',
+  }
+};
+
+// ── STATE ──
+const DB = {
+  s(k,v){try{localStorage.setItem('ndhr2_'+k,JSON.stringify(v));}catch(e){}},
+  l(k,d=null){try{const v=localStorage.getItem('ndhr2_'+k);return v!==null?JSON.parse(v):d;}catch(e){return d;}}
+};
+
+let S = {
+  yr: DB.l('yr',1),
+  wk: DB.l('wk',1),
+  _manualYr: DB.l('manualYr', null),
+  _manualWk: DB.l('manualWk', null),
+  mode: DB.l('mode','std'),
+  profil: DB.l('profil',{
+    poids:70, taille:175, age:20,
+    sprint:12.6, detente:72, bdStatus:'perd',
+    squat1RM:80, rdl1RM:70, traction:0, curl3RM:15,
+    startDate: new Date().toISOString().split('T')[0]
+  }),
+  snc: DB.l('snc',[]),
+  sessions: DB.l('sessions',{}),
+  tests: DB.l('tests',[]),
+  checklists: DB.l('checklists',{}),
+  jbKey: DB.l('jbKey',''),
+  jbBin: DB.l('jbBin',''),
+};
+
+// ── AUTO-SYNC STATE ──
+let _syncTimer = null, _syncPending = false;
+const JBURL = 'https://api.jsonbin.io/v3';
+
+// ── UTILS ──
+const td = () => new Date().toISOString().split('T')[0];
+const fmt = (s) => `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+const clamp = (v,a,b) => Math.min(b,Math.max(a,v));
+const pct = (v,mx) => clamp((v/mx)*100,0,100);
+const DAYS = ['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche'];
+const DAYS_FR = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+
+function todayKey(){ return DAYS[new Date().getDay()===0?6:new Date().getDay()-1]; }
+function getMacro(yr){ return MACROS[Math.min(yr,MACROS.length)-1]; }
+function isHivernal(){ const m=new Date().getMonth()+1; return m<=2; }
+function mesoPhase(wk){
+  const sw=((wk-1)%8)+1;
+  if(sw<=2) return {ph:'prep',label:'ACCUMULATION',css:'pt-prep',icon:'💪'};
+  if(sw<=5) return {ph:'charge',label:'SURCHARGE',css:'pt-charge',icon:'🔥'};
+  if(sw<=7) return {ph:'pic',label:'INTENSIFICATION',css:'pt-pic',icon:'🚀'};
+  return {ph:'dech',label:'DÉCHARGE',css:'pt-dech',icon:'⚡'};
+}
+
+function calcCharge(key, wk){
+  const sw = ((wk-1)%8)+1;
+  const p = S.profil;
+  const c = [0,0.80,0.85,0.90,0.95,0.95,1.00,1.00,0.65][Math.min(sw,8)];
+  if(key==='squat') return Math.round(p.squat1RM*c);
+  if(key==='hip')   return Math.round(p.squat1RM*0.82*c);
+  if(key==='traction'){ return Math.max(0,(p.traction||0))+((wk-1)%8); }
+  if(key==='rdl')   return Math.round((p.rdl1RM||p.squat1RM*0.85)*c);
+  if(key==='split') return Math.round(p.squat1RM*0.32*c);
+  if(key==='curl')  return Math.round((p.curl3RM||15)*0.78);
+  if(key==='bd_hiv')return Math.round((p.curl3RM||15)*0.92);
+  return 0;
+}
+
+function getPlioBox(yr){
+  const boxes=[30,35,35,40,45,50,50,40];
+  return boxes[Math.min(yr,8)-1];
+}
+
+// ── SNC ENGINE ──
+function sncMoy7(){
+  const r=S.snc.slice(-7);
+  if(!r.length) return null;
+  return r.map(x=>(x.s1+x.s2+x.s3)/3).reduce((a,b)=>a+b,0)/r.length;
+}
+function sncToday(){ const d=S.snc.find(x=>x.date===td()); return d?(d.s1+d.s2+d.s3)/3:null; }
+function sleepToday(){ const d=S.snc.find(x=>x.date===td()); return d?d.sleep:null; }
+function sncRatio(){ const m=sncMoy7(),t=sncToday(); if(!m||!t) return null; return t/m; }
+
+function sncDecision(){
+  const ratio = sncRatio();
+  const sleep = sleepToday();
+  const reasons = [];
+  if(ratio !== null && ratio < 0.85) reasons.push(`SNC ${Math.round(ratio*100)}% < 85%`);
+  if(sleep !== null && sleep < 7.5) reasons.push(`Sommeil ${sleep}h < 7h30`);
+  const warned = ratio !== null && ratio >= 0.85 && ratio < 0.90;
+  return { ok: reasons.length===0, warned, reasons, ratio, sleep };
+}
+
+function sncBannerHTML(){
+  const d = sncDecision();
+  const ratio = d.ratio;
+  if(ratio === null){
+    return `<div class="snc-banner snc-none">❓ Test SNC non effectué aujourd'hui — tape sur <strong>SNC</strong> en haut</div>`;
+  }
+  if(!d.ok){
+    return `<div class="snc-banner snc-bad">🚫 SÉANCE HAUTE INTENSITÉ ANNULÉE — ${d.reasons.join(' • ')}</div>`;
+  }
+  if(d.warned){
+    return `<div class="snc-banner snc-warn">⚡ SNC BAS (${Math.round(ratio*100)}%) — Sprint & plio réduits −25%</div>`;
+  }
+  return `<div class="snc-banner snc-ok">✅ SNC ${Math.round(ratio*100)}% — ${ratio>=1?'OPTIMAL 🚀':'Bon niveau'}</div>`;
+}
+
+function adjustEx(ex, wk){
+  const sw = ((wk-1)%8)+1;
+  const d = sncDecision();
+  const ratio = d.ratio ?? 1.0;
+  const isDech = sw===8;
+
+  if(isDech){
+    if(ex.cat==='sprint'||ex.cat==='plio'){
+      return {css:'ex-reduced', badge:'⚡ DÉCHARGE', note:'Volume −40%'};
+    }
+    if(ex.cat==='muscu'){
+      return {css:'ex-reduced', badge:'⚡ DÉCHARGE', note:'Charge 65%'};
+    }
+  }
+  if(!d.ok && (ex.cat==='sprint'||ex.cat==='plio')){
+    return {css:'ex-cancelled', badge:'🚫 ANNULÉ', note:'SNC/sommeil insuffisant'};
+  }
+  if(d.warned && (ex.cat==='sprint'||ex.cat==='plio')){
+    return {css:'ex-reduced', badge:'⚠️ RÉDUIT', note:`SNC ${Math.round(ratio*100)}% — volume −25%`};
+  }
+  if(ratio >= 1.0 && (ex.cat==='sprint'||ex.cat==='plio') && sw>=5 && sw<=7){
+    return {css:'ex-ok', badge:'🚀 OPTIMAL', note:'SNC au top — volume max'};
+  }
+  return null;
+}
+
+// ── NUTRITION ──
+function calcNutri(poids, intensite, sw){
+  const isDech = sw===8;
+  const isRest = intensite==='repos'||intensite==='basse';
+  const isHigh = intensite==='haute';
+  const prot = isDech ? poids*2.0 : (sw<=4 ? poids*2.2 : poids*2.0);
+  const gMin = isRest||isDech ? 3.0 : (isHigh ? 5.0 : 4.0);
+  const gMax = isRest||isDech ? 4.0 : (isHigh ? 7.0 : 5.5);
+  const fat   = poids * (isRest ? 1.1 : 0.9);
+  const cal   = prot*4 + (((gMin+gMax)/2)*poids)*4 + fat*9;
+  return {
+    prot: Math.round(prot*poids)/poids > 1 ? Math.round(prot) : Math.round(prot*poids),
+    glucMin: Math.round(gMin*poids), glucMax: Math.round(gMax*poids),
+    fat: Math.round(fat), cal: Math.round(cal),
+    creatine: '5g/j dans eau (maintenance — obligatoire)',
+    timing: isHigh ? 'J-1h30: riz+poulet. Post: 35g whey+banane' : 'Repas normaux — focus récupération'
+  };
+}
+
+// ── SAVE ENGINE ──
+function save(){
+  DB.s('yr',S.yr); DB.s('wk',S.wk); DB.s('manualYr',S._manualYr); DB.s('manualWk',S._manualWk); DB.s('mode',S.mode);
+  DB.s('profil',S.profil); DB.s('snc',S.snc); DB.s('sessions',S.sessions);
+  DB.s('tests',S.tests); DB.s('checklists',S.checklists);
+  DB.s('jbKey',S.jbKey); DB.s('jbBin',S.jbBin);
+  showAutosave();
+  scheduleSync();
+}
+
+function showAutosave(type='local'){
+  const el = document.getElementById('autosave-badge');
+  if(!el) return;
+  if(type==='cloud'){el.textContent='☁️ cloud sync';el.classList.add('cloud');}
+  else{el.textContent='💾 sauvegardé';el.classList.remove('cloud');}
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(()=>el.classList.remove('show'), 2200);
+}
+
+// ── AUTO CLOUD SYNC (debounce 5s) ──
+function scheduleSync(){
+  if(!S.jbKey || !S.jbBin) return;
+  _syncPending = true;
+  clearTimeout(_syncTimer);
+  _syncTimer = setTimeout(autoSync, 5000);
+}
+
+async function autoSync(){
+  _syncPending = false;
+  if(!S.jbKey || !S.jbBin) return;
+  try{
+    const payload = getPayload();
+    const res = await fetch(`${JBURL}/b/${S.jbBin}`,{
+      method:'PUT',
+      headers:{'Content-Type':'application/json','X-Master-Key':S.jbKey},
+      body: JSON.stringify(payload)
+    });
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    showAutosave('cloud');
+    cloudLog2('ok',`☁️ Auto-sync OK — ${new Date().toLocaleTimeString()}`);
+    updateCloudDot('ok');
+  }catch(e){
+    cloudLog2('err',`✗ Auto-sync: ${e.message.slice(0,40)}`);
+    updateCloudDot('err');
+  }
+}
+
+function getPayload(){
+  return {yr:S.yr,wk:S.wk,mode:S.mode,profil:S.profil,snc:S.snc,
+    sessions:S.sessions,tests:S.tests,checklists:S.checklists,
+    _v:'nadhir-elite-v1',_at:new Date().toISOString()};
+}
+
+function updateCloudDot(state){
+  const dot = document.getElementById('cloud-dot');
+  const val = document.getElementById('cloud-val');
+  if(!dot||!val) return;
+  if(state==='ok'){dot.style.background='var(--g)';val.textContent='✓';}
+  else if(state==='err'){dot.style.background='var(--r)';val.textContent='✗';}
+  else{dot.style.background='var(--b)';val.textContent='Sync';}
+}
+
+// ── CLOUD FUNCTIONS ──
+async function cloudSave(){
+  const key=(document.getElementById('jb-key')?.value||'').trim();
+  const bin=(document.getElementById('jb-bin')?.value||'').trim();
+  if(!key){cloudLog2('err','❌ Clé API manquante');return;}
+  cloudLog2('info','Sauvegarde…');
+  updateCloudDot('sync');
+  try{
+    let url = bin ? `${JBURL}/b/${bin}` : `${JBURL}/b`;
+    let method = bin ? 'PUT' : 'POST';
+    const headers = {'Content-Type':'application/json','X-Master-Key':key};
+    if(!bin){headers['X-Bin-Name']='nadhir-elite';headers['X-Bin-Private']='true';}
+    const res = await fetch(url,{method,headers,body:JSON.stringify(getPayload())});
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const d = await res.json();
+    const newBin = d?.metadata?.id || bin;
+    S.jbKey=key; S.jbBin=newBin;
+    DB.s('jbKey',key); DB.s('jbBin',newBin);
+    if(document.getElementById('jb-bin')) document.getElementById('jb-bin').value=newBin;
+    cloudLog2('ok',`✅ Sauvegardé — Bin: ${newBin}`);
+    updateCloudDot('ok');
+    notify('Sauvegarde cloud réussie ☁️','success');
+  }catch(e){
+    cloudLog2('err',`❌ ${e.message.slice(0,50)}`);
+    updateCloudDot('err');
+  }
+}
+
+async function cloudLoad(){
+  const key=(document.getElementById('jb-key')?.value||'').trim();
+  const bin=(document.getElementById('jb-bin')?.value||'').trim();
+  if(!key||!bin){cloudLog2('err','❌ Clé + Bin ID requis');return;}
+  if(!confirm('Restaurer depuis le cloud ? Données locales écrasées.')) return;
+  cloudLog2('info','Chargement…');
+  try{
+    const res = await fetch(`${JBURL}/b/${bin}/latest`,{
+      headers:{'X-Master-Key':key,'X-Bin-Meta':false}
+    });
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const raw = await res.json();
+    const d = raw.record || raw;
+    if(d.profil) S.profil=d.profil;
+    if(d.yr) S.yr=d.yr; if(d.wk) S.wk=d.wk;
+    if(d.mode) S.mode=d.mode;
+    if(d.snc) S.snc=d.snc; if(d.sessions) S.sessions=d.sessions;
+    if(d.tests) S.tests=d.tests; if(d.checklists) S.checklists=d.checklists;
+    S.jbKey=key; S.jbBin=bin;
+    save(); cloudLog2('ok','✅ Restauré — rechargement…');
+    setTimeout(()=>location.reload(), 1200);
+  }catch(e){ cloudLog2('err',`❌ ${e.message.slice(0,50)}`); }
+}
+
+async function cloudTest(){
+  const key=(document.getElementById('jb-key')?.value||'').trim();
+  if(!key){cloudLog2('err','❌ Entrez votre clé API');return;}
+  cloudLog2('info','Test connexion…');
+  try{
+    const res = await fetch(`${JBURL}/b`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','X-Master-Key':key,
+        'X-Bin-Name':'nadhir-test','X-Bin-Private':'true'},
+      body:JSON.stringify({test:true,ts:Date.now()})
+    });
+    if(res.ok||res.status===201){
+      const d=await res.json();
+      const id=d?.metadata?.id;
+      S.jbKey=key; if(id) S.jbBin=id;
+      DB.s('jbKey',key); if(id) DB.s('jbBin',id);
+      if(document.getElementById('jb-bin')&&id) document.getElementById('jb-bin').value=id;
+      cloudLog2('ok',`✅ Clé valide ! Bin test: ${id}`);
+      updateCloudDot('ok');
+    } else throw new Error(`HTTP ${res.status}`);
+  }catch(e){cloudLog2('err',`❌ Clé invalide: ${e.message.slice(0,40)}`);}
+}
+
+function cloudLog2(type, msg){
+  const el = document.getElementById('cloud-log'); if(!el) return;
+  const ts = new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const line = document.createElement('div');
+  line.className = `log-${type}`;
+  line.textContent = `[${ts}] ${msg}`;
+  el.insertBefore(line,el.firstChild);
+  while(el.children.length>6) el.removeChild(el.lastChild);
+}
+
+// ── TOAST ──
+let notifTimer;
+function notify(msg, type='success'){
+  const el=document.getElementById('notif');
+  const ni=document.getElementById('ni');
+  const nt=document.getElementById('nt');
+  if(!el||!ni||!nt) return;
+  ni.textContent = type==='success'?'✅':type==='warn'?'⚡':type==='error'?'❌':'ℹ️';
+  nt.textContent = msg;
+  el.className = `show ${type}`;
+  clearTimeout(notifTimer);
+  notifTimer = setTimeout(()=>el.className='', 2800);
+}
+
+// ── TIMER ENGINE ──
+let timerInterval, timerSec=0, timerDur=0;
+let currentTimerEx = '';
+
+function startTimer(sec, exName=''){
+  clearInterval(timerInterval);
+  timerSec=sec; timerDur=sec; currentTimerEx=exName;
+  document.getElementById('timer-ov').classList.add('show');
+  document.getElementById('t-lbl').textContent='REPOS';
+  document.getElementById('t-ex').textContent=exName||'—';
+  document.getElementById('t-num').classList.remove('urgent');
+  updateTimerDisplay();
+  timerInterval = setInterval(()=>{
+    timerSec--;
+    if(timerSec<=0){
+      clearInterval(timerInterval);
+      document.getElementById('t-num').textContent='GO! 🔥';
+      document.getElementById('t-pf').style.width='0%';
+      if('vibrate' in navigator) navigator.vibrate([150,80,150,80,250]);
+      setTimeout(closeTimer, 1800);
+    } else {
+      updateTimerDisplay();
+      if(timerSec<=5) document.getElementById('t-num').classList.add('urgent');
+    }
+  },1000);
+}
+
+function updateTimerDisplay(){
+  document.getElementById('t-num').textContent=fmt(timerSec);
+  document.getElementById('t-pf').style.width=(timerSec/timerDur*100)+'%';
+}
+function addTime(s){ timerSec=Math.max(1,timerSec+s); }
+function closeTimer(){ clearInterval(timerInterval); document.getElementById('timer-ov').classList.remove('show'); }
+
+// ── MODAL ──
+function openModal(title, html){
+  document.getElementById('modal-title').textContent=title;
+  document.getElementById('modal-body').innerHTML=html;
+  document.getElementById('modal-ov').classList.add('show');
+}
+function closeModal(e){ if(!e||e.target===document.getElementById('modal-ov')) document.getElementById('modal-ov').classList.remove('show'); }
+
+// ── POPUPS ──
+function toggleSNC(){
+  document.getElementById('snc-pop').classList.toggle('show');
+  document.getElementById('cloud-pop').classList.remove('show');
+}
+function toggleCloud(){
+  const el = document.getElementById('cloud-pop');
+  el.classList.toggle('show');
+  document.getElementById('snc-pop').classList.remove('show');
+  if(el.classList.contains('show')){
+    if(S.jbKey) document.getElementById('jb-key').value=S.jbKey;
+    if(S.jbBin) document.getElementById('jb-bin').value=S.jbBin;
+  }
+}
+document.addEventListener('click', e=>{
+  if(!e.target.closest('#snc-pop')&&!e.target.closest('.top-chip')){
+    document.getElementById('snc-pop').classList.remove('show');
+    document.getElementById('cloud-pop').classList.remove('show');
+  }
+});
+
+// ── SNC SAVE ──
+function saveSNC(){
+  const s1=parseFloat(document.getElementById('s1').value)||0;
+  const s2=parseFloat(document.getElementById('s2').value)||0;
+  const s3=parseFloat(document.getElementById('s3').value)||0;
+  const slp=parseFloat(document.getElementById('sleep').value)||0;
+  if(!s1||!s2||!s3){notify('Entre les 3 sauts','warn');return;}
+  const existing = S.snc.findIndex(x=>x.date===td());
+  const entry = {date:td(),s1,s2,s3,sleep:slp};
+  if(existing>=0) S.snc[existing]=entry; else S.snc.push(entry);
+  if(S.snc.length>90) S.snc=S.snc.slice(-90);
+  save();
+  const moy=(s1+s2+s3)/3;
+  const m7=sncMoy7();
+  const ratio=m7?Math.round(moy/m7*100):100;
+  document.getElementById('snc-result').innerHTML=
+    `Moy aujourd'hui: <strong>${moy.toFixed(1)}cm</strong><br>Moyenne 7j: <strong>${m7?m7.toFixed(1):moy.toFixed(1)}cm</strong><br>Ratio SNC: <strong style="color:${ratio>=90?'var(--g)':ratio>=85?'var(--a)':'var(--r)'}">${ratio}%</strong><br>Sommeil: <strong>${slp?slp+'h':'—'}</strong>`;
+  const dot=document.getElementById('snc-dot');
+  dot.className='tc-dot';
+  if(ratio>=90) dot.classList.add('green');
+  else if(ratio>=85) dot.style.background='var(--a)';
+  else dot.style.background='var(--r)';
+  document.getElementById('snc-val').textContent=ratio+'%';
+  renderToday();
+  notify('SNC enregistré ✓','success');
+}
+
+// ── TAB SWITCH ──
+function switchTab(name, btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  if(btn) btn.classList.add('active');
+  const renders = {
+    today: renderToday,
+    training: renderTraining,
+    goals: renderGoals,
+    coach: renderCoach,
+    profile: renderProfile,
+  };
+  if(renders[name]) renders[name]();
+}
+
+// ════════════════════════════════════════════════════════════════
+// RENDER: AUJOURD'HUI
+// ════════════════════════════════════════════════════════════════
+function renderToday(){
+  // Auto-sync yr/wk depuis date de début
+  if(isAutoMode()){
+    const yw = calcYrWk();
+    if(S.yr !== yw.yr || S.wk !== yw.wk){ S.yr=yw.yr; S.wk=yw.wk; }
+    if(yw.hivAuto && S.mode!=='hiv') S.mode='hiv';
+    else if(!yw.hivAuto && S.mode==='hiv') S.mode='std';
+  }
+  const day = todayKey();
+  const plan = getSemaine(S.yr, S.mode)[day];
+  const macro = getMacro(S.yr);
+  const meso = mesoPhase(S.wk);
+  const sw = ((S.wk-1)%8)+1;
+  const dec = sncDecision();
+  const nutri = calcNutri(S.profil.poids, plan.int, sw);
+  const ckKey = `${td()}_${day}`;
+  if(!S.checklists[ckKey]) S.checklists[ckKey]={};
+
+  let h = '';
+
+  // === HERO CARD ===
+  h += `<div class="card cg" style="margin-bottom:12px;">
+    <div style="font-size:9px;color:var(--t3);letter-spacing:2px;margin-bottom:3px;">${DAYS_FR[new Date().getDay()].toUpperCase()} — AN ${S.yr} / SEMAINE ${S.wk}</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:var(--g);line-height:1;">${plan.emoji} ${plan.titre(S.wk)}</div>
+    <div style="font-size:11px;color:var(--t2);margin-top:4px;">${plan.type} · Intensité ${plan.int}</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;">
+      <span class="phase-tag ${meso.css}">${meso.icon} ${meso.label}</span>
+      <span class="badge ${S.mode==='hiv'?'bb':'bg'}">${S.mode==='hiv'?'❄️ BLOC HIVERNAL':'📅 STANDARD'}</span>
+    </div>
+  </div>`;
+
+  // === SNC BANNER ===
+  h += sncBannerHTML();
+
+  // === OBJECTIFS RAPIDES ===
+  h += `<div class="obj-grid">`;
+  const sprint=S.profil.sprint, detente=S.profil.detente;
+  const sprintPct = sprint ? pct((12.5-sprint),(12.5-10.0)) : 0;
+  const detPct = detente ? pct(detente-60, 120-60) : 0;
+  h += `<div class="obj-card obj-sprint">
+    <div class="obj-label">🏁 100M — CIBLE</div>
+    <div class="obj-value" style="color:var(--g)">${sprint||'—'}s → <span style="font-size:16px;opacity:.7;">10.0s</span></div>
+    <div class="obj-current">Attendu An ${S.yr}: ${macro.sprint}s</div>
+    <div class="obj-bar"><div class="obj-fill pf-g" style="width:${sprintPct}%"></div></div>
+  </div>`;
+  h += `<div class="obj-card obj-detente">
+    <div class="obj-label">⬆️ DÉTENTE — CIBLE</div>
+    <div class="obj-value" style="color:var(--a)">${detente||'—'}cm → <span style="font-size:16px;opacity:.7;">120cm</span></div>
+    <div class="obj-current">Attendu An ${S.yr}: ${macro.det}cm</div>
+    <div class="obj-bar"><div class="obj-fill pf-a" style="width:${detPct}%"></div></div>
+  </div>`;
+  h += `</div>`;
+
+  // === CHECKLIST SÉANCE ===
+  h += `<div class="card">
+    <div class="ct"><span class="ico">📋</span>PROGRAMME DU JOUR</div>`;
+
+  plan.ex.forEach((ex,i)=>{
+    const adj = adjustEx(ex, S.wk);
+    const done = S.checklists[ckKey][i]||false;
+    const chargeVal = ex.chargeKey ? calcCharge(ex.chargeKey, S.wk) : null;
+    const plioBox = ex.cat==='plio' ? getPlioBox(S.yr) : null;
+
+    h += `<div class="chk-item ${done?'done':''}" onclick="toggleCheck('${ckKey}',${i})">
+      <div class="chk-box ${done?'done':''}"></div>
+      <div style="flex:1;">
+        <div class="chk-label">${ex.n}</div>
+        <div style="font-size:9px;color:var(--t3);margin-top:2px;">${adj ? `<span style="color:${adj.css.includes('ok')?'var(--g)':adj.css.includes('red')||adj.css.includes('cancel')?'var(--r)':'var(--a)'}">${adj.badge}</span> ${adj.note}` : ex.d}</div>
+        ${chargeVal ? `<div class="ex-charge">⚖ Charge: ${chargeVal}kg</div>` : ''}
+        ${plioBox ? `<div class="ex-charge">📦 Boîte: ${plioBox}cm</div>` : ''}
+      </div>
+      ${ex.repos ? `<button class="btn btn-sm btn-o" onclick="event.stopPropagation();startTimer(${ex.repos},'${ex.n}')" style="flex-shrink:0;">⏱ ${ex.repos}s</button>` : ''}
+    </div>`;
+  });
+
+  const totalEx = plan.ex.filter(e=>e.cat!=='warmup'&&e.cat!=='cooldown'&&e.cat!=='repos').length;
+  const doneCount = plan.ex.filter((e,i)=>S.checklists[ckKey][i]).length;
+  h += `<div style="margin-top:10px;">
+    <div style="font-size:10px;color:var(--t3);margin-bottom:5px;">${doneCount}/${plan.ex.length} exercices validés</div>
+    <div class="pb-track"><div class="pb-fill pf-g" style="width:${pct(doneCount,plan.ex.length)}%"></div></div>
+  </div></div>`;
+
+  // === NUTRITION DU JOUR ===
+  h += `<div class="card cb">
+    <div class="ct"><span class="ico">🍽</span>NUTRITION AUJOURD'HUI</div>
+    <div class="nutri-grid">
+      <div class="nutri-box"><div class="nutri-val" style="color:var(--a)">${nutri.cal}</div><div class="nutri-lbl">KCAL</div></div>
+      <div class="nutri-box"><div class="nutri-val" style="color:var(--g)">${nutri.prot}g</div><div class="nutri-lbl">PROTÉINES</div></div>
+      <div class="nutri-box"><div class="nutri-val" style="color:var(--b)">${nutri.glucMin}–${nutri.glucMax}g</div><div class="nutri-lbl">GLUCIDES</div></div>
+      <div class="nutri-box"><div class="nutri-val" style="color:var(--p)">${nutri.fat}g</div><div class="nutri-lbl">LIPIDES</div></div>
+    </div>
+    <div class="cm cm-warn" style="margin-top:8px;margin-bottom:0;"><p>⚗️ ${nutri.creatine}<br>⏰ ${nutri.timing}</p></div>
+  </div>`;
+
+  document.getElementById('tab-today').innerHTML=h;
+}
+
+function toggleCheck(ckKey,i){
+  if(!S.checklists[ckKey]) S.checklists[ckKey]={};
+  S.checklists[ckKey][i] = !S.checklists[ckKey][i];
+  save();
+  renderToday();
+}
+
+// ════════════════════════════════════════════════════════════════
+// RENDER: SÉANCE (HEBDOMADAIRE)
+// ════════════════════════════════════════════════════════════════
+function renderTraining(){
+  const sw = ((S.wk-1)%8)+1;
+  const meso = mesoPhase(S.wk);
+  const weekPlan = getSemaine(S.yr, S.mode);
+  let h = '';
+
+  // === NAVIGATION SEMAINE ===
+  h += `<div class="card">
+    <div class="wk-nav">
+      <div>
+        <div class="wk-label">SEMAINE ${S.wk}</div>
+        <div class="wk-sub">An ${S.yr} · ${getMacro(S.yr).label}</div>
+      </div>
+      <div class="wk-btns">
+        <div class="wk-btn" onclick="changeWk(-1)">‹</div>
+        <div class="wk-btn" onclick="changeWk(1)">›</div>
+      </div>
+    </div>
+    <div class="slider-row" style="margin-bottom:8px;">
+      <input type="range" min="1" max="400" value="${S.wk}" id="wk-slider" oninput="setWk(parseInt(this.value))">
+      <div class="wk-badge">${S.wk}</div>
+    </div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px;">
+      <span class="phase-tag ${meso.css}">${meso.icon} ${meso.label} — Sem.${sw}/8</span>
+      <button class="btn btn-sm ${S.mode==='hiv'?'btn-b':'btn-o'}" onclick="toggleMode()">
+        ${S.mode==='hiv'?'❄️ HIVERNAL':'📅 STD'} ⇄
+      </button>
+    </div>`;
+
+  // Meso dots
+  h += `<div class="meso-row">`;
+  for(let i=1;i<=8;i++){
+    const ph = mesoPhase(i);
+    const isCur = i===sw;
+    h += `<div class="mdot ${ph.ph} ${isCur?'cur':''}" title="Sem.${i}: ${ph.label}">${i}</div>`;
+  }
+  h += `</div></div>`;
+
+  // === SEMAINE COMPLÈTE ===
+  DAYS.forEach(day=>{
+    const plan = weekPlan[day];
+    if(!plan) return;
+    const ckKey = `wk${S.wk}_${day}`;
+    if(!S.checklists[ckKey]) S.checklists[ckKey]={};
+    const doneCount = plan.ex.filter((_,i)=>S.checklists[ckKey][i]).length;
+    const isToday = day===todayKey();
+
+    h += `<div class="card ${isToday?'cg':''}" style="${isToday?'border-color:rgba(0,230,118,.3)':''}" id="day-${day}">
+      <div class="ct" style="cursor:pointer;" onclick="toggleDay('${day}')">
+        <span class="ico">${plan.emoji}</span>
+        <span>${plan.jour.toUpperCase()} — ${plan.type}</span>
+        <span style="margin-left:auto;font-size:11px;color:var(--t3);">${doneCount}/${plan.ex.length} ${isToday?'📍':''}</span>
+      </div>
+      <div id="day-body-${day}" style="display:${isToday?'block':'none'};">`;
+
+    plan.ex.forEach((ex,i)=>{
+      const adj = adjustEx(ex, S.wk);
+      const done = S.checklists[ckKey][i]||false;
+      const chargeVal = ex.chargeKey ? calcCharge(ex.chargeKey, S.wk) : null;
+      const plioBox = ex.cat==='plio' ? getPlioBox(S.yr) : null;
+
+      h += `<div class="ex-item ${adj?adj.css:''}">
+        <div style="flex:1;cursor:pointer;" onclick="toggleWkCheck('${ckKey}',${i})">
+          <div class="ex-name" style="${done?'text-decoration:line-through;opacity:.5':''}">${ex.n}</div>
+          <div class="ex-sub">${adj ? `${adj.badge} — ${adj.note}` : ex.d}</div>
+          ${chargeVal ? `<div class="ex-charge">⚖ ${chargeVal}kg</div>` : ''}
+          ${plioBox ? `<div class="ex-charge">📦 Boîte ${plioBox}cm</div>` : ''}
+        </div>
+        ${ex.repos ? `<button class="btn btn-sm btn-o" onclick="startTimer(${ex.repos},'${ex.n}')">⏱ ${fmt(ex.repos)}</button>` : ''}
+      </div>`;
+    });
+    h += `</div></div>`;
+  });
+
+  document.getElementById('tab-training').innerHTML=h;
+}
+
+function toggleDay(day){
+  const el = document.getElementById('day-body-'+day);
+  if(el) el.style.display = el.style.display==='none'?'block':'none';
+}
+function toggleWkCheck(ckKey,i){
+  if(!S.checklists[ckKey]) S.checklists[ckKey]={};
+  S.checklists[ckKey][i] = !S.checklists[ckKey][i];
+  save(); renderTraining();
+}
+function changeWk(d){ S.wk=Math.max(1,Math.min(400,S.wk+d)); save(); renderTraining(); }
+function setWk(v){ S.wk=v; save(); renderTraining(); }
+function toggleMode(){ S.mode=S.mode==='hiv'?'std':'hiv'; save(); renderTraining(); }
+
+// ════════════════════════════════════════════════════════════════
+// RENDER: OBJECTIFS
+// ════════════════════════════════════════════════════════════════
+function renderGoals(){
+  let h = '';
+
+  // === 3 OBJECTIFS CARTES ===
+  h += `<div class="card cg">
+    <div class="ct"><span class="ico">🏁</span>100M EN 10.00 SECONDES</div>
+    <div class="sg">
+      <div class="sb"><div class="sv" style="color:var(--g)">${S.profil.sprint||'—'}s</div><div class="sl">ACTUEL</div></div>
+      <div class="sb"><div class="sv" style="font-size:16px">10.0s</div><div class="sl">CIBLE</div><div class="ss">An 7</div></div>
+    </div>
+    <div class="pb-wrap">
+      <div class="pb-labels"><span>Départ estimé</span><span>${S.profil.sprint||'?'}s → 10.0s</span></div>
+      <div class="pb-track"><div class="pb-fill pf-g" style="width:${S.profil.sprint?pct(12.5-S.profil.sprint,2.5):0}%"></div></div>
+    </div>
+    <div class="cm" style="margin-top:8px;margin-bottom:0;">
+      <p><strong>Science sprint:</strong> Pour courir 10.0s, tu as besoin de Vmax > 11.2 m/s. Ça se décompose: 30m de départ (3.85s), 60m de montée vitesse (6.47s), maintien 80–100m (1.53s+1.77s). Squat cible: 160–170kg 1RM. RSI > 2.0. Drop jumps 50cm indispensables.</p>
+    </div>
+  </div>`;
+
+  h += `<div class="card ca">
+    <div class="ct"><span class="ico">⬆️</span>DÉTENTE 120CM (2 PIEDS)</div>
+    <div class="sg">
+      <div class="sb"><div class="sv" style="color:var(--a)">${S.profil.detente||'—'}cm</div><div class="sl">ACTUEL</div></div>
+      <div class="sb"><div class="sv" style="font-size:16px">120cm</div><div class="sl">CIBLE</div><div class="ss">An 7</div></div>
+    </div>
+    <div class="pb-wrap">
+      <div class="pb-track"><div class="pb-fill pf-a" style="width:${S.profil.detente?pct(S.profil.detente-60,60):0}%"></div></div>
+    </div>
+    <div class="cm cm-warn" style="margin-top:8px;margin-bottom:0;">
+      <p><strong>Science détente:</strong> 120cm avec élan est un niveau ELITE (NBA Elite = 90–100cm, records mondiaux = 140cm+). Clés: RSI (Reactive Strength Index) > 2.0, drop jumps 50cm, force relative squat > 2.2×poids, raideur musculo-tendineuse achilléenne optimale.</p>
+    </div>
+  </div>`;
+
+  h += `<div class="card cr">
+    <div class="ct"><span class="ico">🤼</span>BATTRE TON FRÈRE 120KG</div>
+    <div class="sg">
+      <div class="sb"><div class="sv" style="color:var(--r)">${S.profil.bdStatus==='oui'?'✓ BATTU':'En cours'}</div><div class="sl">STATUT</div></div>
+      <div class="sb"><div class="sv" style="font-size:13px">Top-roll</div><div class="sl">STRATÉGIE</div><div class="ss">Technique > masse</div></div>
+    </div>
+    <div class="cm cm-bad" style="margin-top:8px;margin-bottom:0;">
+      <p><strong>Plan vs 120kg:</strong> Il a l'avantage masse (levier + poids). Ta stratégie GAGNANTE: <strong>Top-roll</strong> — pronation + rising pour ouvrir ses doigts → sa prise se brise. Combine avec cupping (flexion poignet). 18–24 mois de BD spécifique minimum.</p>
+    </div>
+    <div style="display:flex;gap:6px;margin-top:10px;">
+      <button class="btn btn-r btn-sm" onclick="openBDTech('toproll')">Top-roll 📖</button>
+      <button class="btn btn-o btn-sm" onclick="openBDTech('hook')">Hook 📖</button>
+      <button class="btn btn-o btn-sm" onclick="openBDTech('press')">Press 📖</button>
+    </div>
+  </div>`;
+
+  // === TIMELINE 8 ANS ===
+  h += `<div class="card">
+    <div class="ct"><span class="ico">🗓</span>ROADMAP — 8 ANS VERS LES 3 OBJECTIFS</div>
+    <div class="timeline">`;
+
+  MACROS.forEach(m=>{
+    const isCur = m.yr===S.yr;
+    h += `<div class="tl-item">
+      <div class="tl-dot ${isCur?'':'dim'}"></div>
+      <div class="tl-yr">AN ${m.yr}${isCur?' ← TU ES ICI':''}</div>
+      <div class="tl-title">${m.label} — Sprint: ${m.sprint}s · Détente: ${m.det}cm</div>
+      <div class="tl-sub">${m.focus.slice(0,2).join(' · ')}</div>
+      <div style="margin-top:3px;display:flex;gap:4px;flex-wrap:wrap;">
+        <span class="badge ${isCur?'bg':'bdim'}">Sprint: ${m.sprint}s</span>
+        <span class="badge ${isCur?'ba':'bdim'}">Détente: ${m.det}cm</span>
+        <span class="badge ${isCur?'br':'bdim'}">Squat: ${m.sq}kg</span>
+      </div>
+    </div>`;
+  });
+  h += `</div></div>`;
+
+  // === ENREGISTRER TEST ===
+  h += `<div class="card">
+    <div class="ct"><span class="ico">📊</span>ENREGISTRER UN TEST</div>
+    <div class="ig"><label class="il">100m (secondes)</label><input class="inp" type="number" id="t-sprint" placeholder="ex: 11.8" step="0.01" value="${S.profil.sprint||''}"></div>
+    <div class="ig"><label class="il">Détente 2 pieds (cm)</label><input class="inp" type="number" id="t-det" placeholder="ex: 85" value="${S.profil.detente||''}"></div>
+    <div class="ig"><label class="il">Bras de fer vs frère 120kg</label>
+      <select class="inp" id="t-bd">
+        <option value="non" ${S.profil.bdStatus==='non'?'selected':''}>Non tenté</option>
+        <option value="perdu" ${S.profil.bdStatus==='perdu'?'selected':''}>Perdu</option>
+        <option value="proche" ${S.profil.bdStatus==='proche'?'selected':''}>Match proche</option>
+        <option value="oui" ${S.profil.bdStatus==='oui'?'selected':''}>✓ BATTU !</option>
+      </select>
+    </div>
+    <button class="btn btn-g btn-full" onclick="saveTest()">💾 Enregistrer test</button>
+  </div>`;
+
+  // === HISTORIQUE TESTS ===
+  if(S.tests.length > 0){
+    h += `<div class="card">
+      <div class="ct"><span class="ico">📜</span>HISTORIQUE DES TESTS</div>`;
+    S.tests.slice(-8).reverse().forEach(t=>{
+      h += `<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);">
+        <div style="font-size:9px;color:var(--t3);font-family:'JetBrains Mono',monospace;">${t.date} · An${t.yr}/S${t.wk}</div>
+        <div style="font-size:11px;display:flex;gap:8px;">
+          ${t.sprint?`<span style="color:var(--g)">${t.sprint}s</span>`:''}
+          ${t.det?`<span style="color:var(--a)">${t.det}cm</span>`:''}
+          ${t.bd?`<span style="color:var(--r)">${t.bd}</span>`:''}
+        </div>
+      </div>`;
+    });
+    h += `</div>`;
+  }
+
+  // ── Trajectoire cibles annuelles ──
+  h += `<div class="card cb">
+    <div class="ct"><span class="ico">🎯</span>TRAJECTOIRE SCIENTIFIQUE 2025–2031</div>`;
+
+  // Récupérer derniers tests
+  const lastTs = [...(S.tests||[])].reverse();
+  const lSprint  = lastTs.find(t=>t.sprint)?.sprint;
+  const lDetente = lastTs.find(t=>t.detente)?.detente;
+  const lBd      = lastTs.find(t=>t.bd!==undefined)?.bd;
+
+  TRAJECTOIRE.sprint.forEach((t,i)=>{
+    const yr = i+1;
+    const isCur = yr===S.yr;
+    const isPast = yr<S.yr;
+    const dtCible = TRAJECTOIRE.detente[i].cible;
+    const bdCible = TRAJECTOIRE.bd[i].cible;
+    const spOk = lSprint ? lSprint<=t.cible : null;
+    const dtOk = lDetente ? lDetente>=dtCible : null;
+    h += '<div class="tl-item"><div class="tl-dot '+(isCur?'':'a')+(isPast?' dim':'')+'"></div>';
+    h += '<div class="tl-yr">'+(isCur?'▶ ':'')+'AN '+yr+(isPast?' ✓':'')+'</div>';
+    h += '<div class="tl-title" style="color:'+(isCur?'var(--g)':isPast?'var(--t3)':'var(--t)')+'">'+MACROS[i].label+'</div>';
+    h += '<div class="tl-sub">🏃 '+t.cible+'s &nbsp;🦘 '+dtCible+'cm &nbsp;🤼 '+(bdCible>0?bdCible+'%':'intro')+'</div>';
+    if(isCur && (lSprint||lDetente)){
+      const adj = getAdjustedVolumes(yr);
+      if(adj.message.length){
+        h += '<div style="margin-top:4px;font-size:9px;">';
+        adj.message.forEach(m=>{ h+='<div style="color:var(--a);">'+m+'</div>'; });
+        h += '</div>';
+      }
+    }
+    h += '</div>';
+  });
+  h += `</div>`;
+
+  document.getElementById('tab-goals').innerHTML=h;
+}
+
+function saveTest(){
+  const sprint=parseFloat(document.getElementById('t-sprint')?.value)||null;
+  const det=parseFloat(document.getElementById('t-det')?.value)||null;
+  const bd=document.getElementById('t-bd')?.value||null;
+  if(sprint) S.profil.sprint=sprint;
+  if(det) S.profil.detente=det;
+  if(bd) S.profil.bdStatus=bd;
+  S.tests.push({date:td(),yr:S.yr,wk:S.wk,sprint,det,bd});
+  if(S.tests.length>50) S.tests=S.tests.slice(-50);
+  save();
+  notify('Test enregistré ✓','success');
+  renderGoals();
+}
+
+function openBDTech(key){
+  const t=BD_TECHNIQUES[key];
+  openModal(`🤼 ${t.nom}`,`
+    <p style="font-size:11px;color:var(--t2);margin-bottom:12px;">${t.desc}</p>
+    <div class="sec-title">MUSCLES CIBLES</div>
+    <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;">
+      ${t.muscles.map(m=>`<span class="badge ba">${m}</span>`).join('')}
+    </div>
+    <div class="sec-title">CLÉS TECHNIQUE</div>
+    <p style="font-size:11px;color:var(--t);margin-bottom:12px;line-height:1.7;">${t.cles}</p>
+    <div class="cm cm-bad"><p><strong>vs frère 120kg:</strong> ${t.vs120kg}</p></div>
+  `);
+}
+
+// ════════════════════════════════════════════════════════════════
+// RENDER: COACH IA
+// ════════════════════════════════════════════════════════════════
+function renderCoach(){
+  const macro = getMacro(S.yr);
+  const sw = ((S.wk-1)%8)+1;
+  const meso = mesoPhase(S.wk);
+  const dec = sncDecision();
+  let h = '';
+
+  // === DIAGNOSTIC ===
+  h += `<div class="card cg">
+    <div class="ct"><span class="ico">🤖</span>DIAGNOSTIC AN ${S.yr} · SEMAINE ${S.wk}</div>`;
+
+  // Messages coach adaptatifs
+  const msgs = generateCoachMsgs(macro, sw, meso, dec);
+  msgs.forEach(m=>{
+    h += `<div class="cm ${m.cls}" style="margin-bottom:8px;"><p>${m.text}</p></div>`;
+  });
+  h += `</div>`;
+
+  // === RÈGLES ===
+  h += `<div class="card">
+    <div class="ct"><span class="ico">📜</span>LES 6 RÈGLES ABSOLUES</div>`;
+  REGLES.forEach(r=>{
+    h += `<div style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);">
+      <span style="font-size:18px;flex-shrink:0;">${r.e}</span>
+      <div>
+        <div style="font-size:12px;font-weight:600;margin-bottom:3px;">${r.titre}</div>
+        <div style="font-size:10px;color:var(--t2);line-height:1.6;">${r.desc}</div>
+      </div>
+    </div>`;
+  });
+  h += `</div>`;
+
+  // === FOCUS AN EN COURS ===
+  h += `<div class="card ca">
+    <div class="ct"><span class="ico">🎯</span>FOCUS AN ${S.yr}: ${macro.label.toUpperCase()}</div>
+    ${macro.focus.map(f=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);">
+      <span style="color:var(--a);font-size:14px;">→</span>
+      <span style="font-size:12px;">${f}</span>
+    </div>`).join('')}
+  </div>`;
+
+  // === TECHNIQUE BD SEMAINE ===
+  h += `<div class="card cr">
+    <div class="ct"><span class="ico">🤼</span>BRAS DE FER — FOCUS SEMAINE</div>
+    <div class="cm cm-bad">
+      <p><strong>Phase BD actuelle: ${macro.bdPhase}</strong><br>
+      ${getBDAdvice(macro.bdPhase, sw)}</p>
+    </div>
+    <div style="display:flex;gap:6px;margin-top:8px;">
+      <button class="btn btn-r btn-sm btn-full" onclick="openModal('🎯 Top-roll vs 120kg',getBDPlan())">📋 Plan BD complet</button>
+    </div>
+  </div>`;
+
+  // === SCIENCE SPRINT ===
+  h += `<div class="card">
+    <div class="ct"><span class="ico">🏁</span>SCIENCE DU SPRINT</div>
+    <div class="cm"><p>
+      <strong>100m → 10.0s: les vrais leviers</strong><br><br>
+      🏁 <strong>Phase 0–30m (accél):</strong> Angle corps 45°, poussée horizontale, stride rate. Travail: départs répétés, résistance élastique.<br><br>
+      ⚡ <strong>Phase 30–60m (Vmax):</strong> Fréquence maximale, dorsiflexion, pose-pied sous CDG. Travail: flys 20–30m, cyclage cuisses.<br><br>
+      🔒 <strong>Phase 60–100m (maintien):</strong> Relaxation musculaire, économie de course. Travail: spécifique Vmax, core.<br><br>
+      💪 <strong>Squat ≥ 1.5×poids obligatoire</strong> pour sprinter 10.5s. Pour 10.0s: 1.8–2.0×poids.
+    </p></div>
+  </div>`;
+
+  // === SCIENCE DÉTENTE ===
+  h += `<div class="card">
+    <div class="ct"><span class="ico">⬆️</span>SCIENCE DE LA DÉTENTE</div>
+    <div class="cm cm-warn"><p>
+      <strong>120cm avec élan: les mécanismes</strong><br><br>
+      1️⃣ <strong>RSI (Reactive Strength Index):</strong> h_saut / t_contact. Cible: > 2.0. Entraîné par drop jumps.<br><br>
+      2️⃣ <strong>Raideur tendon d'Achille:</strong> Clé du stockage énergie élastique. Amélioré par: plyométrie progressive, drops haute boîte.<br><br>
+      3️⃣ <strong>Force concentrique:</strong> Squat, hip thrust, RDL. Plus fort = plus de force disponible au saut.<br><br>
+      4️⃣ <strong>Élan:</strong> 3–4 pas d'élan optimaux. Conversion énergie cinétique → verticale.
+    </p></div>
+  </div>`;
+
+  document.getElementById('tab-coach').innerHTML=h;
+}
+
+function generateCoachMsgs(macro, sw, meso, dec){
+  const msgs = [];
+  const ratio=dec.ratio;
+  const sprint=S.profil.sprint;
+  const det=S.profil.detente;
+
+  if(!sprint&&!det){
+    msgs.push({cls:'cm-warn',text:'📊 <strong>Aucun test enregistré.</strong> Va dans Objectifs → Enregistrer un test pour que le coach adapte les recommandations à ton niveau réel.'});
+  } else {
+    const sprintOk = sprint && sprint <= macro.sprint*1.02;
+    const detOk = det && det >= macro.det*0.98;
+    if(sprintOk) msgs.push({cls:'',text:`✅ <strong>Sprint ${sprint}s</strong> — dans les clous pour An ${S.yr} (cible: ${macro.sprint}s). Continue sur cette progression.`});
+    else if(sprint) msgs.push({cls:'cm-warn',text:`⚡ <strong>Sprint ${sprint}s</strong> vs cible An ${S.yr}: ${macro.sprint}s — déficit. Augmente le volume Vmax et les départs en semaines non-décharge.`});
+    if(detOk) msgs.push({cls:'',text:`✅ <strong>Détente ${det}cm</strong> — dans les clous (cible: ${macro.det}cm). Maintiens drop jumps et force squat.`});
+    else if(det) msgs.push({cls:'cm-warn',text:`⚡ <strong>Détente ${det}cm</strong> vs cible An ${S.yr}: ${macro.det}cm — déficit. Focus RSI: drop jumps ${getPlioBox(S.yr)}cm, squat lourd.`});
+  }
+
+  if(sw===8) msgs.push({cls:'cm-warn',text:'⚡ <strong>Semaine de décharge obligatoire (S8/8).</strong> Sprint −30%, plio −40%, charges 65%. Ce n\'est PAS optionnel — c\'est quand les adaptations se consolident.'});
+  if(meso.ph==='pic') msgs.push({cls:'',text:`🚀 <strong>Phase INTENSIFICATION.</strong> Volume réduit, qualité maximale. C'est maintenant que tu exprimes les gains des 6 semaines passées.`});
+
+  if(ratio!==null && ratio<0.90) msgs.push({cls:'cm-bad',text:`⚠️ <strong>SNC critique (${Math.round(ratio*100)}%).</strong> Sprint et pliométrie automatiquement réduits. Priorité récupération aujourd'hui.`});
+
+  msgs.push({cls:'',text:`📅 <strong>An ${S.yr}/8 — Semaine ${S.wk}.</strong> ${macro.focus[0]}. Objectifs de l'année: sprint ${macro.sprint}s · détente ${macro.det}cm · squat ${macro.sq}kg.`});
+  return msgs;
+}
+
+function getBDAdvice(phase, sw){
+  const advice={
+    intro:'Semaine de prise en main. Focus: wrist curl léger + pronation douce. Appren la position de table, le cupping, et la relaxation du poignet. Aucune charge lourde avant 4 semaines.',
+    dev:'Phase développement. Curl marteau lourd (4×6 à 80%), pronation câble progressive. Commence l\'isométrie table: 5×5s effort modéré. Chaque semaine +2.5% charge.',
+    force:'Bloc force. Isométrie table 80%+ effort max, pronation lourde. Simulation match vs partenaire 15–20 min/sam. Technique top-roll prioritaire.',
+    intense:'Bloc intensif. 2× BD/semaine (hiver). Isométrie + match sim intense. Travaille les finitions: passage de la position haute à la pin. Récupération coudes stricte.',
+    peak:'Bloc compétitif. Teste-toi contre ton frère régulièrement. Analyse ses faiblesses: a-t-il un hook ou un top-roll? Exploite la technique vs sa masse.',
+    maintain:'Maintien BD. 1 séance technique/semaine. Conserve la force acquise sans surentraîner les coudes.',
+  };
+  return advice[phase]||advice.intro;
+}
+
+function getBDPlan(){
+  return `
+  <div class="sec-title">STRATÉGIE VS FRÈRE 120KG</div>
+  <div class="cm cm-bad"><p>Son avantage: +${S.profil ? Math.max(0,120-S.profil.poids) : 50}kg de masse = levier + stabilité supérieure. Ta réponse: <strong>technique top-roll.</strong></p></div>
+  <div class="sec-title">PLAN EN 18 MOIS</div>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-yr">MOIS 1–4</div><div class="tl-title">Fondations force</div><div class="tl-sub">Curl marteau 4×6, wrist curl, pronation légère. Anatomie des positions BD.</div></div>
+    <div class="tl-item"><div class="tl-dot a"></div><div class="tl-yr">MOIS 5–9</div><div class="tl-title">Développement technique</div><div class="tl-sub">Isométrie table, top-roll miroir, simulation strap. Curl lourd: progression +2.5kg/2sem.</div></div>
+    <div class="tl-item"><div class="tl-dot a"></div><div class="tl-yr">MOIS 10–15</div><div class="tl-title">Bloc hivernal intensif</div><div class="tl-sub">2 séances BD/semaine, match vs partenaires, ajustement technique.</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-yr">MOIS 16–18</div><div class="tl-title">Match vs frère</div><div class="tl-sub">Tu le bats avec le top-roll: monte le pouce, pronate, tire en diagonal.</div></div>
+  </div>
+  <div class="sec-title">TECHNIQUE TOP-ROLL PAS À PAS</div>
+  <div style="font-size:11px;color:var(--t);line-height:1.8;">
+    1. Poignée haute — ton pouce domine la prise<br>
+    2. Coupé poignet en avant (cupping initial)<br>
+    3. Monte le pouce (rising) — son poignet plie<br>
+    4. Pronate vers l'extérieur — ses doigts s'ouvrent<br>
+    5. Tire épaule vers ta poche — verrouille<br>
+    6. Finition: pression latérale vers le pad
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════════
+// RENDER: PROFIL
+// ════════════════════════════════════════════════════════════════
+function renderProfile(){
+  const p = S.profil;
+  let h = '';
+
+  h += `<div class="card">
+    <div class="ct"><span class="ico">👤</span>PROFIL ATHLÈTE</div>
+    <div class="inp-row">
+      <div class="ig"><label class="il">Poids (kg)</label><input class="inp" type="number" id="p-poids" value="${p.poids}" step="0.5"></div>
+      <div class="ig"><label class="il">Taille (cm)</label><input class="inp" type="number" id="p-taille" value="${p.taille}"></div>
+    </div>
+    <div class="ig"><label class="il">Âge</label><input class="inp" type="number" id="p-age" value="${p.age}"></div>
+    <div class="inp-row">
+      <div class="ig"><label class="il">Squat 1RM (kg)</label><input class="inp" type="number" id="p-sq" value="${p.squat1RM}" step="2.5"></div>
+      <div class="ig"><label class="il">RDL 1RM (kg)</label><input class="inp" type="number" id="p-rdl" value="${p.rdl1RM||''}" step="2.5"></div>
+    </div>
+    <div class="inp-row">
+      <div class="ig"><label class="il">Traction lestée (kg lest)</label><input class="inp" type="number" id="p-tr" value="${p.traction||0}" step="1"></div>
+      <div class="ig"><label class="il">Curl marteau 3RM (kg)</label><input class="inp" type="number" id="p-curl" value="${p.curl3RM||15}" step="1"></div>
+    </div>
+    <div class="hr"></div>
+    <div class="sec-title">📅 DATE DE DÉBUT DU PROGRAMME</div>
+    <div class="ig">
+      <label class="il">Date de début — semaine et année calculées automatiquement</label>
+      <input class="inp" type="date" id="p-startDate" value="${S.profil.startDate||new Date().toISOString().split('T')[0]}">
+    </div>
+    <div style="padding:10px 12px;border-radius:10px;margin-bottom:10px;font-size:11px;line-height:1.8;${isAutoMode()?'background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.25);color:var(--g)':'background:rgba(255,179,0,.07);border:1px solid rgba(255,179,0,.25);color:var(--a)'}">
+      ${(()=>{const yw=calcYrWk();return isAutoMode()
+        ? '✅ AUTO — An <strong>'+S.yr+'</strong> · Sem. <strong>'+S.wk+'</strong><br><span style="opacity:.7;font-size:10px;">Depuis le '+new Date(S.profil.startDate).toLocaleDateString('fr-FR')+(yw.hivAuto?' · ❄️ Bloc hivernal actif':'')+'</span>'
+        : '⚙️ MANUEL — An <strong>'+S.yr+'</strong> · Sem. <strong>'+S.wk+'</strong><br><button class="btn btn-sm btn-o" onclick="resetAuto()" style="margin-top:6px;font-size:10px;padding:3px 8px;">↩ Revenir en auto</button>'
+      })()}
+    </div>
+    <div class="sec-title">⚙️ OVERRIDE MANUEL <span style="font-size:9px;color:var(--t3);">(laisser vide = auto)</span></div>
+    <div class="inp-row">
+      <div class="ig"><label class="il">Forcer Année (1–8)</label><input class="inp" type="number" id="p-yr" value="${S._manualYr!==null?S._manualYr:''}" min="1" max="8" placeholder="auto"></div>
+      <div class="ig"><label class="il">Forcer Semaine</label><input class="inp" type="number" id="p-wk" value="${S._manualWk!==null?S._manualWk:''}" min="1" max="400" placeholder="auto"></div>
+    </div>
+    <button class="btn btn-g btn-full" onclick="saveProfil()">💾 Sauvegarder profil</button>
+  </div>`;
+
+  // Charges calculées
+  const sw = ((S.wk-1)%8)+1;
+  h += `<div class="card ca">
+    <div class="ct"><span class="ico">⚖️</span>CHARGES SEMAINE ${S.wk}</div>
+    <div class="sg">
+      ${[['squat','🏋️ Squat'],['hip','🍑 Hip Thrust'],['rdl','🔥 RDL'],['traction','💪 Traction +lest'],['curl','🤼 Curl BD'],['split','🦵 Split Squat']].map(([k,l])=>`
+      <div class="sb"><div class="sv" style="font-size:18px">${calcCharge(k,S.wk)}kg</div><div class="sl">${l}</div><div class="ss">Sem.${sw}/8</div></div>`).join('')}
+    </div>
+  </div>`;
+
+  // Export / Import
+  h += `<div class="card">
+    <div class="ct"><span class="ico">🔄</span>SAUVEGARDE LOCALE</div>
+    <button class="btn btn-g btn-full" onclick="exportData()">📤 Exporter JSON</button>
+    <button class="btn btn-o btn-full" onclick="document.getElementById('imp-file').click()">📂 Importer</button>
+    <input type="file" id="imp-file" accept=".json" style="display:none;" onchange="importData(this)">
+  </div>`;
+
+  document.getElementById('tab-profile').innerHTML=h;
+}
+
+function saveProfil(){
+  S.profil.poids=parseFloat(document.getElementById('p-poids')?.value)||S.profil.poids;
+  S.profil.taille=parseInt(document.getElementById('p-taille')?.value)||S.profil.taille;
+  S.profil.age=parseInt(document.getElementById('p-age')?.value)||S.profil.age;
+  S.profil.squat1RM=parseFloat(document.getElementById('p-sq')?.value)||S.profil.squat1RM;
+  S.profil.rdl1RM=parseFloat(document.getElementById('p-rdl')?.value)||S.profil.rdl1RM;
+  S.profil.traction=parseFloat(document.getElementById('p-tr')?.value)||0;
+  S.profil.curl3RM=parseFloat(document.getElementById('p-curl')?.value)||S.profil.curl3RM;
+  const sd=document.getElementById('p-startDate')?.value;
+  if(sd) S.profil.startDate=sd;
+  const yrRaw=(document.getElementById('p-yr')?.value||'').trim();
+  const wkRaw=(document.getElementById('p-wk')?.value||'').trim();
+  S._manualYr=yrRaw?parseInt(yrRaw):null;
+  S._manualWk=wkRaw?parseInt(wkRaw):null;
+  if(isAutoMode()){
+    const yw=calcYrWk(); S.yr=yw.yr; S.wk=yw.wk;
+    if(yw.hivAuto && S.mode!=='hiv') S.mode='hiv';
+    else if(!yw.hivAuto && S.mode==='hiv') S.mode='std';
+  } else {
+    if(S._manualYr) S.yr=S._manualYr;
+    if(S._manualWk) S.wk=S._manualWk;
+  }
+  save();
+  notify('Profil sauvegardé ✓ '+(isAutoMode()?'— AUTO 📅':'— Manuel ⚙️'),'success');
+  renderProfile(); renderToday();
+}
+
+function exportData(){
+  const b=new Blob([JSON.stringify(getPayload(),null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);
+  a.download=`nadhir-elite-${td()}.json`;a.click();URL.revokeObjectURL(a.href);
+  notify('Export réussi ✓','success');
+}
+function importData(input){
+  if(!input.files.length) return;
+  const r=new FileReader();
+  r.onload=e=>{
+    try{
+      const d=JSON.parse(e.target.result);
+      if(d.profil) S.profil=d.profil;
+      if(d.yr) S.yr=d.yr; if(d.wk) S.wk=d.wk;
+      if(d.snc) S.snc=d.snc; if(d.sessions) S.sessions=d.sessions;
+      if(d.tests) S.tests=d.tests;
+      save(); location.reload();
+    }catch(err){notify('Fichier invalide ❌','error');}
+  };
+  r.readAsText(input.files[0]);
+}
+
+// ── INIT ──
+(function init(){
+  // Sync cloud dot state
+  if(S.jbKey && S.jbBin) updateCloudDot('ok');
+
+  // SNC dot
+  const ratio = sncRatio();
+  if(ratio !== null){
+    const dot=document.getElementById('snc-dot');
+    const val=document.getElementById('snc-val');
+    dot.className='tc-dot';
+    if(ratio>=0.90) dot.classList.add('green');
+    else if(ratio>=0.85) dot.style.background='var(--a)';
+    else dot.style.background='var(--r)';
+    if(val) val.textContent=Math.round(ratio*100)+'%';
+  }
+
+  if(isAutoMode()){
+    const yw=calcYrWk(); S.yr=yw.yr; S.wk=yw.wk;
+    if(yw.hivAuto && S.mode!=='hiv') S.mode='hiv';
+    else if(!yw.hivAuto && S.mode==='hiv') S.mode='std';
+    save();
+  }
+  renderToday();
+  (function schedMidnight(){
+    const now=new Date(), next=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,0,0,3);
+    setTimeout(()=>{
+      if(isAutoMode()){
+        const yw=calcYrWk(); S.yr=yw.yr; S.wk=yw.wk;
+        if(yw.hivAuto&&S.mode!=='hiv') S.mode='hiv';
+        else if(!yw.hivAuto&&S.mode==='hiv') S.mode='std';
+        save();
+      }
+      renderToday(); schedMidnight();
+    }, next-now);
+  })();
+})();
+</script>
+</body>
+</html>
