@@ -2,1079 +2,1508 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>FORCE PROTOCOL // SYSTÈME MINIMALISTE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FORCE PROTOCOL · 6 MOIS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --c: #00d4ff;
-  --c2: #00a8cc;
-  --gold: #ffd700;
-  --red: #ff2244;
+  --bg:    #030912;
+  --bg2:   #060f1e;
+  --bg3:   #0b1a2e;
+  --c:     #00c8ff;
   --green: #00ff88;
-  --orange: #ff8c00;
-  --purple: #bf5fff;
-  --bg: #020610;
-  --bg2: #050d18;
-  --bg3: #0a1525;
-  --panel: rgba(0,212,255,0.04);
-  --panel-gold: rgba(255,215,0,0.04);
-  --panel-green: rgba(0,255,136,0.04);
-  --border: rgba(0,212,255,0.18);
-  --border2: rgba(255,215,0,0.22);
-  --border3: rgba(0,255,136,0.18);
-  --text: #c0d8e8;
-  --dim: #3a6070;
-  --nav-h: 58px;
-  --safe: env(safe-area-inset-bottom, 0px);
+  --gold:  #ffd700;
+  --red:   #ff2244;
+  --orange:#ff8c00;
+  --purple:#bf5fff;
+  --dim:   #2a4a60;
+  --text:  #a8c8d8;
+  --white: #e8f4f8;
+  --border:rgba(0,200,255,0.12);
+  --border-g:rgba(0,255,136,0.15);
+  --border-gold:rgba(255,215,0,0.18);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Rajdhani',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
 }
 
-* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-html { scroll-behavior:smooth; }
-body { font-family:'Rajdhani',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; cursor:crosshair; }
-
-body::before {
-  content:''; position:fixed; inset:0;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,212,255,0.010) 2px,rgba(0,212,255,0.010) 4px);
-  pointer-events:none; z-index:9999;
-}
-body::after {
-  content:''; position:fixed; inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events:none; z-index:9998; opacity:0.35;
+/* scanline overlay */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,200,255,0.008) 3px,rgba(0,200,255,0.008) 4px);
 }
 
-.top-bar { position:fixed; top:0; left:0; height:2px; background:linear-gradient(90deg,var(--green),var(--c),var(--gold)); z-index:10000; box-shadow:0 0 8px var(--c); width:100%; }
-
-/* ══ HERO ══ */
-.hero {
-  position:relative; min-height:100vh;
-  display:flex; flex-direction:column; justify-content:center; align-items:center;
-  overflow:hidden; padding:2rem 1rem;
+/* ── TOP BAR ── */
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(3,9,18,0.96);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:12px 20px;
+  display:flex;align-items:center;justify-content:space-between;
 }
-.hero-bg {
-  position:absolute; inset:0;
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 40%,rgba(0,255,136,0.06) 0%,transparent 70%),
-    radial-gradient(ellipse 40% 40% at 80% 20%,rgba(0,212,255,0.05) 0%,transparent 60%),
-    radial-gradient(ellipse 40% 40% at 20% 80%,rgba(255,215,0,0.04) 0%,transparent 60%),
-    linear-gradient(180deg,#020610 0%,#03101c 50%,#020610 100%);
+.topbar-logo{
+  font-family:'Orbitron',monospace;font-size:1rem;font-weight:900;
+  letter-spacing:0.18em;color:#fff;
 }
-.grid-bg {
-  position:absolute; inset:0;
-  background-image:linear-gradient(rgba(0,255,136,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.03) 1px,transparent 1px);
-  background-size:40px 40px; animation:gridPulse 8s ease-in-out infinite;
+.topbar-logo span{color:var(--green);}
+.topbar-sub{
+  font-family:'Share Tech Mono',monospace;font-size:0.55rem;
+  color:var(--green);letter-spacing:0.25em;margin-top:2px;
 }
-@keyframes gridPulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
-
-.bracket { position:absolute; width:60px; height:60px; border-color:var(--green); border-style:solid; opacity:0.35; }
-.bracket-tl { top:20px; left:20px; border-width:2px 0 0 2px; }
-.bracket-tr { top:20px; right:20px; border-width:2px 2px 0 0; }
-.bracket-bl { bottom:80px; left:20px; border-width:0 0 2px 2px; }
-.bracket-br { bottom:80px; right:20px; border-width:0 2px 2px 0; }
-
-.hero-content { position:relative; z-index:2; text-align:center; max-width:500px; width:100%; }
-.system-id {
-  font-family:'Share Tech Mono',monospace; font-size:0.6rem; color:var(--green);
-  letter-spacing:0.3em; text-transform:uppercase; margin-bottom:1rem;
-  animation:blink 3s ease-in-out infinite;
+.status-pill{
+  font-family:'Share Tech Mono',monospace;font-size:0.55rem;
+  color:var(--green);background:rgba(0,255,136,0.06);
+  border:1px solid var(--border-g);border-radius:20px;
+  padding:4px 12px;letter-spacing:0.12em;
+  display:flex;align-items:center;gap:6px;
 }
-@keyframes blink { 0%,90%,100%{opacity:1} 95%{opacity:0.2} }
+.dot{width:5px;height:5px;border-radius:50%;background:var(--green);
+  animation:pulse 1.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,255,136,0.7)}50%{box-shadow:0 0 0 5px rgba(0,255,136,0)}}
 
-.hero-name {
-  font-family:'Orbitron',monospace; font-size:clamp(2rem,10vw,4.5rem);
-  font-weight:900; line-height:0.9; letter-spacing:-0.02em;
-  background:linear-gradient(135deg,#ffffff 0%,var(--green) 40%,var(--gold) 100%);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-  animation:nameGlow 4s ease-in-out infinite alternate;
+/* ── NAV ANCHORS ── */
+.nav-anchors{
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  display:flex;overflow-x:auto;gap:0;
+  scrollbar-width:none;
 }
-@keyframes nameGlow {
-  from { filter:drop-shadow(0 0 20px rgba(0,255,136,0.3)); }
-  to { filter:drop-shadow(0 0 40px rgba(0,255,136,0.7)) drop-shadow(0 0 80px rgba(255,215,0,0.2)); }
+.nav-anchors::-webkit-scrollbar{display:none;}
+.nav-a{
+  font-family:'Share Tech Mono',monospace;font-size:0.55rem;
+  color:var(--dim);letter-spacing:0.15em;text-transform:uppercase;
+  text-decoration:none;padding:10px 16px;white-space:nowrap;
+  border-bottom:2px solid transparent;transition:all 0.2s;
+  border-right:1px solid var(--border);
 }
-.hero-subtitle {
-  font-family:'Orbitron',monospace; font-size:clamp(0.5rem,2vw,0.72rem);
-  font-weight:400; letter-spacing:0.45em; color:var(--gold); text-transform:uppercase; margin-top:0.5rem;
+.nav-a:hover{color:var(--green);border-bottom-color:var(--green);}
+
+/* ── SECTIONS ── */
+section{
+  max-width:900px;margin:0 auto;
+  padding:40px 16px 20px;
 }
-.hero-divider { width:200px; height:2px; background:linear-gradient(90deg,transparent,var(--green),var(--gold),transparent); margin:1.5rem auto; }
+section+section{border-top:1px solid rgba(255,255,255,0.04);}
 
-.hero-pillars { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.6rem; margin-top:1.2rem; }
-.pillar {
-  border:1px solid var(--border3); background:var(--panel-green);
-  padding:0.7rem 0.5rem; border-radius:4px; text-align:center; position:relative; overflow:hidden;
+.section-header{
+  display:flex;align-items:center;gap:12px;margin-bottom:28px;
 }
-.pillar::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:1px;
-  background:linear-gradient(90deg,transparent,var(--green),transparent);
-  animation:scanH 3s linear infinite;
+.section-header::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,var(--border),transparent);
 }
-@keyframes scanH { from{transform:translateX(-100%)} to{transform:translateX(100%)} }
-.pillar-icon { font-size:1.3rem; display:block; margin-bottom:4px; }
-.pillar-val { font-family:'Orbitron',monospace; font-size:0.85rem; font-weight:700; color:var(--green); }
-.pillar-lbl { font-family:'Share Tech Mono',monospace; font-size:0.5rem; color:var(--dim); letter-spacing:0.1em; text-transform:uppercase; margin-top:2px; }
-
-.pulse-badge {
-  display:inline-flex; align-items:center; gap:6px; margin-top:1.2rem;
-  background:rgba(0,255,136,0.06); border:1px solid var(--border3); border-radius:20px;
-  padding:0.3rem 0.9rem; font-family:'Share Tech Mono',monospace; font-size:0.6rem; color:var(--green); letter-spacing:0.1em;
+.section-num{
+  font-family:'Share Tech Mono',monospace;font-size:0.55rem;
+  color:var(--dim);letter-spacing:0.2em;
 }
-.pulse-dot { width:6px; height:6px; background:var(--green); border-radius:50%; animation:pulseAnim 1.5s ease-in-out infinite; flex-shrink:0; }
-@keyframes pulseAnim { 0%,100%{box-shadow:0 0 0 0 rgba(0,255,136,0.7)} 50%{box-shadow:0 0 0 6px rgba(0,255,136,0)} }
-
-.hero-enter {
-  display:inline-flex; align-items:center; gap:8px; margin-top:1.2rem;
-  background:var(--green); color:#020610; font-family:'Orbitron',monospace; font-size:0.72rem;
-  font-weight:900; letter-spacing:0.15em; padding:0.75rem 1.8rem; border:none; border-radius:3px;
-  cursor:pointer; transition:all 0.2s; box-shadow:0 6px 24px rgba(0,255,136,0.35); text-transform:uppercase;
+.section-title{
+  font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;
+  letter-spacing:0.18em;color:#fff;text-transform:uppercase;
 }
-.hero-enter:hover { box-shadow:0 8px 32px rgba(0,255,136,0.6); transform:translateY(-1px); }
-.scroll-cta { position:absolute; bottom:2rem; left:50%; transform:translateX(-50%); text-align:center; z-index:2; }
-.scroll-arrow { width:22px; height:22px; border-right:2px solid var(--green); border-bottom:2px solid var(--green); transform:rotate(45deg); margin:0 auto; animation:arrowBounce 1.5s ease-in-out infinite; }
-@keyframes arrowBounce { 0%,100%{transform:rotate(45deg) translateY(0);opacity:1} 50%{transform:rotate(45deg) translateY(6px);opacity:0.4} }
+.section-title.green{color:var(--green);}
+.section-title.gold{color:var(--gold);}
+.section-title.cyan{color:var(--c);}
 
-/* ══ APP SHELL ══ */
-#app { display:none; flex-direction:column; height:100vh; max-width:430px; margin:0 auto; position:relative; overflow:hidden; }
-#app.active { display:flex; }
-.screen { display:none; flex:1; overflow-y:auto; overflow-x:hidden; padding-bottom:calc(var(--nav-h) + var(--safe) + 20px); -webkit-overflow-scrolling:touch; }
-.screen.active { display:block; }
-.screen-inner { padding:0 10px 8px; }
-::-webkit-scrollbar { width:0; height:0; }
-
-/* NAV */
-nav.bottom-nav {
-  position:absolute; bottom:0; left:0; right:0;
-  height:calc(var(--nav-h) + var(--safe));
-  background:rgba(2,6,16,0.94); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
-  border-top:1px solid var(--border3);
-  display:flex; align-items:flex-start; padding-top:8px; z-index:100;
+/* ── CARDS ── */
+.card{
+  background:rgba(255,255,255,0.018);
+  border:1px solid var(--border);
+  border-radius:4px;padding:18px;margin-bottom:10px;
+  position:relative;overflow:hidden;
 }
-.nav-btn {
-  flex:1; display:flex; flex-direction:column; align-items:center; gap:3px;
-  background:none; border:none; color:var(--dim); cursor:pointer;
-  font-family:'Share Tech Mono',monospace; font-size:0.5rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:4px 2px 0;
-  transition:color 0.2s;
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(0,200,255,0.12),transparent);
 }
-.nav-btn.active { color:var(--green); }
-.nav-btn svg { width:18px; height:18px; transition:transform 0.2s; }
-.nav-btn.active svg { transform:scale(1.15); filter:drop-shadow(0 0 4px var(--green)); }
-.nav-dot { width:4px; height:4px; border-radius:50%; background:var(--green); opacity:0; transition:opacity 0.2s; }
-.nav-btn.active .nav-dot { opacity:1; }
+.card.green{border-color:var(--border-g);background:rgba(0,255,136,0.03);}
+.card.green::before{background:linear-gradient(90deg,transparent,rgba(0,255,136,0.18),transparent);}
+.card.gold{border-color:var(--border-gold);background:rgba(255,215,0,0.025);}
+.card.gold::before{background:linear-gradient(90deg,transparent,rgba(255,215,0,0.15),transparent);}
+.card.red{border-color:rgba(255,34,68,0.2);background:rgba(255,34,68,0.03);}
+.card.dim{border-color:rgba(255,255,255,0.05);background:rgba(255,255,255,0.01);}
 
-/* TOPBAR */
-.topbar {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:46px 12px 8px; position:sticky; top:0; z-index:10;
-  background:linear-gradient(to bottom,rgba(2,6,16,1) 60%,transparent);
+/* ── HERO ── */
+.hero{
+  max-width:900px;margin:0 auto;
+  padding:60px 16px 40px;
+  text-align:center;
 }
-.topbar-name { font-family:'Orbitron',monospace; font-size:16px; font-weight:700; letter-spacing:0.1em; color:#fff; }
-.topbar-sub { font-family:'Share Tech Mono',monospace; font-size:0.58rem; color:var(--green); letter-spacing:0.2em; }
-.date-chip { font-family:'Share Tech Mono',monospace; font-size:0.58rem; color:var(--green); background:var(--panel-green); border:1px solid var(--border3); border-radius:3px; padding:3px 8px; letter-spacing:0.12em; }
-
-/* CARDS */
-.card {
-  background:var(--panel); border:1px solid var(--border); border-radius:4px;
-  padding:14px; margin-bottom:10px; position:relative; overflow:hidden;
+.hero-eyebrow{
+  font-family:'Share Tech Mono',monospace;font-size:0.6rem;
+  color:var(--green);letter-spacing:0.35em;margin-bottom:20px;
 }
-.card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(0,212,255,0.15),transparent); }
-.card-green { border-color:var(--border3); background:var(--panel-green); }
-.card-green::before { background:linear-gradient(90deg,transparent,rgba(0,255,136,0.2),transparent); }
-.card-gold { border-color:var(--border2); background:var(--panel-gold); }
-.card-gold::before { background:linear-gradient(90deg,transparent,rgba(255,215,0,0.15),transparent); }
-
-/* MICRO */
-.micro { font-family:'Share Tech Mono',monospace; font-size:0.6rem; color:var(--dim); }
-.section-hd { display:flex; align-items:center; gap:0.8rem; margin:18px 0 10px; }
-.section-hd::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,var(--border) 0%,transparent 100%); }
-.section-title { font-family:'Orbitron',monospace; font-size:0.75rem; font-weight:700; letter-spacing:0.18em; color:#fff; text-transform:uppercase; }
-
-/* DAY TAG */
-.day-tag {
-  display:inline-flex; align-items:center; border-radius:3px; padding:3px 10px;
-  font-family:'Orbitron',monospace; font-size:0.55rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+.hero-title{
+  font-family:'Orbitron',monospace;font-size:clamp(2.5rem,8vw,5rem);
+  font-weight:900;line-height:0.9;letter-spacing:-0.02em;
+  background:linear-gradient(135deg,#fff 0%,var(--green) 45%,var(--gold) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:16px;
 }
-.tag-muscu { background:rgba(0,212,255,0.1); color:var(--c); border:1px solid var(--border); }
-.tag-sprint { background:rgba(0,255,136,0.1); color:var(--green); border:1px solid var(--border3); }
-.tag-repos { background:rgba(255,255,255,0.03); color:var(--dim); border:1px solid rgba(255,255,255,0.06); }
-
-/* PLANNING ROW */
-.plan-row {
-  display:grid; grid-template-columns:80px 1fr auto; gap:10px; align-items:center;
-  padding:10px 12px; border-radius:4px; margin-bottom:6px; border:1px solid rgba(255,255,255,0.05);
-  background:rgba(255,255,255,0.015); transition:all 0.2s; cursor:pointer;
+.hero-sub{
+  font-family:'Orbitron',monospace;font-size:0.7rem;
+  color:var(--gold);letter-spacing:0.4em;text-transform:uppercase;
+  margin-bottom:32px;
 }
-.plan-row:hover { background:rgba(0,212,255,0.04); border-color:var(--border); }
-.plan-row.today { background:rgba(0,255,136,0.06); border-color:var(--border3); }
-.plan-day { font-family:'Orbitron',monospace; font-size:0.65rem; font-weight:700; color:#fff; }
-.plan-label { font-size:0.72rem; font-weight:700; color:#dde; }
-.plan-sub { font-family:'Share Tech Mono',monospace; font-size:0.56rem; color:var(--dim); margin-top:2px; }
-
-/* EXERCISE BLOCK */
-.ex-block {
-  background:rgba(255,255,255,0.015); border:1px solid rgba(255,255,255,0.06);
-  border-radius:4px; padding:12px; margin-bottom:8px;
+.hero-pillars{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  max-width:420px;margin:0 auto 32px;
 }
-.ex-block-hd { display:flex; align-items:flex-start; gap:10px; margin-bottom:8px; }
-.ex-num { font-family:'Orbitron',monospace; font-size:1.2rem; font-weight:900; color:rgba(0,212,255,0.15); min-width:28px; line-height:1; }
-.ex-name { font-size:0.75rem; font-weight:700; color:#fff; line-height:1.3; }
-.ex-meta { font-family:'Share Tech Mono',monospace; font-size:0.58rem; color:var(--dim); margin-top:3px; }
-.ex-prog-rule { background:rgba(0,255,136,0.05); border-left:2px solid var(--green); border-radius:0 3px 3px 0; padding:6px 9px; margin-top:8px; font-family:'Share Tech Mono',monospace; font-size:0.6rem; color:rgba(0,255,136,0.8); line-height:1.6; }
-.ex-tip { background:rgba(0,212,255,0.04); border-left:2px solid var(--c); border-radius:0 3px 3px 0; padding:6px 9px; margin-top:6px; font-family:'Share Tech Mono',monospace; font-size:0.58rem; color:var(--text); line-height:1.6; }
+.pillar{
+  border:1px solid var(--border-g);background:rgba(0,255,136,0.04);
+  border-radius:4px;padding:14px 8px;text-align:center;
+}
+.pillar-val{font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:900;color:var(--green);}
+.pillar-lbl{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.1em;text-transform:uppercase;margin-top:4px;}
+.hero-divider{width:180px;height:1px;background:linear-gradient(90deg,transparent,var(--green),var(--gold),transparent);margin:0 auto 32px;}
 
-/* SPRINT BLOCK */
-.sprint-step { display:flex; gap:10px; align-items:flex-start; padding:8px 0; border-bottom:1px solid rgba(0,255,136,0.06); }
-.sprint-step:last-child { border-bottom:none; }
-.sprint-num { font-family:'Orbitron',monospace; font-size:0.65rem; font-weight:700; color:var(--green); min-width:20px; }
-.sprint-text { font-size:0.72rem; font-weight:600; color:#dde; line-height:1.5; }
-.sprint-time { font-family:'Orbitron',monospace; font-size:0.85rem; font-weight:700; color:var(--gold); white-space:nowrap; }
+/* ── RÈGLES ── */
+.rule{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:12px;background:rgba(255,215,0,0.03);
+  border:1px solid rgba(255,215,0,0.1);border-radius:4px;margin-bottom:8px;
+}
+.rule-n{
+  font-family:'Orbitron',monospace;font-size:1.4rem;font-weight:900;
+  color:rgba(255,215,0,0.25);min-width:28px;line-height:1;
+}
+.rule-t{font-size:0.8rem;font-weight:600;color:var(--white);line-height:1.6;}
+.rule-t b{color:var(--green);}
+.rule-t .gold{color:var(--gold);}
+.rule-t .c{color:var(--c);}
 
-/* NUTRITION */
-.shaker-card { background:linear-gradient(135deg,rgba(0,255,136,0.06),rgba(255,215,0,0.03)); border:1px solid rgba(0,255,136,0.2); border-radius:4px; padding:14px; margin-bottom:10px; }
-.ingredient-row { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
-.ingredient-row:last-child { border-bottom:none; }
-.ing-icon { font-size:18px; width:28px; text-align:center; }
-.ing-name { font-size:0.72rem; font-weight:700; color:#dde; flex:1; }
-.ing-qty { font-family:'Share Tech Mono',monospace; font-size:0.65rem; color:var(--green); }
+/* ── BLOC ── */
+.bloc-header{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  margin-bottom:16px;
+}
+.bloc-name{
+  font-family:'Orbitron',monospace;font-size:0.9rem;font-weight:700;
+  color:#fff;letter-spacing:0.12em;
+}
+.bloc-period{
+  font-family:'Share Tech Mono',monospace;font-size:0.58rem;
+  color:var(--green);letter-spacing:0.15em;margin-top:4px;
+}
+.bloc-badge{
+  font-family:'Share Tech Mono',monospace;font-size:0.52rem;
+  padding:4px 10px;border-radius:3px;letter-spacing:0.1em;white-space:nowrap;
+}
+.badge-green{background:rgba(0,255,136,0.1);color:var(--green);border:1px solid var(--border-g);}
+.badge-gold{background:rgba(255,215,0,0.08);color:var(--gold);border:1px solid var(--border-gold);}
+.badge-cyan{background:rgba(0,200,255,0.08);color:var(--c);border:1px solid var(--border);}
 
-/* OBJECTIFS */
-.obj-timeline { position:relative; padding-left:20px; }
-.obj-timeline::before { content:''; position:absolute; left:7px; top:0; bottom:0; width:1px; background:linear-gradient(180deg,var(--green),var(--c),var(--gold)); }
-.obj-milestone { position:relative; margin-bottom:16px; }
-.obj-milestone::before { content:''; position:absolute; left:-15px; top:4px; width:8px; height:8px; border-radius:50%; background:var(--c); box-shadow:0 0 8px var(--c); }
-.obj-milestone.green::before { background:var(--green); box-shadow:0 0 8px var(--green); }
-.obj-milestone.gold::before { background:var(--gold); box-shadow:0 0 8px var(--gold); }
-.obj-period { font-family:'Orbitron',monospace; font-size:0.62rem; font-weight:700; letter-spacing:0.15em; margin-bottom:5px; }
-.obj-item { font-size:0.7rem; color:var(--text); line-height:1.6; }
-.obj-item strong { font-family:'Share Tech Mono',monospace; color:#fff; }
-.obj-item .g { color:var(--green); }
-.obj-item .gold { color:var(--gold); }
+/* ── SEMAINE TYPE ── */
+.week-grid{
+  display:grid;grid-template-columns:repeat(7,1fr);gap:4px;
+}
+.wday{
+  text-align:center;padding:10px 4px;
+  border:1px solid rgba(255,255,255,0.05);border-radius:4px;
+  background:rgba(255,255,255,0.015);
+}
+.wday.muscu{border-color:rgba(0,200,255,0.2);background:rgba(0,200,255,0.06);}
+.wday.sprint{border-color:rgba(0,255,136,0.2);background:rgba(0,255,136,0.06);}
+.wday.repos{border-color:rgba(255,255,255,0.04);background:rgba(255,255,255,0.01);}
+.wday-lbl{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.1em;text-transform:uppercase;}
+.wday-icon{font-size:1.1rem;display:block;margin:6px 0 4px;}
+.wday-name{font-family:'Share Tech Mono',monospace;font-size:0.45rem;color:var(--text);letter-spacing:0.05em;line-height:1.4;}
 
-/* AI MESSAGE */
-.ai-card { background:linear-gradient(135deg,rgba(0,255,136,0.06),rgba(255,215,0,0.03)); border:1px solid rgba(0,255,136,0.18); border-radius:4px; padding:14px; margin-bottom:10px; }
-.ai-label { font-family:'Share Tech Mono',monospace; font-size:0.55rem; color:var(--green); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:6px; }
-.ai-text { font-size:0.75rem; line-height:1.65; color:var(--text); }
-.ai-text strong { color:var(--green); }
+/* ── EXERCICE ── */
+.ex{
+  border:1px solid rgba(255,255,255,0.05);border-radius:4px;
+  padding:14px;margin-bottom:8px;background:rgba(255,255,255,0.01);
+}
+.ex-top{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;}
+.ex-n{
+  font-family:'Orbitron',monospace;font-size:1.5rem;font-weight:900;
+  color:rgba(0,200,255,0.12);min-width:32px;line-height:1;
+}
+.ex-name{font-size:0.82rem;font-weight:700;color:#fff;}
+.ex-sets{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'Share Tech Mono',monospace;font-size:0.6rem;
+  color:var(--c);background:rgba(0,200,255,0.07);
+  border:1px solid rgba(0,200,255,0.15);border-radius:3px;
+  padding:3px 8px;margin-top:5px;letter-spacing:0.1em;
+}
+.ex-rest{
+  font-family:'Share Tech Mono',monospace;font-size:0.55rem;
+  color:var(--dim);margin-top:4px;
+}
+.tip{
+  background:rgba(0,200,255,0.04);border-left:2px solid var(--c);
+  border-radius:0 3px 3px 0;padding:7px 10px;margin-bottom:6px;
+  font-family:'Share Tech Mono',monospace;font-size:0.58rem;
+  color:var(--text);line-height:1.7;
+}
+.prog{
+  background:rgba(0,255,136,0.04);border-left:2px solid var(--green);
+  border-radius:0 3px 3px 0;padding:7px 10px;
+  font-family:'Share Tech Mono',monospace;font-size:0.58rem;
+  color:rgba(0,255,136,0.85);line-height:1.7;
+}
 
-/* RULE BOX */
-.rule-box { display:flex; align-items:flex-start; gap:10px; padding:10px; background:rgba(255,215,0,0.04); border:1px solid rgba(255,215,0,0.15); border-radius:4px; margin-bottom:7px; }
-.rule-num { font-family:'Orbitron',monospace; font-size:1.1rem; font-weight:900; color:var(--gold); min-width:24px; }
-.rule-text { font-size:0.72rem; font-weight:600; color:#dde; line-height:1.5; }
+/* ── SPRINT ── */
+.sprint-step{
+  display:flex;gap:12px;align-items:flex-start;
+  padding:10px 0;border-bottom:1px solid rgba(0,255,136,0.06);
+}
+.sprint-step:last-child{border-bottom:none;}
+.sn{
+  font-family:'Orbitron',monospace;font-size:0.62rem;font-weight:700;
+  color:var(--green);min-width:22px;
+}
+.st{font-size:0.75rem;font-weight:600;color:var(--white);flex:1;line-height:1.5;}
+.sdur{
+  font-family:'Orbitron',monospace;font-size:0.8rem;font-weight:700;
+  color:var(--gold);white-space:nowrap;
+}
 
-/* TOAST */
-.toast { position:fixed; top:55px; left:50%; transform:translateX(-50%); background:var(--green); color:#020610; padding:8px 20px; border-radius:3px; font-family:'Orbitron',monospace; font-weight:700; font-size:0.65rem; z-index:500; white-space:nowrap; box-shadow:0 4px 20px rgba(0,255,136,0.5); letter-spacing:0.1em; animation:toastIn 0.3s ease; }
-@keyframes toastIn { from{opacity:0;transform:translateX(-50%) translateY(-10px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+/* ── PROGRESSION TABLE ── */
+.prog-table{width:100%;border-collapse:collapse;}
+.prog-table th{
+  font-family:'Share Tech Mono',monospace;font-size:0.52rem;
+  color:var(--dim);letter-spacing:0.1em;text-transform:uppercase;
+  padding:8px;text-align:left;border-bottom:1px solid var(--border);
+}
+.prog-table td{
+  font-size:0.72rem;color:var(--text);
+  padding:8px;border-bottom:1px solid rgba(255,255,255,0.03);
+  line-height:1.5;
+}
+.prog-table td:first-child{
+  font-family:'Orbitron',monospace;font-size:0.6rem;font-weight:700;color:#fff;
+  white-space:nowrap;
+}
+.prog-table td b{color:var(--green);}
+.prog-table td .gold{color:var(--gold);}
+.prog-table td .c{color:var(--c);}
+.prog-table tr:last-child td{border-bottom:none;}
 
-/* TIMER */
-.timer-card { background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(0,255,136,0.04)); border:1px solid rgba(0,212,255,0.2); border-radius:4px; padding:16px; margin-bottom:10px; text-align:center; }
-.timer-display { font-family:'Orbitron',monospace; font-size:3rem; font-weight:900; color:var(--c); line-height:1; letter-spacing:0.05em; }
-.timer-label { font-family:'Share Tech Mono',monospace; font-size:0.58rem; color:var(--c); letter-spacing:0.2em; text-transform:uppercase; margin-top:4px; }
-.timer-btns { display:flex; gap:8px; margin-top:12px; }
+/* ── NUTRITION ── */
+.ing{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.ing:last-child{border-bottom:none;}
+.ing-icon{font-size:1.3rem;width:30px;text-align:center;}
+.ing-name{font-size:0.75rem;font-weight:700;color:var(--white);flex:1;}
+.ing-qty{
+  font-family:'Share Tech Mono',monospace;font-size:0.65rem;
+  color:var(--green);white-space:nowrap;
+}
 
-/* BUTTONS */
-.btn { display:flex; align-items:center; justify-content:center; gap:8px; border:none; border-radius:4px; padding:11px 18px; font-family:'Orbitron',monospace; font-size:0.65rem; font-weight:700; cursor:pointer; transition:all 0.2s; letter-spacing:0.1em; text-transform:uppercase; }
-.btn:active { transform:scale(0.97); opacity:0.85; }
-.btn-green { background:var(--green); color:#020610; box-shadow:0 4px 16px rgba(0,255,136,0.3); }
-.btn-green:hover { box-shadow:0 6px 24px rgba(0,255,136,0.5); }
-.btn-c { background:var(--c); color:#020610; box-shadow:0 4px 16px rgba(0,212,255,0.3); }
-.btn-glass { background:rgba(0,212,255,0.05); border:1px solid var(--border); color:var(--text); }
-.btn-gold { background:rgba(255,215,0,0.1); border:1px solid rgba(255,215,0,0.3); color:var(--gold); }
-.btn-block { width:100%; }
+/* ── OBJECTIFS ── */
+.obj-line{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);
+  font-size:0.75rem;color:var(--text);line-height:1.5;
+}
+.obj-line:last-child{border-bottom:none;}
+.obj-check{color:var(--green);font-size:0.8rem;min-width:16px;}
+.obj-line strong{color:#fff;}
+.obj-line .g{color:var(--green);}
+.obj-line .gold{color:var(--gold);}
 
-/* TRACKER */
-.week-tracker { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin-top:8px; }
-.day-cell { display:flex; flex-direction:column; align-items:center; gap:3px; }
-.day-cell-lbl { font-family:'Share Tech Mono',monospace; font-size:0.5rem; color:var(--dim); text-transform:uppercase; }
-.day-cell-dot { width:32px; height:32px; border-radius:4px; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02); display:flex; align-items:center; justify-content:center; font-size:13px; cursor:pointer; transition:all 0.2s; }
-.day-cell-dot.done-muscu { background:rgba(0,212,255,0.2); border-color:var(--c); box-shadow:0 0 8px rgba(0,212,255,0.3); }
-.day-cell-dot.done-sprint { background:rgba(0,255,136,0.2); border-color:var(--green); box-shadow:0 0 8px rgba(0,255,136,0.3); }
-.day-cell-dot.done-repos { background:rgba(255,255,255,0.04); border-color:rgba(255,255,255,0.08); }
+/* ── MICRO TEXT ── */
+.micro{
+  font-family:'Share Tech Mono',monospace;font-size:0.55rem;
+  color:var(--dim);letter-spacing:0.15em;text-transform:uppercase;
+}
+.micro.green{color:rgba(0,255,136,0.6);}
+.micro.gold{color:rgba(255,215,0,0.6);}
+.micro.cyan{color:rgba(0,200,255,0.6);}
 
-/* STATS ROW */
-.stats-row { display:flex; gap:6px; margin-top:8px; }
-.stat-pill { flex:1; background:var(--panel); border:1px solid var(--border); border-radius:4px; padding:8px 6px; text-align:center; }
-.stat-val { font-family:'Orbitron',monospace; font-size:1.1rem; color:var(--c); }
-.stat-lbl { font-family:'Share Tech Mono',monospace; font-size:0.5rem; color:var(--dim); text-transform:uppercase; letter-spacing:0.08em; margin-top:2px; }
+/* ── GRILLE 2 COL ── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+@media(max-width:600px){
+  .grid-2{grid-template-columns:1fr;}
+  .grid-3{grid-template-columns:1fr 1fr;}
+  .week-grid{grid-template-columns:repeat(7,1fr);}
+  .wday-name{font-size:0.38rem;}
+}
 
-/* ANIMATIONS */
-@keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
-.anim1 { animation:fadeUp 0.4s ease both; }
-.anim2 { animation:fadeUp 0.4s ease 0.06s both; }
-.anim3 { animation:fadeUp 0.4s ease 0.12s both; }
-.anim4 { animation:fadeUp 0.4s ease 0.18s both; }
-.anim5 { animation:fadeUp 0.4s ease 0.24s both; }
+/* ── TIMELINE BLOC ── */
+.timeline{position:relative;padding-left:24px;}
+.timeline::before{
+  content:'';position:absolute;left:8px;top:4px;bottom:4px;width:1px;
+  background:linear-gradient(180deg,var(--green),var(--c),var(--gold));
+}
+.tl-item{position:relative;margin-bottom:20px;}
+.tl-item::before{
+  content:'';position:absolute;left:-18px;top:5px;
+  width:9px;height:9px;border-radius:50%;
+  background:var(--c);box-shadow:0 0 8px var(--c);
+}
+.tl-item.green::before{background:var(--green);box-shadow:0 0 8px var(--green);}
+.tl-item.gold::before{background:var(--gold);box-shadow:0 0 8px var(--gold);}
+.tl-period{
+  font-family:'Orbitron',monospace;font-size:0.62rem;font-weight:700;
+  letter-spacing:0.15em;color:var(--c);margin-bottom:6px;
+}
+.tl-item.green .tl-period{color:var(--green);}
+.tl-item.gold .tl-period{color:var(--gold);}
 
-/* SESSION COMPLETE */
-.celebrate { position:fixed; inset:0; z-index:600; pointer-events:none; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:14px; background:rgba(2,6,16,0.9); animation:celebFade 2.8s ease forwards; }
-@keyframes celebFade { 0%{opacity:1} 70%{opacity:1} 100%{opacity:0;pointer-events:none} }
-.celebrate-text { font-family:'Orbitron',monospace; font-size:1.5rem; color:var(--green); text-align:center; text-shadow:0 0 30px rgba(0,255,136,0.7); letter-spacing:0.1em; }
+/* ── ALERT BOX ── */
+.alert{
+  display:flex;align-items:flex-start;gap:12px;padding:12px;
+  border-radius:4px;margin-bottom:8px;
+}
+.alert.green{background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.15);}
+.alert.red{background:rgba(255,34,68,0.05);border:1px solid rgba(255,34,68,0.15);}
+.alert.gold{background:rgba(255,215,0,0.04);border:1px solid rgba(255,215,0,0.15);}
+.alert.cyan{background:rgba(0,200,255,0.04);border:1px solid rgba(0,200,255,0.15);}
+.alert-icon{font-size:1rem;min-width:20px;margin-top:1px;}
+.alert-body{font-size:0.72rem;color:var(--text);line-height:1.65;}
+.alert-body strong{color:#fff;}
+.alert-body .g{color:var(--green);}
+.alert-body .gold{color:var(--gold);}
+.alert-body .c{color:var(--c);}
+.alert-label{
+  font-family:'Share Tech Mono',monospace;font-size:0.5rem;
+  letter-spacing:0.15em;margin-bottom:4px;display:block;
+}
+.alert.green .alert-label{color:var(--green);}
+.alert.red .alert-label{color:var(--red);}
+.alert.gold .alert-label{color:var(--gold);}
+.alert.cyan .alert-label{color:var(--c);}
+
+/* ── BIG QUOTE ── */
+.big-quote{
+  font-size:1rem;font-style:italic;font-weight:600;
+  color:var(--white);line-height:1.7;
+  border-left:3px solid var(--green);padding-left:16px;
+  margin:16px 0;
+}
+
+/* ── FOOTER ── */
+footer{
+  max-width:900px;margin:40px auto 0;
+  padding:20px 16px 40px;
+  border-top:1px solid var(--border);
+  text-align:center;
+}
+
+/* ── BLOC MUSCU DÉTAIL (séances A B C) ── */
+.session-tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:16px;}
+.stab{
+  padding:10px;border-radius:4px;text-align:center;
+  border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);
+}
+.stab.a{border-color:rgba(0,200,255,0.2);background:rgba(0,200,255,0.05);}
+.stab.b{border-color:rgba(0,255,136,0.2);background:rgba(0,255,136,0.05);}
+.stab.c{border-color:rgba(255,215,0,0.2);background:rgba(255,215,0,0.04);}
+.stab-title{font-family:'Orbitron',monospace;font-size:0.65rem;font-weight:700;color:#fff;}
+.stab.a .stab-title{color:var(--c);}
+.stab.b .stab-title{color:var(--green);}
+.stab.c .stab-title{color:var(--gold);}
+.stab-sub{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);margin-top:3px;letter-spacing:0.08em;}
+
+/* sprint alternance */
+.sprint-alt{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+/* bloc comparison */
+.comp-row{
+  display:grid;grid-template-columns:120px 1fr 1fr;gap:8px;align-items:center;
+  padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);
+  font-size:0.72rem;
+}
+.comp-row:last-child{border-bottom:none;}
+.comp-lbl{font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--dim);letter-spacing:0.08em;}
+.comp-before{color:var(--text);}
+.comp-after{color:var(--green);font-weight:700;}
+
+/* ── BLOCKS PROGRESSION CYCLES ── */
+.cycle-bloc{
+  border:1px solid var(--border);border-radius:6px;
+  overflow:hidden;margin-bottom:16px;
+}
+.cycle-bloc-head{
+  padding:14px 18px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.cycle-bloc-head.b1{background:linear-gradient(90deg,rgba(0,255,136,0.1),rgba(0,200,255,0.05));}
+.cycle-bloc-head.b2{background:linear-gradient(90deg,rgba(0,200,255,0.1),rgba(191,95,255,0.04));}
+.cycle-bloc-head.b3{background:linear-gradient(90deg,rgba(255,215,0,0.1),rgba(255,140,0,0.04));}
+.cycle-bloc-body{padding:16px 18px;}
+.cycle-title{font-family:'Orbitron',monospace;font-size:0.85rem;font-weight:700;color:#fff;}
+.cycle-weeks{font-family:'Share Tech Mono',monospace;font-size:0.52rem;letter-spacing:0.15em;}
+
+/* ── INLINE BADGE ── */
+.ibadge{
+  display:inline-block;
+  font-family:'Share Tech Mono',monospace;font-size:0.52rem;
+  padding:2px 8px;border-radius:2px;letter-spacing:0.08em;
+  vertical-align:middle;margin:0 2px;
+}
+.ibadge.g{background:rgba(0,255,136,0.1);color:var(--green);border:1px solid rgba(0,255,136,0.2);}
+.ibadge.gold{background:rgba(255,215,0,0.08);color:var(--gold);border:1px solid rgba(255,215,0,0.2);}
+.ibadge.c{background:rgba(0,200,255,0.08);color:var(--c);border:1px solid rgba(0,200,255,0.15);}
+
+/* ── SEPARATEUR ── */
+.sep{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:20px 0;}
 </style>
 </head>
 <body>
 
-<div class="top-bar"></div>
-
-<!-- HERO -->
-<section class="hero" id="hero">
-  <div class="hero-bg"></div>
-  <div class="grid-bg"></div>
-  <div class="bracket bracket-tl"></div>
-  <div class="bracket bracket-tr"></div>
-  <div class="bracket bracket-bl"></div>
-  <div class="bracket bracket-br"></div>
-  <div class="hero-content">
-    <div class="system-id">// SYSTÈME MINIMALISTE · FORCE + EXPLOSIVITÉ · v1.0 //</div>
-    <div class="hero-name">FORCE<br>PROTOCOL</div>
-    <div class="hero-subtitle">Résultat Maximum · Effort Mental Zéro</div>
-    <div class="hero-divider"></div>
-    <div class="hero-pillars">
-      <div class="pillar">
-        <span class="pillar-icon">💪</span>
-        <div class="pillar-val">3×</div>
-        <div class="pillar-lbl">Muscu / sem</div>
-      </div>
-      <div class="pillar">
-        <span class="pillar-icon">⚡</span>
-        <div class="pillar-val">2×</div>
-        <div class="pillar-lbl">Sprint / sem</div>
-      </div>
-      <div class="pillar">
-        <span class="pillar-icon">⏱</span>
-        <div class="pillar-val">35'</div>
-        <div class="pillar-lbl">Max / séance</div>
-      </div>
-    </div>
-    <div class="pulse-badge" style="margin:1.2rem auto;display:flex;width:fit-content;">
-      <span class="pulse-dot"></span>
-      <span>ZÉRO CALCUL · ZÉRO CHOIX · 100% ADHÉRENCE</span>
-    </div>
-    <button class="hero-enter" onclick="enterApp()">▶ ACCÉDER AU PROTOCOLE</button>
+<!-- TOP BAR -->
+<div class="topbar">
+  <div>
+    <div class="topbar-logo">FORCE <span>PROTOCOL</span></div>
+    <div class="topbar-sub">// SYSTÈME MINIMALISTE · 6 MOIS · LECTURE SEULE //</div>
   </div>
-  <div class="scroll-cta"><div class="scroll-arrow"></div></div>
-</section>
-
-<!-- APP -->
-<div id="app">
-
-  <!-- SCREEN 0 · ACCUEIL -->
-  <div class="screen active" id="screen-home">
-    <div class="topbar">
-      <div>
-        <div class="topbar-sub" id="greeting-sub">SYSTÈME ACTIF</div>
-        <div class="topbar-name">FORCE PROTOCOL</div>
-      </div>
-      <div class="date-chip" id="streak-chip">🔥 0j</div>
-    </div>
-    <div class="screen-inner">
-
-      <div class="ai-card anim1">
-        <div class="ai-label">⬡ COACH · ANALYSE DU JOUR</div>
-        <div class="ai-text" id="ai-msg">Chargement...</div>
-      </div>
-
-      <div class="card anim2">
-        <div class="micro" style="letter-spacing:0.15em;margin-bottom:10px;">3 RÈGLES — C'EST TOUT</div>
-        <div class="rule-box">
-          <div class="rule-num">1</div>
-          <div class="rule-text">Soulève lourd <strong style="color:var(--c)">3× / semaine</strong> — exactement ce qui est écrit, rien de plus.</div>
-        </div>
-        <div class="rule-box">
-          <div class="rule-num">2</div>
-          <div class="rule-text">Sprinte <strong style="color:var(--green)">2× / semaine</strong> — jamais le même jour que la muscu.</div>
-        </div>
-        <div class="rule-box" style="margin-bottom:0;">
-          <div class="rule-num">3</div>
-          <div class="rule-text">Mange <strong style="color:var(--gold)">le shaker + 3 œufs</strong> chaque jour sans exception.</div>
-        </div>
-      </div>
-
-      <div class="card anim3">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-          <div class="micro" style="letter-spacing:0.15em;">TRACKER HEBDO</div>
-          <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--green);cursor:pointer;" onclick="resetWeek()">RESET →</span>
-        </div>
-        <div class="week-tracker" id="week-tracker"></div>
-        <div class="stats-row" style="margin-top:10px;">
-          <div class="stat-pill"><div class="stat-val" id="stat-muscu" style="color:var(--c)">0/3</div><div class="stat-lbl">Muscu</div></div>
-          <div class="stat-pill"><div class="stat-val" id="stat-sprint" style="color:var(--green)">0/2</div><div class="stat-lbl">Sprint</div></div>
-          <div class="stat-pill"><div class="stat-val" id="stat-streak" style="color:var(--gold)">0</div><div class="stat-lbl">🔥 Streak</div></div>
-        </div>
-      </div>
-
-      <div class="card card-green anim4">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-          <div class="micro" style="letter-spacing:0.15em;color:var(--green);">PROCHAINE SÉANCE</div>
-          <span style="font-family:'Orbitron',monospace;font-size:0.6rem;color:var(--green);cursor:pointer;" onclick="goTab(2)">DÉMARRER →</span>
-        </div>
-        <div style="font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:#fff;margin-bottom:4px;" id="next-session-title">Muscu A · Push</div>
-        <div class="micro" id="next-session-sub">4 exercices · ~35 min</div>
-        <button class="btn btn-green btn-block" style="margin-top:10px;height:42px;" onclick="goTab(2)">▶ C'EST PARTI</button>
-      </div>
-
-      <div class="card anim5">
-        <div class="micro" style="letter-spacing:0.15em;margin-bottom:6px;">// RÈGLE D'OR</div>
-        <p style="font-size:0.82rem;line-height:1.7;font-style:italic;color:var(--text);" id="quote-txt">« Si tu rates une séance, tu décales. Tu ne sautes pas. »</p>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- SCREEN 1 · PLANNING -->
-  <div class="screen" id="screen-planning">
-    <div class="topbar">
-      <div>
-        <div class="topbar-sub">SEMAINE TYPE</div>
-        <div class="topbar-name">Planning</div>
-      </div>
-    </div>
-    <div class="screen-inner">
-
-      <div class="ai-card anim1">
-        <div class="ai-label">⬡ LOGIQUE DU PROGRAMME</div>
-        <div class="ai-text">Muscu et sprint sont <strong>toujours séparés</strong>. Jamais les deux le même jour. 2 jours de repos complet. Aucun choix à faire — applique le planning.</div>
-      </div>
-
-      <div class="card anim2" id="planning-rows"></div>
-
-      <div class="card anim3">
-        <div class="micro" style="letter-spacing:0.15em;margin-bottom:8px;">RÈGLE DE DÉCALAGE</div>
-        <div style="font-size:0.72rem;line-height:1.7;color:var(--text);">
-          Tu rates Lundi ? → Tu fais Muscu A le Mardi.<br>
-          Tu rates Mardi ? → Sprint le Mercredi.<br>
-          <span style="color:var(--green);font-family:'Share Tech Mono',monospace;font-size:0.65rem;">⬡ Le seul interdit : muscu + sprint le même jour.</span>
-        </div>
-      </div>
-
-      <div class="card card-gold anim4">
-        <div class="micro" style="letter-spacing:0.15em;margin-bottom:8px;color:var(--gold);">PROGRESSION UNIVERSELLE</div>
-        <div style="font-size:0.72rem;line-height:1.8;color:var(--text);">
-          Tu complètes toutes les reps cibles → <strong style="color:var(--green)">+2.5kg la prochaine fois</strong>.<br>
-          Tu rates des reps → <strong style="color:var(--gold)">même poids</strong>, même objectif.<br>
-          Tu rates 2 séances de suite → <strong style="color:var(--c)">-5% du poids</strong>, recommence proprement.
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- SCREEN 2 · SÉANCES -->
-  <div class="screen" id="screen-seances">
-    <div class="topbar">
-      <div>
-        <div class="topbar-sub">SÉANCES COMPLÈTES</div>
-        <div class="topbar-name" id="seance-title">Séances</div>
-      </div>
-      <div style="display:flex;gap:5px;">
-        <button class="btn btn-glass" style="padding:4px 8px;font-size:0.52rem;" onclick="prevSession()">‹</button>
-        <button class="btn btn-glass" style="padding:4px 8px;font-size:0.52rem;" onclick="nextSession()">›</button>
-      </div>
-    </div>
-    <div class="screen-inner" id="seance-content"></div>
-  </div>
-
-  <!-- SCREEN 3 · SPRINT -->
-  <div class="screen" id="screen-sprint">
-    <div class="topbar">
-      <div>
-        <div class="topbar-sub">SÉANCES SPRINT</div>
-        <div class="topbar-name">Explosivité</div>
-      </div>
-    </div>
-    <div class="screen-inner">
-
-      <div class="ai-card anim1">
-        <div class="ai-label">⬡ PRINCIPE SPRINT</div>
-        <div class="ai-text">Efforts <strong>maximaux courts</strong> = explosivité + puissance athlétique. Jamais fatigué à la fin = trop facile. Récup incomplète = trop dur.</div>
-      </div>
-
-      <div class="timer-card anim2">
-        <div class="timer-label">⏱ TIMER SPRINT</div>
-        <div class="timer-display" id="sprint-timer">0:00</div>
-        <div class="micro" id="timer-phase-label" style="margin-top:6px;color:var(--gold);">PRÊT ?</div>
-        <div class="timer-btns">
-          <button class="btn btn-green btn-block" id="timer-start-btn" onclick="startSprintTimer()">▶ DÉMARRER</button>
-          <button class="btn btn-glass" onclick="resetSprintTimer()" style="padding:11px 14px;">↺</button>
-        </div>
-        <div class="micro" style="margin-top:8px;" id="timer-progress-lbl">Série 0 / 6</div>
-      </div>
-
-      <div class="card anim3">
-        <div style="font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;color:var(--green);margin-bottom:10px;letter-spacing:0.1em;">⚡ SPRINT A · ACCÉLÉRATION</div>
-        <div class="sprint-step"><div class="sprint-num">01</div><div class="sprint-text" style="flex:1;">Échauffement marche rapide / trot léger</div><div class="sprint-time">5 MIN</div></div>
-        <div class="sprint-step"><div class="sprint-num">02</div><div class="sprint-text" style="flex:1;">Sprint <strong style="color:var(--green)">100%</strong> sur 30m (départ arrêté)</div><div class="sprint-time">×6</div></div>
-        <div class="sprint-step"><div class="sprint-num">03</div><div class="sprint-text" style="flex:1;">Récupération marche entre chaque</div><div class="sprint-time">90 SEC</div></div>
-        <div class="sprint-step"><div class="sprint-num">04</div><div class="sprint-text" style="flex:1;">Retour au calme — marche lente</div><div class="sprint-time">3 MIN</div></div>
-        <div style="margin-top:10px;padding:8px;background:rgba(0,255,136,0.04);border-radius:3px;">
-          <span class="micro">TOTAL : ~25 min · Lieu : n'importe quel espace de 30m</span>
-        </div>
-      </div>
-
-      <div class="card anim4">
-        <div style="font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;color:var(--c);margin-bottom:10px;letter-spacing:0.1em;">⚡ SPRINT B · PUISSANCE</div>
-        <div class="sprint-step"><div class="sprint-num">01</div><div class="sprint-text" style="flex:1;">Échauffement marche rapide + skipping léger</div><div class="sprint-time">5 MIN</div></div>
-        <div class="sprint-step"><div class="sprint-num">02</div><div class="sprint-text" style="flex:1;">Sprint <strong style="color:var(--c)">100%</strong> sur 20m (départ en position basse)</div><div class="sprint-time">×8</div></div>
-        <div class="sprint-step"><div class="sprint-num">03</div><div class="sprint-text" style="flex:1;">Récupération marche / trot entre chaque</div><div class="sprint-time">75 SEC</div></div>
-        <div class="sprint-step"><div class="sprint-num">04</div><div class="sprint-text" style="flex:1;">Retour au calme</div><div class="sprint-time">3 MIN</div></div>
-        <div style="margin-top:10px;padding:8px;background:rgba(0,212,255,0.04);border-radius:3px;">
-          <span class="micro">TOTAL : ~25 min · Alterner A et B chaque semaine</span>
-        </div>
-      </div>
-
-      <div class="card card-gold anim5">
-        <div class="micro" style="letter-spacing:0.15em;margin-bottom:8px;color:var(--gold);">⚠ RÈGLES ABSOLUES</div>
-        <div style="font-size:0.7rem;line-height:1.8;color:var(--text);">
-          — Jamais de sprint si douleur articulaire<br>
-          — Toujours s'échauffer avant<br>
-          — <strong style="color:var(--green)">100% d'intensité</strong> ou ça ne sert à rien<br>
-          — Sol plat, chaussures adaptées
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- SCREEN 4 · NUTRITION -->
-  <div class="screen" id="screen-nutrition">
-    <div class="topbar">
-      <div>
-        <div class="topbar-sub">NUTRITION SIMPLIFIÉE</div>
-        <div class="topbar-name">Nutrition</div>
-      </div>
-    </div>
-    <div class="screen-inner">
-
-      <div class="ai-card anim1">
-        <div class="ai-label">⬡ PRINCIPE FONDATEUR</div>
-        <div class="ai-text"><strong>Zéro calorie à compter.</strong> Tu manges à ta faim + le shaker obligatoire + les œufs. Si tu prends du poids → bien. Si tu n'en prends pas → ajouter une banane le soir.</div>
-      </div>
-
-      <div class="shaker-card anim2">
-        <div style="font-family:'Orbitron',monospace;font-size:0.78rem;font-weight:700;color:var(--green);margin-bottom:10px;letter-spacing:0.1em;">🥤 SHAKER MAISON · 1× / JOUR</div>
-        <div class="ingredient-row">
-          <div class="ing-icon">🥛</div>
-          <div class="ing-name">Lait entier ou demi-écrémé</div>
-          <div class="ing-qty">400 ml</div>
-        </div>
-        <div class="ingredient-row">
-          <div class="ing-icon">🌾</div>
-          <div class="ing-name">Flocons d'avoine</div>
-          <div class="ing-qty">80g</div>
-        </div>
-        <div class="ingredient-row">
-          <div class="ing-icon">🍌</div>
-          <div class="ing-name">Banane</div>
-          <div class="ing-qty">1 grosse</div>
-        </div>
-        <div class="ingredient-row">
-          <div class="ing-icon">🥜</div>
-          <div class="ing-name">Beurre de cacahuète <span class="micro">(si dispo)</span></div>
-          <div class="ing-qty">1 càs</div>
-        </div>
-        <div style="margin-top:10px;padding:8px;background:rgba(0,255,136,0.05);border-radius:3px;display:flex;gap:10px;">
-          <span class="micro">~700 kcal · ~25g protéines · Tout mixer 30 secondes</span>
-        </div>
-      </div>
-
-      <div class="card anim3">
-        <div style="font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;color:var(--c);margin-bottom:10px;letter-spacing:0.1em;">🥚 ŒUFS · 3-4 / JOUR</div>
-        <div class="ingredient-row">
-          <div class="ing-icon">🥚</div>
-          <div class="ing-name">Matin : 3 œufs brouillés ou au plat</div>
-          <div class="ing-qty">~25g prot</div>
-        </div>
-        <div style="margin-top:8px;font-size:0.7rem;line-height:1.7;color:var(--text);">
-          Ajouter un 4ème œuf les jours d'entraînement muscu.
-        </div>
-      </div>
-
-      <div class="card card-gold anim4">
-        <div class="micro" style="letter-spacing:0.15em;margin-bottom:8px;color:var(--gold);">AJUSTEMENTS SIMPLES</div>
-        <div style="display:grid;gap:8px;">
-          <div style="padding:8px;background:rgba(0,255,136,0.04);border-radius:3px;border-left:2px solid var(--green);">
-            <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--green);margin-bottom:3px;">PAS DE PRISE DE POIDS</div>
-            <div style="font-size:0.7rem;color:var(--text);">→ Ajouter une banane le soir + 1 tartine pain complet</div>
-          </div>
-          <div style="padding:8px;background:rgba(255,34,68,0.04);border-radius:3px;border-left:2px solid var(--red);">
-            <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--red);margin-bottom:3px;">PRISE TROP RAPIDE (gras)</div>
-            <div style="font-size:0.7rem;color:var(--text);">→ Retirer le beurre de cacahuète du shaker</div>
-          </div>
-          <div style="padding:8px;background:rgba(0,212,255,0.04);border-radius:3px;border-left:2px solid var(--c);">
-            <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--c);margin-bottom:3px;">RÉCUPÉRATION LENTE</div>
-            <div style="font-size:0.7rem;color:var(--text);">→ Ajouter 1 yaourt grec le soir (protéines avant le sommeil)</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card anim5">
-        <div class="micro" style="letter-spacing:0.15em;margin-bottom:8px;">RESTE DES REPAS</div>
-        <div style="font-size:0.72rem;line-height:1.8;color:var(--text);">
-          Mange ce qu'il y a à la maison, normalement.<br>
-          <strong style="color:var(--green)">Aucune restriction.</strong> Aucune pesée. Aucun calcul.<br><br>
-          Priorité : <strong style="color:#fff">protéines à chaque repas</strong> (œufs, viande, poisson, légumineuses).
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- SCREEN 5 · OBJECTIFS -->
-  <div class="screen" id="screen-objectifs">
-    <div class="topbar">
-      <div>
-        <div class="topbar-sub">MESURABLES · CONCRETS</div>
-        <div class="topbar-name">Objectifs</div>
-      </div>
-    </div>
-    <div class="screen-inner">
-
-      <div class="ai-card anim1">
-        <div class="ai-label">⬡ SEULS CES CHIFFRES COMPTENT</div>
-        <div class="ai-text">Poids soulevé. Temps de sprint. Poids de corps. <strong>Si ces 3 chiffres avancent → tout avance.</strong> Pas de photos, pas de miroir, pas de commentaires.</div>
-      </div>
-
-      <div class="card anim2">
-        <div class="micro" style="letter-spacing:0.15em;margin-bottom:12px;">TIMELINE DE PROGRESSION</div>
-        <div class="obj-timeline">
-
-          <div class="obj-milestone green">
-            <div class="obj-period" style="color:var(--green);">MOIS 1 · SEMAINES 1-4</div>
-            <div class="obj-item">Développé couché : <strong>+5 à 7.5 kg</strong> sur le 5RM</div>
-            <div class="obj-item">Squat : <strong>+5 à 10 kg</strong></div>
-            <div class="obj-item">Sprint 30m : <span class="g">-0.3s vs. le départ</span></div>
-            <div class="obj-item">Corps : <strong>+0.5 à 1 kg</strong> net</div>
-          </div>
-
-          <div class="obj-milestone" style="margin-top:16px;">
-            <div class="obj-period" style="color:var(--c);">MOIS 3 · SEMAINES 5-12</div>
-            <div class="obj-item">Développé couché : <strong>+15 à 20 kg</strong> total</div>
-            <div class="obj-item">Squat : <strong>+20 à 30 kg</strong></div>
-            <div class="obj-item">Tractions : <span class="g">3-5 reps propres si débutant</span></div>
-            <div class="obj-item">Sprint 30m : <span class="g">-0.5 à -0.7s</span> perceptible</div>
-            <div class="obj-item">Corps : <strong>+2 à 3 kg</strong> de masse propre</div>
-          </div>
-
-          <div class="obj-milestone gold" style="margin-top:16px;">
-            <div class="obj-period" style="color:var(--gold);">MOIS 6 · SEMAINES 13-24</div>
-            <div class="obj-item">Développé couché : <span class="gold">poids de corps ou plus</span></div>
-            <div class="obj-item">Squat : <span class="gold">1.2× poids de corps</span></div>
-            <div class="obj-item">Tractions : <span class="g">8-10 reps propres</span></div>
-            <div class="obj-item">Sprint : <span class="g">différence visible vs. avant</span></div>
-            <div class="obj-item">Corps : <strong>+4 à 6 kg</strong> de masse athlétique</div>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="card card-green anim3">
-        <div class="micro" style="letter-spacing:0.15em;margin-bottom:8px;color:var(--green);">SIGNAUX QUE ÇA MARCHE</div>
-        <div style="display:grid;gap:5px;">
-          <div style="font-size:0.7rem;color:var(--text);padding:6px 0;border-bottom:1px solid rgba(0,255,136,0.06);display:flex;gap:8px;align-items:center;"><span style="color:var(--green);">✓</span>Tu ajoutes du poids chaque semaine</div>
-          <div style="font-size:0.7rem;color:var(--text);padding:6px 0;border-bottom:1px solid rgba(0,255,136,0.06);display:flex;gap:8px;align-items:center;"><span style="color:var(--green);">✓</span>Tu prends +0.5 à 1 kg / mois</div>
-          <div style="font-size:0.7rem;color:var(--text);padding:6px 0;border-bottom:1px solid rgba(0,255,136,0.06);display:flex;gap:8px;align-items:center;"><span style="color:var(--green);">✓</span>Tes sprints sont plus rapides sur la même distance</div>
-          <div style="font-size:0.7rem;color:var(--text);padding:6px 0;display:flex;gap:8px;align-items:center;"><span style="color:var(--green);">✓</span>Tu récupères mieux entre les séries</div>
-        </div>
-      </div>
-
-      <div class="card card-gold anim4">
-        <div class="micro" style="letter-spacing:0.15em;margin-bottom:8px;color:var(--gold);">SI ÇA BLOQUE</div>
-        <div style="font-size:0.72rem;line-height:1.8;color:var(--text);">
-          Force stagnante > 2 sem → <strong style="color:var(--gold)">dormir 8h minimum</strong>, c'est la cause N°1.<br>
-          Pas de prise de poids → <strong style="color:var(--green)">ajouter banane le soir</strong> (vu dans Nutrition).<br>
-          Fatigue chronique → <strong style="color:var(--c)">retirer 1 séance sprint</strong>, passer à 1×/sem.
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- NAV -->
-  <nav class="bottom-nav">
-    <button class="nav-btn active" id="nav-0" onclick="goTab(0)">
-      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      Accueil<div class="nav-dot"></div>
-    </button>
-    <button class="nav-btn" id="nav-1" onclick="goTab(1)">
-      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      Planning<div class="nav-dot"></div>
-    </button>
-    <button class="nav-btn" id="nav-2" onclick="goTab(2)">
-      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 5h12M6 19h12M9 5v14M15 5v14"/></svg>
-      Muscu<div class="nav-dot"></div>
-    </button>
-    <button class="nav-btn" id="nav-3" onclick="goTab(3)">
-      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="13 2 13 9 20 9"/><path d="M21 3L13 11"/><path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0"/></svg>
-      Sprint<div class="nav-dot"></div>
-    </button>
-    <button class="nav-btn" id="nav-4" onclick="goTab(4)">
-      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-      Nutri<div class="nav-dot"></div>
-    </button>
-    <button class="nav-btn" id="nav-5" onclick="goTab(5)">
-      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      Objectifs<div class="nav-dot"></div>
-    </button>
-  </nav>
-
+  <div class="status-pill"><span class="dot"></span>PROGRAMME ACTIF</div>
 </div>
 
-<script>
-/* ═══ DATA ═══ */
-const PLANNING = [
-  { day:'Lundi',    type:'muscu',  label:'💪 Muscu A · Push',          sub:'4 exercices · ~35 min', session:0 },
-  { day:'Mardi',   type:'sprint', label:'⚡ Sprint A · Accélération',  sub:'6 × 30m · ~25 min',     session:null },
-  { day:'Mercredi',type:'repos',  label:'😴 Repos complet',            sub:'Sommeil, nutrition',     session:null },
-  { day:'Jeudi',   type:'muscu',  label:'💪 Muscu B · Pull + Jambes',  sub:'4 exercices · ~35 min', session:1 },
-  { day:'Vendredi',type:'sprint', label:'⚡ Sprint B · Puissance',     sub:'8 × 20m · ~25 min',     session:null },
-  { day:'Samedi',  type:'muscu',  label:'💪 Muscu C · Full Corps',     sub:'5 exercices · ~40 min', session:2 },
-  { day:'Dimanche',type:'repos',  label:'😴 Repos complet',            sub:'Récupération active',    session:null },
-];
+<!-- NAV -->
+<nav class="nav-anchors">
+  <a class="nav-a" href="#regles">01 · Règles</a>
+  <a class="nav-a" href="#planning">02 · Planning</a>
+  <a class="nav-a" href="#muscu">03 · Muscu A/B/C</a>
+  <a class="nav-a" href="#sprint">04 · Sprint</a>
+  <a class="nav-a" href="#cycles">05 · Cycles 6 Mois</a>
+  <a class="nav-a" href="#progression">06 · Progression</a>
+  <a class="nav-a" href="#nutrition">07 · Nutrition</a>
+  <a class="nav-a" href="#objectifs">08 · Objectifs</a>
+  <a class="nav-a" href="#bloquage">09 · Si ça Bloque</a>
+</nav>
 
-const SESSIONS = [
-  {
-    id:0, label:'MUSCU A · PUSH', sub:'Force + Pectoraux / Épaules / Triceps',
-    color:'var(--c)', icon:'💪',
-    exercises:[
-      { num:'01', name:'Développé couché barre', sets:'3 × 5', rest:'3 min', tip:'Omoplates serrées. Descente 2s, montée explosive. Haltères si pas de barre.', prog:'Ajouter 2.5kg quand tu fais 3×5 proprement.', icon:'🏋️' },
-      { num:'02', name:'Développé militaire barre', sets:'3 × 5', rest:'3 min', tip:'Debout, barre depuis clavicules. Fessiers serrés. Pousser vertical.', prog:'Ajouter 2.5kg quand tu fais 3×5 proprement.', icon:'🏋️' },
-      { num:'03', name:'Dips lestés (ou poids corps)', sets:'3 × 6-10', rest:'2 min', tip:'Légèrement penché pour cibler pectoraux. Descente 2-3s contrôlée.', prog:'Ajouter 2.5kg avec ceinture quand tu fais 3×10.', icon:'🤸' },
-      { num:'04', name:'Élévations latérales haltères', sets:'3 × 12', rest:'90 sec', tip:'Coude qui mène. Arrêt à hauteur des épaules. Descente 3s.', prog:'Ajouter 1kg quand tu fais 3×12 proprement.', icon:'💪' },
-    ]
-  },
-  {
-    id:1, label:'MUSCU B · PULL + JAMBES', sub:'Force + Dos / Biceps / Quadriceps',
-    color:'var(--green)', icon:'🏋️',
-    exercises:[
-      { num:'01', name:'Tractions pronation (ou tirage poulie)', sets:'3 × 5-8', rest:'3 min', tip:'Épaules déprimées. Tirer les coudes vers les hanches. Descente 2s.', prog:'Ajouter des reps. Lesté quand tu atteins 3×8.', icon:'🤸' },
-      { num:'02', name:'Rowing barre penché', sets:'3 × 6', rest:'3 min', tip:'Buste 45°, dos plat. Tirer vers le sternum. Pause 1s en haut.', prog:'Ajouter 2.5kg quand tu fais 3×6 proprement.', icon:'🏋️' },
-      { num:'03', name:'Squat barre dos', sets:'3 × 5', rest:'3 min', tip:'Bracing 360°. Descendre sous le parallèle. Genoux vers l\'extérieur.', prog:'Ajouter 2.5kg chaque séance tant que possible.', icon:'🦵' },
-      { num:'04', name:'Curl barre (ou haltères marteau)', sets:'3 × 8', rest:'90 sec', tip:'Coudes fixes. Pas de balancement. Contraction totale en haut.', prog:'Ajouter 1.25kg quand tu fais 3×8.', icon:'💪' },
-    ]
-  },
-  {
-    id:2, label:'MUSCU C · FULL CORPS', sub:'Force + Volume · Tous les groupes',
-    color:'var(--gold)', icon:'🔥',
-    exercises:[
-      { num:'01', name:'Soulevé de terre (deadlift)', sets:'3 × 3-5', rest:'4 min', tip:'Barre contre tibias. Hanches hautes, dos plat. Pousser le sol. ROI des exercices.', prog:'Ajouter 2.5-5kg quand tu fais 3×5 proprement.', icon:'🏋️' },
-      { num:'02', name:'Développé incliné haltères', sets:'3 × 8', rest:'2 min', tip:'Banc 30°. Mouvement en arc. Omoplates fixes sur le banc.', prog:'Ajouter 1kg par haltère quand tu fais 3×8.', icon:'🏋️' },
-      { num:'03', name:'Hip thrust barre (ou fessiers au sol)', sets:'3 × 10', rest:'90 sec', tip:'Dos sur banc, barre sur hanches. Extension maximale, pause 2s en haut.', prog:'Ajouter 5kg quand tu fais 3×10 proprement.', icon:'🦵' },
-      { num:'04', name:'Face pull corde (ou rowing câble)', sets:'3 × 12', rest:'90 sec', tip:'Tirer vers le visage, rotation externe. Posture et santé épaule.', prog:'Ajouter 2.5kg quand tu fais 3×12.', icon:'💪' },
-      { num:'05', name:'Gainage planche (ou crunch câble)', sets:'3 × 30-45s', rest:'60 sec', tip:'Corps droit, fessiers actifs. Progresser vers planche lestée.', prog:'Ajouter 5s par semaine. Puis ajouter du poids.', icon:'🤸' },
-    ]
-  },
-];
+<!-- ════════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-eyebrow">// SYSTÈME MINIMALISTE · FORCE + EXPLOSIVITÉ · v2.0 //</div>
+  <div class="hero-title">FORCE<br>PROTOCOL</div>
+  <div class="hero-sub">Résultat Maximum · Effort Mental Zéro · 6 Mois</div>
+  <div class="hero-divider"></div>
+  <div class="hero-pillars">
+    <div class="pillar">
+      <div class="pillar-val">3×</div>
+      <div class="pillar-lbl">💪 Muscu / sem</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-val">2×</div>
+      <div class="pillar-lbl">⚡ Sprint / sem</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-val">35'</div>
+      <div class="pillar-lbl">⏱ Max / séance</div>
+    </div>
+  </div>
+  <div class="big-quote">« Si tu rates une séance, tu décales. Tu ne sautes pas. »</div>
+</div>
 
-const QUOTES = [
-  "Si tu rates une séance, tu décales. Tu ne sautes pas.",
-  "La constance bat l'intensité sur le long terme.",
-  "Ajouter 2.5kg par mois = transformation en 1 an.",
-  "Tes muscles poussent pendant la récupération, pas pendant la séance.",
-  "Un seul système. Pas de choix. Juste l'exécution.",
-  "La force est la base. Tout le reste suit.",
-];
+<!-- ════════════════════════════════════════
+     01 · RÈGLES
+════════════════════════════════════════ -->
+<section id="regles">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-title">3 Règles — C'est Tout</div>
+  </div>
 
-/* ═══ STATE ═══ */
-let state = JSON.parse(localStorage.getItem('fp1') || 'null') || {
-  week: [null,null,null,null,null,null,null], // null | 'muscu' | 'sprint' | 'repos'
-  streak: 0,
-  currentSession: 0,
-};
-function save() { localStorage.setItem('fp1', JSON.stringify(state)); }
+  <div class="rule">
+    <div class="rule-n">1</div>
+    <div class="rule-t">Soulève lourd <b>3× / semaine</b> — exactement ce qui est écrit, rien de plus. Pas d'improvisation.</div>
+  </div>
+  <div class="rule">
+    <div class="rule-n">2</div>
+    <div class="rule-t">Sprinte <b>2× / semaine</b> — <span class="gold">jamais le même jour que la muscu.</span> Toujours séparés.</div>
+  </div>
+  <div class="rule">
+    <div class="rule-n">3</div>
+    <div class="rule-t">Mange <span class="gold">le shaker + 3-4 œufs</span> chaque jour sans exception. La nutrition, c'est la moitié du résultat.</div>
+  </div>
 
-/* ═══ APP ═══ */
-let currentTab = 0;
-let sprintInterval = null, sprintSec = 0, sprintPhase = 'ready', sprintSet = 0;
-const MAX_SETS = 6;
+  <div class="sep"></div>
 
-function enterApp() {
-  document.getElementById('hero').style.display = 'none';
-  document.getElementById('app').classList.add('active');
-  goTab(0);
-}
+  <div class="card gold">
+    <div class="micro gold" style="margin-bottom:10px;">RÈGLE DE PROGRESSION UNIVERSELLE</div>
+    <div style="font-size:0.8rem;line-height:1.8;color:var(--white);">
+      Tu complètes <strong>toutes les reps cibles</strong> → <span style="color:var(--green);font-weight:700;">+2.5 kg la prochaine fois.</span><br>
+      Tu rates des reps → <span style="color:var(--gold);">même poids</span>, même objectif. Ne monte pas.<br>
+      Tu rates <strong>2 séances de suite</strong> → <span style="color:var(--c);">−5% du poids</span>, recommence proprement.
+    </div>
+  </div>
 
-const SCREENS = ['home','planning','seances','sprint','nutrition','objectifs'];
-function goTab(idx) {
-  SCREENS.forEach((s,i) => {
-    document.getElementById('screen-'+s).classList.toggle('active', i===idx);
-    document.getElementById('nav-'+i).classList.toggle('active', i===idx);
-  });
-  currentTab = idx;
-  if(idx===0) renderHome();
-  if(idx===1) renderPlanning();
-  if(idx===2) renderSeance();
-  if(idx===3) renderSprint();
-}
+  <div class="card">
+    <div class="micro" style="margin-bottom:10px;">RÈGLE DE DÉCALAGE</div>
+    <div style="font-size:0.75rem;line-height:1.8;color:var(--text);">
+      Tu rates <strong style="color:#fff;">Lundi</strong> → Tu fais Muscu A le Mardi.<br>
+      Tu rates <strong style="color:#fff;">Mardi</strong> → Sprint le Mercredi.<br>
+      <span style="color:var(--green);font-family:'Share Tech Mono',monospace;font-size:0.65rem;">⬡ L'unique interdit : muscu + sprint le même jour.</span>
+    </div>
+  </div>
+</section>
 
-/* ═══ HOME ═══ */
-function renderHome() {
-  const h = new Date().getHours();
-  document.getElementById('greeting-sub').textContent = h<12 ? 'BONNE SÉANCE · BONJOUR' : h<18 ? 'SYSTÈME ACTIF' : 'BONSOIR · RÉCUPÈRE BIEN';
-  document.getElementById('quote-txt').textContent = '« ' + QUOTES[Math.floor(Math.random()*QUOTES.length)] + ' »';
-  document.getElementById('streak-chip').textContent = '🔥 ' + state.streak + 'j';
-  document.getElementById('stat-streak').textContent = state.streak;
+<!-- ════════════════════════════════════════
+     02 · PLANNING SEMAINE TYPE
+════════════════════════════════════════ -->
+<section id="planning">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-title green">Planning · Semaine Type</div>
+  </div>
 
-  // Count week
-  const muscuDone = state.week.filter(d=>d==='muscu').length;
-  const sprintDone = state.week.filter(d=>d==='sprint').length;
-  document.getElementById('stat-muscu').textContent = muscuDone + '/3';
-  document.getElementById('stat-sprint').textContent = sprintDone + '/2';
+  <div class="week-grid">
+    <div class="wday muscu">
+      <div class="wday-lbl">LUN</div>
+      <div class="wday-icon">💪</div>
+      <div class="wday-name">Muscu A<br>Push</div>
+    </div>
+    <div class="wday sprint">
+      <div class="wday-lbl">MAR</div>
+      <div class="wday-icon">⚡</div>
+      <div class="wday-name">Sprint A<br>Accél.</div>
+    </div>
+    <div class="wday repos">
+      <div class="wday-lbl">MER</div>
+      <div class="wday-icon">😴</div>
+      <div class="wday-name">Repos<br>Complet</div>
+    </div>
+    <div class="wday muscu">
+      <div class="wday-lbl">JEU</div>
+      <div class="wday-icon">💪</div>
+      <div class="wday-name">Muscu B<br>Pull+Jamb</div>
+    </div>
+    <div class="wday sprint">
+      <div class="wday-lbl">VEN</div>
+      <div class="wday-icon">⚡</div>
+      <div class="wday-name">Sprint B<br>Puiss.</div>
+    </div>
+    <div class="wday muscu">
+      <div class="wday-lbl">SAM</div>
+      <div class="wday-icon">💪</div>
+      <div class="wday-name">Muscu C<br>Full Corps</div>
+    </div>
+    <div class="wday repos">
+      <div class="wday-lbl">DIM</div>
+      <div class="wday-icon">😴</div>
+      <div class="wday-name">Repos<br>Récup.</div>
+    </div>
+  </div>
 
-  // Next session
-  const s = SESSIONS[state.currentSession];
-  document.getElementById('next-session-title').textContent = s.label;
-  document.getElementById('next-session-sub').textContent = s.exercises.length + ' exercices · ~' + (s.exercises.length <= 4 ? 35 : 40) + ' min';
+  <div class="sep"></div>
 
-  // AI message
-  let ai = '';
-  if(muscuDone === 3 && sprintDone === 2) ai = '<strong>✅ Semaine complète !</strong> Repose-toi bien ce week-end. La croissance se passe maintenant.';
-  else if(muscuDone < 3 && sprintDone < 2) ai = 'Cette semaine : <strong>' + muscuDone + '/3 muscu</strong> · <strong>' + sprintDone + '/2 sprint</strong>. Prochaine séance : <strong>' + s.label + '</strong>';
-  else if(muscuDone === 3) ai = '💪 <strong>Muscu complète !</strong> Il te reste <strong>' + (2-sprintDone) + ' sprint</strong> cette semaine.';
-  else ai = '⚡ <strong>' + sprintDone + '/2 sprints</strong> faits. Il te reste <strong>' + (3-muscuDone) + ' séance muscu</strong> cette semaine.';
-  document.getElementById('ai-msg').innerHTML = ai;
+  <div class="alert cyan">
+    <div class="alert-icon">⬡</div>
+    <div class="alert-body">
+      <span class="alert-label">LOGIQUE DU PROGRAMME</span>
+      Muscu et sprint sont <strong>toujours séparés</strong>. Jamais les deux le même jour. 2 jours de repos complet. <strong>Aucun choix à faire</strong> — applique le planning.
+    </div>
+  </div>
+</section>
 
-  renderWeekTracker();
-}
+<!-- ════════════════════════════════════════
+     03 · SÉANCES MUSCU A / B / C
+════════════════════════════════════════ -->
+<section id="muscu">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-title cyan">Séances Muscu A / B / C</div>
+  </div>
 
-function renderWeekTracker() {
-  const labels = ['L','M','M','J','V','S','D'];
-  const types  = ['muscu','sprint','repos','muscu','sprint','muscu','repos'];
-  const emojis = { muscu:'💪', sprint:'⚡', repos:'😴', null:'·' };
-  const cont = document.getElementById('week-tracker');
-  cont.innerHTML = '';
-  labels.forEach((l,i) => {
-    const d = document.createElement('div');
-    d.className = 'day-cell';
-    const dot = document.createElement('div');
-    dot.className = 'day-cell-dot' + (state.week[i] ? ' done-'+state.week[i] : '');
-    dot.textContent = state.week[i] ? emojis[state.week[i]] : emojis[null];
-    dot.onclick = () => toggleDay(i, types[i]);
-    const lbl = document.createElement('div');
-    lbl.className = 'day-cell-lbl';
-    lbl.textContent = l;
-    d.appendChild(dot);
-    d.appendChild(lbl);
-    cont.appendChild(d);
-  });
-}
+  <div class="session-tabs">
+    <div class="stab a">
+      <div class="stab-title">💪 SÉANCE A</div>
+      <div class="stab-sub">PUSH · Lundi + Sam si ratée</div>
+    </div>
+    <div class="stab b">
+      <div class="stab-title">🏋️ SÉANCE B</div>
+      <div class="stab-sub">PULL + JAMBES · Jeudi</div>
+    </div>
+    <div class="stab c">
+      <div class="stab-title">🔥 SÉANCE C</div>
+      <div class="stab-sub">FULL CORPS · Samedi</div>
+    </div>
+  </div>
 
-function toggleDay(i, type) {
-  if(state.week[i]) {
-    state.week[i] = null;
-  } else {
-    state.week[i] = type;
-    state.streak = (state.streak||0) + 1;
-    if(type === 'muscu') {
-      const muscu = state.week.filter(d=>d==='muscu').length;
-      if(muscu <= 3) { state.currentSession = (state.currentSession + 1) % 3; }
-    }
-    celebrate(type === 'muscu' ? '💪 SÉANCE VALIDÉE !' : '⚡ SPRINT VALIDÉ !');
-  }
-  save();
-  renderHome();
-}
-
-function resetWeek() {
-  state.week = [null,null,null,null,null,null,null];
-  save(); renderHome();
-  showToast('↺ SEMAINE REMISE À ZÉRO');
-}
-
-/* ═══ PLANNING ═══ */
-function renderPlanning() {
-  const today = new Date().getDay(); // 0=Sun
-  const dayMap = [6,0,1,2,3,4,5]; // map getDay() to planning index
-  const todayIdx = dayMap[today];
-  const cont = document.getElementById('planning-rows');
-  cont.innerHTML = '';
-  PLANNING.forEach((p,i) => {
-    const div = document.createElement('div');
-    div.className = 'plan-row' + (i===todayIdx?' today':'');
-    div.onclick = () => { if(p.type==='muscu'&&p.session!==null){state.currentSession=p.session;save();goTab(2);}else if(p.type==='sprint'){goTab(3);} };
-    const tagClass = p.type==='muscu' ? 'tag-muscu' : p.type==='sprint' ? 'tag-sprint' : 'tag-repos';
-    div.innerHTML = `
+  <!-- ── SÉANCE A ── -->
+  <div class="card green" style="margin-bottom:20px;">
+    <div class="bloc-header">
       <div>
-        <div class="plan-day">${p.day.toUpperCase()}</div>
-        ${i===todayIdx?'<div style="font-family:\'Share Tech Mono\',monospace;font-size:0.48rem;color:var(--green);margin-top:2px;">AUJOURD\'HUI</div>':''}
+        <div class="bloc-name" style="color:var(--c);">💪 SÉANCE A · PUSH</div>
+        <div class="bloc-period">Pectoraux · Épaules · Triceps · ~35 min</div>
       </div>
-      <div>
-        <div class="plan-label">${p.label}</div>
-        <div class="plan-sub">${p.sub}</div>
-      </div>
-      <div class="day-tag ${tagClass}">${p.type==='muscu'?'MUSCU':p.type==='sprint'?'SPRINT':'REPOS'}</div>`;
-    cont.appendChild(div);
-  });
-}
+      <div class="bloc-badge badge-cyan">4 EXERCICES</div>
+    </div>
 
-/* ═══ SÉANCES ═══ */
-let seanceIdx = 0;
-
-function renderSeance() {
-  seanceIdx = state.currentSession;
-  displaySeance();
-}
-
-function displaySeance() {
-  const s = SESSIONS[seanceIdx];
-  document.getElementById('seance-title').textContent = s.label.split('·')[0].trim();
-  const cont = document.getElementById('seance-content');
-  let html = `
-    <div class="card" style="border-color:${s.color}30;background:rgba(255,255,255,0.02);margin-bottom:10px;">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <span style="font-size:28px;">${s.icon}</span>
-        <div>
-          <div style="font-family:'Orbitron',monospace;font-size:0.9rem;font-weight:700;color:#fff;">${s.label}</div>
-          <div class="micro" style="margin-top:3px;">${s.sub}</div>
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-n">01</div>
+        <div style="flex:1;">
+          <div class="ex-name">🏋️ Développé couché barre</div>
+          <div class="ex-sets">3 × 5 reps</div>
+          <div class="ex-rest">Repos : 3 min entre séries</div>
         </div>
+      </div>
+      <div class="tip">💡 Omoplates serrées contre le banc. Descente 2 secondes contrôlée, montée explosive. Haltères si pas de barre.</div>
+      <div class="prog">📈 +2.5 kg quand tu complètes 3×5 proprement.</div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-n">02</div>
+        <div style="flex:1;">
+          <div class="ex-name">🏋️ Développé militaire barre</div>
+          <div class="ex-sets">3 × 5 reps</div>
+          <div class="ex-rest">Repos : 3 min entre séries</div>
+        </div>
+      </div>
+      <div class="tip">💡 Debout ou assis. Barre depuis les clavicules. Fessiers serrés, pas de cambrure excessive. Pousser strict et vertical.</div>
+      <div class="prog">📈 +2.5 kg quand tu complètes 3×5 proprement.</div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-n">03</div>
+        <div style="flex:1;">
+          <div class="ex-name">🤸 Dips lestés (ou poids de corps)</div>
+          <div class="ex-sets">3 × 6-10 reps</div>
+          <div class="ex-rest">Repos : 2 min entre séries</div>
+        </div>
+      </div>
+      <div class="tip">💡 Corps légèrement penché vers l'avant pour cibler les pectoraux. Descente 2-3s contrôlée. Si trop facile : ceinture lestée.</div>
+      <div class="prog">📈 +2.5 kg avec ceinture quand tu fais 3×10 proprement.</div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-n">04</div>
+        <div style="flex:1;">
+          <div class="ex-name">💪 Élévations latérales haltères</div>
+          <div class="ex-sets">3 × 12 reps</div>
+          <div class="ex-rest">Repos : 90 sec entre séries</div>
+        </div>
+      </div>
+      <div class="tip">💡 Le coude mène le mouvement. Arrêt à hauteur des épaules. Descente 3 secondes. Pas de balancement du buste.</div>
+      <div class="prog">📈 +1 kg par haltère quand tu fais 3×12 proprement.</div>
+    </div>
+  </div>
+
+  <!-- ── SÉANCE B ── -->
+  <div class="card" style="border-color:var(--border-g);margin-bottom:20px;">
+    <div class="bloc-header">
+      <div>
+        <div class="bloc-name" style="color:var(--green);">🏋️ SÉANCE B · PULL + JAMBES</div>
+        <div class="bloc-period">Dos · Biceps · Quadriceps · ~35 min</div>
+      </div>
+      <div class="bloc-badge badge-green">4 EXERCICES</div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-n">01</div>
+        <div style="flex:1;">
+          <div class="ex-name">🤸 Tractions pronation (ou tirage poulie haute)</div>
+          <div class="ex-sets">3 × 5-8 reps</div>
+          <div class="ex-rest">Repos : 3 min entre séries</div>
+        </div>
+      </div>
+      <div class="tip">💡 Épaules déprimées avant de commencer. Tirer les coudes vers les hanches. Descente 2 secondes. Chin-up (prise supine) si trop difficile.</div>
+      <div class="prog">📈 Ajoute des reps. Ajoute du poids quand tu atteins 3×8 propres. Si tu ne fais pas encore 1 traction → tirage poulie haute.</div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-n">02</div>
+        <div style="flex:1;">
+          <div class="ex-name">🏋️ Rowing barre penché</div>
+          <div class="ex-sets">3 × 6 reps</div>
+          <div class="ex-rest">Repos : 3 min entre séries</div>
+        </div>
+      </div>
+      <div class="tip">💡 Buste à 45°, dos plat, regard légèrement vers le bas. Tirer la barre vers le sternum (pas le ventre). Pause 1 seconde en haut.</div>
+      <div class="prog">📈 +2.5 kg quand tu complètes 3×6 proprement.</div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-n">03</div>
+        <div style="flex:1;">
+          <div class="ex-name">🦵 Squat barre dos</div>
+          <div class="ex-sets">3 × 5 reps</div>
+          <div class="ex-rest">Repos : 3 min entre séries</div>
+        </div>
+      </div>
+      <div class="tip">💡 Bracing abdominal 360° avant chaque rep. Descendre sous le parallèle. Genoux dans l'axe des orteils. Pousser le sol.</div>
+      <div class="prog">📈 +2.5 kg chaque séance tant que possible. C'est le mouvement roi des jambes.</div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-n">04</div>
+        <div style="flex:1;">
+          <div class="ex-name">💪 Curl barre (ou haltères marteau)</div>
+          <div class="ex-sets">3 × 8 reps</div>
+          <div class="ex-rest">Repos : 90 sec entre séries</div>
+        </div>
+      </div>
+      <div class="tip">💡 Coudes fixes contre le buste. Zéro balancement. Contraction maximale en haut, descente 2-3 secondes.</div>
+      <div class="prog">📈 +1.25 kg quand tu fais 3×8 proprement.</div>
+    </div>
+  </div>
+
+  <!-- ── SÉANCE C ── -->
+  <div class="card gold">
+    <div class="bloc-header">
+      <div>
+        <div class="bloc-name" style="color:var(--gold);">🔥 SÉANCE C · FULL CORPS</div>
+        <div class="bloc-period">Force + Volume · Tous les groupes · ~40 min</div>
+      </div>
+      <div class="bloc-badge badge-gold">5 EXERCICES</div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-n">01</div>
+        <div style="flex:1;">
+          <div class="ex-name">🏋️ Soulevé de terre (Deadlift)</div>
+          <div class="ex-sets">3 × 3-5 reps</div>
+          <div class="ex-rest">Repos : 4 min entre séries</div>
+        </div>
+      </div>
+      <div class="tip">💡 Barre contre les tibias. Hanches hautes, dos plat, regard neutre. Pousser le sol. ROI de tous les exercices — exécution parfaite avant de charger.</div>
+      <div class="prog">📈 +2.5 à 5 kg quand tu complètes 3×5 proprement.</div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-n">02</div>
+        <div style="flex:1;">
+          <div class="ex-name">🏋️ Développé incliné haltères</div>
+          <div class="ex-sets">3 × 8 reps</div>
+          <div class="ex-rest">Repos : 2 min entre séries</div>
+        </div>
+      </div>
+      <div class="tip">💡 Banc à 30°. Mouvement en arc de cercle. Omoplates fixes et serrées sur le banc pendant tout le mouvement.</div>
+      <div class="prog">📈 +1 kg par haltère quand tu fais 3×8 proprement.</div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-n">03</div>
+        <div style="flex:1;">
+          <div class="ex-name">🦵 Hip thrust barre (ou fessiers au sol)</div>
+          <div class="ex-sets">3 × 10 reps</div>
+          <div class="ex-rest">Repos : 90 sec entre séries</div>
+        </div>
+      </div>
+      <div class="tip">💡 Dos appuyé sur un banc, barre sur les hanches (coussin). Extension maximale en haut, pause 2 secondes, fessiers contractés à fond.</div>
+      <div class="prog">📈 +5 kg quand tu fais 3×10 proprement. Progression rapide sur cet exercice.</div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-n">04</div>
+        <div style="flex:1;">
+          <div class="ex-name">💪 Face pull corde (ou rowing câble prise neutre)</div>
+          <div class="ex-sets">3 × 12 reps</div>
+          <div class="ex-rest">Repos : 90 sec entre séries</div>
+        </div>
+      </div>
+      <div class="tip">💡 Tirer vers le visage avec rotation externe des épaules. Exercice clé pour la santé des épaules et la posture. Ne jamais le sauter.</div>
+      <div class="prog">📈 +2.5 kg quand tu fais 3×12 proprement.</div>
+    </div>
+
+    <div class="ex" style="margin-bottom:0;">
+      <div class="ex-top">
+        <div class="ex-n">05</div>
+        <div style="flex:1;">
+          <div class="ex-name">🤸 Gainage planche (ou crunch câble)</div>
+          <div class="ex-sets">3 × 30-45 secondes</div>
+          <div class="ex-rest">Repos : 60 sec entre séries</div>
+        </div>
+      </div>
+      <div class="tip">💡 Corps parfaitement droit, fessiers actifs, respiration. Planche lestée dès que tu atteins 3×45s. Progression simple mais réelle.</div>
+      <div class="prog">📈 +5s par semaine. Puis planche lestée dès 3×60s.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     04 · SPRINT
+════════════════════════════════════════ -->
+<section id="sprint">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-title green">Séances Sprint</div>
+  </div>
+
+  <div class="alert cyan" style="margin-bottom:16px;">
+    <div class="alert-icon">⬡</div>
+    <div class="alert-body">
+      <span class="alert-label">PRINCIPE FONDAMENTAL</span>
+      Efforts <strong>100% maximaux</strong> + récupération complète = explosivité réelle. Récupération incomplète = effort sub-maximal = zéro gain de vitesse. <strong>Qualité avant quantité.</strong>
+    </div>
+  </div>
+
+  <div class="sprint-alt">
+
+    <!-- Sprint A -->
+    <div class="card" style="border-color:var(--border-g);">
+      <div style="font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;color:var(--green);margin-bottom:12px;letter-spacing:0.1em;">⚡ SPRINT A · ACCÉLÉRATION</div>
+      <div class="sprint-step">
+        <div class="sn">01</div>
+        <div class="st">Échauffement marche rapide / trot léger</div>
+        <div class="sdur">5 MIN</div>
+      </div>
+      <div class="sprint-step">
+        <div class="sn">02</div>
+        <div class="st"><strong style="color:var(--green);">Sprint 100%</strong> sur 30m (départ arrêté)</div>
+        <div class="sdur">×6</div>
+      </div>
+      <div class="sprint-step">
+        <div class="sn">03</div>
+        <div class="st">Récupération marche entre chaque sprint</div>
+        <div class="sdur">90 SEC</div>
+      </div>
+      <div class="sprint-step">
+        <div class="sn">04</div>
+        <div class="st">Retour au calme — marche lente</div>
+        <div class="sdur">3 MIN</div>
+      </div>
+      <div style="margin-top:10px;padding:8px;background:rgba(0,255,136,0.04);border-radius:3px;">
+        <span class="micro green">TOTAL : ~25 min · N'importe quel espace de 30m</span>
       </div>
     </div>
-    <div class="card card-gold" style="padding:10px 14px;margin-bottom:12px;">
-      <div class="micro" style="color:var(--gold);letter-spacing:0.12em;margin-bottom:4px;">RÈGLE DE PROGRESSION</div>
-      <div style="font-size:0.7rem;color:var(--text);">Tu fais toutes les reps cibles → <strong style="color:var(--green)">+2.5 kg la prochaine fois</strong>. Tu rates → même poids.</div>
-    </div>`;
 
-  s.exercises.forEach(ex => {
-    html += `
-    <div class="ex-block anim2">
-      <div class="ex-block-hd">
-        <div class="ex-num">${ex.num}</div>
-        <div style="flex:1;">
-          <div class="ex-name">${ex.icon} ${ex.name}</div>
-          <div class="ex-meta">${ex.sets} · Repos ${ex.rest}</div>
+    <!-- Sprint B -->
+    <div class="card" style="border-color:var(--border);">
+      <div style="font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;color:var(--c);margin-bottom:12px;letter-spacing:0.1em;">⚡ SPRINT B · PUISSANCE</div>
+      <div class="sprint-step">
+        <div class="sn" style="color:var(--c);">01</div>
+        <div class="st">Échauffement marche rapide + skipping léger</div>
+        <div class="sdur">5 MIN</div>
+      </div>
+      <div class="sprint-step">
+        <div class="sn" style="color:var(--c);">02</div>
+        <div class="st"><strong style="color:var(--c);">Sprint 100%</strong> sur 20m (départ en position basse)</div>
+        <div class="sdur">×8</div>
+      </div>
+      <div class="sprint-step">
+        <div class="sn" style="color:var(--c);">03</div>
+        <div class="st">Récupération marche / trot entre chaque</div>
+        <div class="sdur">75 SEC</div>
+      </div>
+      <div class="sprint-step">
+        <div class="sn" style="color:var(--c);">04</div>
+        <div class="st">Retour au calme</div>
+        <div class="sdur">3 MIN</div>
+      </div>
+      <div style="margin-top:10px;padding:8px;background:rgba(0,200,255,0.04);border-radius:3px;">
+        <span class="micro cyan">TOTAL : ~25 min · Alterner A et B chaque semaine</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- Alternance sprint progression -->
+  <div class="card gold">
+    <div class="micro gold" style="margin-bottom:10px;">PROGRESSION SPRINT SUR 6 MOIS</div>
+    <table class="prog-table">
+      <tr>
+        <th>PÉRIODE</th>
+        <th>SPRINT A (Accél.)</th>
+        <th>SPRINT B (Puiss.)</th>
+      </tr>
+      <tr>
+        <td>Bloc 1<br>Sem 1-8</td>
+        <td><b>6 × 30m</b> · 90s repos</td>
+        <td><b>8 × 20m</b> · 75s repos</td>
+      </tr>
+      <tr>
+        <td>Bloc 2<br>Sem 9-16</td>
+        <td><b>6 × 40m</b> · 2 min repos</td>
+        <td><b>8 × 20m</b> + départ en chute · 90s repos</td>
+      </tr>
+      <tr>
+        <td>Bloc 3<br>Sem 17-24</td>
+        <td><b>8 × 40m</b> · 2 min repos</td>
+        <td><b>6 × 20m</b> résistance légère (côte) · 2 min repos</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="alert red">
+    <div class="alert-icon">⚠</div>
+    <div class="alert-body">
+      <span class="alert-label">RÈGLES ABSOLUES SPRINT</span>
+      Jamais de sprint si douleur articulaire. Toujours s'échauffer avant. <strong>100% d'intensité</strong> ou ça ne sert à rien — si tu ne peux pas sprinter à fond, reporte. Sol plat et stable, chaussures adaptées.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     05 · CYCLES 6 MOIS
+════════════════════════════════════════ -->
+<section id="cycles">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-title gold">Cycles 6 Mois — Structure Complète</div>
+  </div>
+
+  <div class="alert green" style="margin-bottom:20px;">
+    <div class="alert-icon">⬡</div>
+    <div class="alert-body">
+      <span class="alert-label">LOGIQUE DES BLOCS</span>
+      6 mois = 3 blocs de 8 semaines. Chaque bloc a une intention précise. <strong>La progression linéaire (+2.5 kg à chaque séance réussie) reste constante</strong> tout au long. Ce qui change : le volume et l'intensité augmentent progressivement.
+    </div>
+  </div>
+
+  <!-- ── BLOC 1 ── -->
+  <div class="cycle-bloc">
+    <div class="cycle-bloc-head b1">
+      <div>
+        <div class="cycle-title">🟢 BLOC 1 · FONDATIONS</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--green);letter-spacing:0.15em;margin-top:4px;">SEMAINES 1 → 8</div>
+      </div>
+      <div class="bloc-badge badge-green">DÉBUTANT / REPRISE</div>
+    </div>
+    <div class="cycle-bloc-body">
+
+      <div class="micro green" style="margin-bottom:12px;">OBJECTIF DU BLOC</div>
+      <div style="font-size:0.78rem;line-height:1.7;color:var(--white);margin-bottom:16px;">
+        Maîtriser les mouvements. Installer les habitudes. Progression rapide car tu es en phase novice — <strong style="color:var(--green);">profites-en au maximum.</strong> Ne pas chercher à aller vite, chercher à aller propre.
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="micro" style="margin-bottom:8px;">💪 MUSCU · BLOCS 1-8</div>
+          <div class="card dim">
+            <div style="font-size:0.72rem;line-height:1.8;color:var(--text);">
+              Séances A / B / C en rotation<br>
+              <strong style="color:#fff;">Sets/Reps : comme indiqué</strong><br>
+              Progression : <span style="color:var(--green);">+2.5 kg chaque séance réussie</span><br>
+              Repos entre séries : long (3 min) — ne rogne pas<br>
+              <span style="color:var(--dim);font-family:'Share Tech Mono',monospace;font-size:0.55rem;">PRIORITÉ : TECHNIQUE AVANT POIDS</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="micro" style="margin-bottom:8px;">⚡ SPRINT · BLOCS 1-8</div>
+          <div class="card dim">
+            <div style="font-size:0.72rem;line-height:1.8;color:var(--text);">
+              Sprint A : <strong style="color:#fff;">6 × 30m</strong> · 90s repos<br>
+              Sprint B : <strong style="color:#fff;">8 × 20m</strong> · 75s repos<br>
+              Alterner A et B chaque semaine<br>
+              <span style="color:var(--dim);font-family:'Share Tech Mono',monospace;font-size:0.55rem;">SENTIR LA DIFFÉRENCE D'EFFORT ENTRE SEM 1 ET SEM 8</span>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="ex-tip">💡 ${ex.tip}</div>
-      <div class="ex-prog-rule">📈 ${ex.prog}</div>
-    </div>`;
-  });
 
-  html += `
-    <button class="btn btn-green btn-block" style="margin-top:4px;height:44px;" onclick="validateSession()">✅ VALIDER CETTE SÉANCE</button>
-    <div style="height:16px;"></div>`;
-  cont.innerHTML = html;
-}
+      <div class="sep"></div>
 
-function prevSession() {
-  seanceIdx = (seanceIdx + 2) % 3;
-  displaySeance();
-}
-function nextSession() {
-  seanceIdx = (seanceIdx + 1) % 3;
-  displaySeance();
-}
+      <div class="micro" style="margin-bottom:10px;">SEMAINE 4 · SEMAINE DE DÉCHARGE (obligatoire)</div>
+      <div class="alert gold">
+        <div class="alert-icon">💤</div>
+        <div class="alert-body">
+          <span class="alert-label">DÉCHARGE SEM 4</span>
+          Fais les mêmes exercices, <strong>−30% du poids habituel</strong>. Même nombre de séries et reps. Cette semaine existe pour que ton système nerveux récupère. <strong>Ne la saute pas.</strong> Tu seras plus fort après.
+        </div>
+      </div>
 
-function validateSession() {
-  const today = new Date().getDay();
-  const dayMap = [6,0,1,2,3,4,5];
-  const idx = dayMap[today];
-  if(state.week[idx] !== 'muscu') {
-    state.week[idx] = 'muscu';
-    state.streak = (state.streak||0) + 1;
-    state.currentSession = (seanceIdx + 1) % 3;
-    save();
-    celebrate('💪 SÉANCE TERMINÉE !');
-    setTimeout(() => goTab(0), 2800);
-  } else {
-    showToast('✅ Déjà validée aujourd\'hui !');
-  }
-}
+      <div class="sep"></div>
 
-/* ═══ SPRINT TIMER ═══ */
-function renderSprint() {}
+      <div class="micro" style="margin-bottom:10px;">RÉSULTATS ATTENDUS FIN BLOC 1 (Sem 8)</div>
+      <div class="obj-line"><span class="obj-check">✓</span><span>Développé couché : <strong>+7 à 10 kg</strong> sur le 5RM vs départ</span></div>
+      <div class="obj-line"><span class="obj-check">✓</span><span>Squat : <strong>+10 à 15 kg</strong></span></div>
+      <div class="obj-line"><span class="obj-check">✓</span><span>Deadlift : <strong>+10 à 15 kg</strong></span></div>
+      <div class="obj-line"><span class="obj-check">✓</span><span>Sprint 30m : <span class="g">−0.2 à −0.4s</span> perceptible</span></div>
+      <div class="obj-line"><span class="obj-check">✓</span><span>Poids de corps : <strong>+1 à 1.5 kg</strong></span></div>
+    </div>
+  </div>
 
-let sprintRunning = false;
-const SPRINT_PHASES = [
-  { label:'SPRINT — GO !', dur:6, isWork:true },
-  { label:'RÉCUPÉRATION', dur:90, isWork:false },
-];
-let phaseIdx = 0;
-let phaseSec = 0;
+  <!-- ── BLOC 2 ── -->
+  <div class="cycle-bloc">
+    <div class="cycle-bloc-head b2">
+      <div>
+        <div class="cycle-title">🔵 BLOC 2 · ACCUMULATION</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--c);letter-spacing:0.15em;margin-top:4px;">SEMAINES 9 → 16</div>
+      </div>
+      <div class="bloc-badge badge-cyan">INTERMÉDIAIRE</div>
+    </div>
+    <div class="cycle-bloc-body">
 
-function startSprintTimer() {
-  if(sprintRunning) {
-    clearInterval(sprintInterval);
-    sprintRunning = false;
-    document.getElementById('timer-start-btn').textContent = '▶ REPRENDRE';
-    return;
-  }
-  if(sprintSet >= MAX_SETS) {
-    resetSprintTimer();
-    return;
-  }
-  sprintRunning = true;
-  document.getElementById('timer-start-btn').textContent = '⏸ PAUSE';
-  if(phaseSec === 0) {
-    phaseIdx = 0;
-    phaseSec = SPRINT_PHASES[0].dur;
-  }
-  sprintInterval = setInterval(() => {
-    phaseSec--;
-    updateSprintDisplay();
-    if(phaseSec <= 0) {
-      if(phaseIdx === 0) {
-        // End of sprint → start rest
-        sprintSet++;
-        phaseIdx = 1;
-        phaseSec = SPRINT_PHASES[1].dur;
-        if(navigator.vibrate) navigator.vibrate([100,50,200]);
-      } else {
-        // End of rest → next sprint
-        phaseIdx = 0;
-        phaseSec = SPRINT_PHASES[0].dur;
-        if(navigator.vibrate) navigator.vibrate([200,50,100,50,200]);
-        if(sprintSet >= MAX_SETS) {
-          clearInterval(sprintInterval);
-          sprintRunning = false;
-          document.getElementById('timer-start-btn').textContent = '▶ DÉMARRER';
-          document.getElementById('timer-phase-label').textContent = '🏆 TERMINÉ !';
-          celebrate('⚡ SPRINT TERMINÉ !');
-          return;
-        }
-      }
-    }
-    updateSprintDisplay();
-  }, 1000);
-}
+      <div class="micro cyan" style="margin-bottom:12px;">OBJECTIF DU BLOC</div>
+      <div style="font-size:0.78rem;line-height:1.7;color:var(--white);margin-bottom:16px;">
+        La progression linéaire commence à ralentir. On <strong style="color:var(--c);">augmente le volume</strong> pour continuer à progresser. Les bases sont solides — maintenant on construit dessus. Sprint sur des distances plus longues.
+      </div>
 
-function updateSprintDisplay() {
-  const m = Math.floor(phaseSec/60), s = phaseSec%60;
-  document.getElementById('sprint-timer').textContent = m + ':' + (s<10?'0':'')+s;
-  const phase = SPRINT_PHASES[phaseIdx];
-  const lbl = document.getElementById('timer-phase-label');
-  if(lbl) {
-    lbl.textContent = phase.label;
-    lbl.style.color = phase.isWork ? 'var(--green)' : 'var(--gold)';
-  }
-  document.getElementById('timer-progress-lbl').textContent = 'Sprint ' + (phase.isWork ? sprintSet+1 : sprintSet) + ' / ' + MAX_SETS;
-}
+      <div class="grid-2">
+        <div>
+          <div class="micro" style="margin-bottom:8px;">💪 MUSCU · CHANGEMENTS BLOC 2</div>
+          <div class="card dim">
+            <div style="font-size:0.72rem;line-height:1.8;color:var(--text);">
+              <strong style="color:#fff;">Séance A :</strong> Ajouter 1 série aux exercices principaux → <span style="color:var(--c);">4×5 sur Dev. couché + Militaire</span><br>
+              <strong style="color:#fff;">Séance B :</strong> Ajouter 1 série de squat → <span style="color:var(--c);">4×5</span><br>
+              <strong style="color:#fff;">Séance C :</strong> Ajouter 1 série deadlift → <span style="color:var(--c);">4×3-5</span><br>
+              Progression : <span style="color:var(--green);">+2.5 kg si réussie, même poids si ratée</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="micro" style="margin-bottom:8px;">⚡ SPRINT · CHANGEMENTS BLOC 2</div>
+          <div class="card dim">
+            <div style="font-size:0.72rem;line-height:1.8;color:var(--text);">
+              Sprint A : <strong style="color:#fff;">6 × 40m</strong> · 2 min repos<br>
+              Sprint B : <strong style="color:#fff;">8 × 20m</strong> départ en chute · 90s repos<br>
+              Distance plus longue = plus de vitesse maximale atteinte<br>
+              <span style="color:var(--dim);font-family:'Share Tech Mono',monospace;font-size:0.55rem;">PROGRESSION : DISTANCE AVANT VOLUME</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
-function resetSprintTimer() {
-  clearInterval(sprintInterval);
-  sprintRunning = false;
-  sprintSet = 0;
-  phaseIdx = 0;
-  phaseSec = 0;
-  document.getElementById('sprint-timer').textContent = '0:00';
-  document.getElementById('timer-phase-label').textContent = 'PRÊT ?';
-  document.getElementById('timer-progress-lbl').textContent = 'Sprint 0 / ' + MAX_SETS;
-  document.getElementById('timer-start-btn').textContent = '▶ DÉMARRER';
-}
+      <div class="sep"></div>
 
-/* ═══ HELPERS ═══ */
-function showToast(msg, d=3000) {
-  const old = document.querySelector('.toast'); if(old) old.remove();
-  const t = document.createElement('div'); t.className='toast'; t.textContent=msg;
-  document.body.appendChild(t);
-  setTimeout(() => { if(t.parentNode) t.remove(); }, d);
-}
+      <div class="micro" style="margin-bottom:10px;">SEMAINE 12 · SEMAINE DE DÉCHARGE (obligatoire)</div>
+      <div class="alert gold">
+        <div class="alert-icon">💤</div>
+        <div class="alert-body">
+          <span class="alert-label">DÉCHARGE SEM 12</span>
+          Même principe : <strong>−30% du poids</strong>, toutes les séries et reps. Ton système nerveux et tes articulations en ont besoin après 4 semaines de volume augmenté.
+        </div>
+      </div>
 
-function celebrate(txt) {
-  const d = document.createElement('div');
-  d.className = 'celebrate';
-  d.innerHTML = `<div style="font-size:50px">${txt.includes('⚡')?'⚡':'🏆'}</div><div class="celebrate-text">${txt}</div>`;
-  document.body.appendChild(d);
-  setTimeout(() => { if(d.parentNode) d.remove(); }, 2700);
-}
+      <div class="sep"></div>
 
-/* ═══ INIT ═══ */
-document.getElementById('quote-txt').textContent = '« ' + QUOTES[0] + ' »';
-</script>
+      <div class="micro" style="margin-bottom:10px;">RÉSULTATS ATTENDUS FIN BLOC 2 (Sem 16)</div>
+      <div class="obj-line"><span class="obj-check">✓</span><span>Développé couché : <strong>+15 à 20 kg</strong> total vs départ</span></div>
+      <div class="obj-line"><span class="obj-check">✓</span><span>Squat : <strong>+20 à 30 kg</strong> total</span></div>
+      <div class="obj-line"><span class="obj-check">✓</span><span>Tractions : <span class="g">3 à 6 reps propres si débutant</span></span></div>
+      <div class="obj-line"><span class="obj-check">✓</span><span>Sprint 30m : <span class="g">−0.4 à −0.6s</span> vs départ</span></div>
+      <div class="obj-line"><span class="obj-check">✓</span><span>Poids de corps : <strong>+2 à 3 kg</strong> de masse propre</span></div>
+    </div>
+  </div>
+
+  <!-- ── BLOC 3 ── -->
+  <div class="cycle-bloc">
+    <div class="cycle-bloc-head b3">
+      <div>
+        <div class="cycle-title">🟡 BLOC 3 · INTENSIFICATION</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--gold);letter-spacing:0.15em;margin-top:4px;">SEMAINES 17 → 24</div>
+      </div>
+      <div class="bloc-badge badge-gold">CONFIRMÉ</div>
+    </div>
+    <div class="cycle-bloc-body">
+
+      <div class="micro gold" style="margin-bottom:12px;">OBJECTIF DU BLOC</div>
+      <div style="font-size:0.78rem;line-height:1.7;color:var(--white);margin-bottom:16px;">
+        La progression hebdomadaire est plus lente. On passe à une <strong style="color:var(--gold);">progression à la semaine</strong> (non plus à chaque séance). Les charges sont lourdes. La qualité d'exécution doit être parfaite.
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="micro" style="margin-bottom:8px;">💪 MUSCU · CHANGEMENTS BLOC 3</div>
+          <div class="card dim">
+            <div style="font-size:0.72rem;line-height:1.8;color:var(--text);">
+              <strong style="color:#fff;">Progression :</strong> <span style="color:var(--gold);">+2.5 kg par semaine</span> (non plus par séance)<br>
+              <strong style="color:#fff;">Semaine 1 de cycle :</strong> 3×5 à 85% du max<br>
+              <strong style="color:#fff;">Semaine 2 :</strong> 3×5 à 90% du max<br>
+              <strong style="color:#fff;">Semaine 3 :</strong> 3×3 à 95% du max<br>
+              <strong style="color:#fff;">Semaine 4 :</strong> Décharge − 3×5 à 60%<br>
+              <span style="color:var(--dim);font-family:'Share Tech Mono',monospace;font-size:0.55rem;">PATTERN 3-1 : 3 SEM LOURDES, 1 DÉCHARGE</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="micro" style="margin-bottom:8px;">⚡ SPRINT · CHANGEMENTS BLOC 3</div>
+          <div class="card dim">
+            <div style="font-size:0.72rem;line-height:1.8;color:var(--text);">
+              Sprint A : <strong style="color:#fff;">8 × 40m</strong> · 2 min repos<br>
+              Sprint B : <strong style="color:#fff;">6 × 20m</strong> en légère côte (3-5%) · 2 min<br>
+              La côte force la puissance de départ sans blessure<br>
+              <span style="color:var(--dim);font-family:'Share Tech Mono',monospace;font-size:0.55rem;">QUALITÉ ABSOLUE SUR CHAQUE RÉPÉTITION</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <div class="micro" style="margin-bottom:10px;">RÉSULTATS ATTENDUS FIN BLOC 3 (Sem 24 · FIN DES 6 MOIS)</div>
+      <div class="obj-line"><span class="obj-check">✓</span><span>Développé couché : <span class="gold">poids de corps ou plus</span></span></div>
+      <div class="obj-line"><span class="obj-check">✓</span><span>Squat : <span class="gold">1.2× poids de corps</span></span></div>
+      <div class="obj-line"><span class="obj-check">✓</span><span>Deadlift : <span class="gold">1.5× poids de corps</span></span></div>
+      <div class="obj-line"><span class="obj-check">✓</span><span>Tractions : <span class="g">8 à 12 reps propres</span></span></div>
+      <div class="obj-line"><span class="obj-check">✓</span><span>Sprint 30m : <span class="g">différence nette et visible</span> vs le jour 1</span></div>
+      <div class="obj-line"><span class="obj-check">✓</span><span>Poids de corps : <strong>+4 à 6 kg</strong> de masse athlétique</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     06 · TABLEAU DE PROGRESSION
+════════════════════════════════════════ -->
+<section id="progression">
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div class="section-title">Tableau de Progression</div>
+  </div>
+
+  <div class="card" style="margin-bottom:12px;">
+    <div class="micro" style="margin-bottom:14px;">PROGRESSION EXERCICES PRINCIPAUX · REPÈRES PAR BLOC</div>
+    <table class="prog-table">
+      <tr>
+        <th>EXERCICE</th>
+        <th>DÉPART</th>
+        <th>FIN BLOC 1 (Sem 8)</th>
+        <th>FIN BLOC 2 (Sem 16)</th>
+        <th>FIN BLOC 3 (Sem 24)</th>
+      </tr>
+      <tr>
+        <td>Dev. Couché</td>
+        <td>Base</td>
+        <td><b>+7-10 kg</b></td>
+        <td><b>+15-20 kg</b></td>
+        <td><span class="gold">Poids corps</span></td>
+      </tr>
+      <tr>
+        <td>Dev. Militaire</td>
+        <td>Base</td>
+        <td><b>+5-7 kg</b></td>
+        <td><b>+10-14 kg</b></td>
+        <td><b>+18-22 kg</b></td>
+      </tr>
+      <tr>
+        <td>Squat</td>
+        <td>Base</td>
+        <td><b>+10-15 kg</b></td>
+        <td><b>+20-30 kg</b></td>
+        <td><span class="gold">1.2× poids corps</span></td>
+      </tr>
+      <tr>
+        <td>Deadlift</td>
+        <td>Base</td>
+        <td><b>+10-15 kg</b></td>
+        <td><b>+20-30 kg</b></td>
+        <td><span class="gold">1.5× poids corps</span></td>
+      </tr>
+      <tr>
+        <td>Tractions</td>
+        <td>0-3 reps</td>
+        <td><b>3-5 reps</b></td>
+        <td><b>5-8 reps</b></td>
+        <td><span class="g">8-12 reps</span></td>
+      </tr>
+      <tr>
+        <td>Sprint 30m</td>
+        <td>Base</td>
+        <td><span class="g">−0.2-0.4s</span></td>
+        <td><span class="g">−0.4-0.6s</span></td>
+        <td><span class="g">Différence nette</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card gold">
+    <div class="micro gold" style="margin-bottom:12px;">RÈGLE DE DÉCHARGE · PATTERN OBLIGATOIRE</div>
+    <table class="prog-table">
+      <tr>
+        <th>SEMAINE</th>
+        <th>TYPE</th>
+        <th>POIDS</th>
+        <th>POURQUOI</th>
+      </tr>
+      <tr>
+        <td>Sem 1-3</td>
+        <td style="color:var(--white);">Charge normale</td>
+        <td><b>100%</b></td>
+        <td style="font-size:0.65rem;">Progresser</td>
+      </tr>
+      <tr>
+        <td>Sem 4</td>
+        <td style="color:var(--gold);">⬡ DÉCHARGE</td>
+        <td><span class="gold">−30%</span></td>
+        <td style="font-size:0.65rem;">Système nerveux, articulations</td>
+      </tr>
+      <tr>
+        <td>Sem 5-7</td>
+        <td style="color:var(--white);">Charge normale</td>
+        <td><b>100%</b></td>
+        <td style="font-size:0.65rem;">Progresser</td>
+      </tr>
+      <tr>
+        <td>Sem 8</td>
+        <td style="color:var(--gold);">⬡ DÉCHARGE</td>
+        <td><span class="gold">−30%</span></td>
+        <td style="font-size:0.65rem;">Transition vers Bloc 2</td>
+      </tr>
+      <tr>
+        <td>…</td>
+        <td colspan="3" style="color:var(--dim);font-size:0.65rem;">Pattern 3 semaines charge + 1 décharge · toute la durée</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     07 · NUTRITION
+════════════════════════════════════════ -->
+<section id="nutrition">
+  <div class="section-header">
+    <div class="section-num">07</div>
+    <div class="section-title gold">Nutrition</div>
+  </div>
+
+  <div class="alert green" style="margin-bottom:16px;">
+    <div class="alert-icon">⬡</div>
+    <div class="alert-body">
+      <span class="alert-label">PRINCIPE FONDATEUR</span>
+      <strong>Zéro calorie à compter.</strong> Tu manges à ta faim + le shaker obligatoire + les œufs. Si tu prends du poids → bien. Si tu n'en prends pas → ajouter une banane le soir.
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:10px;">
+
+    <!-- Shaker -->
+    <div class="card green">
+      <div style="font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;color:var(--green);margin-bottom:12px;letter-spacing:0.08em;">🥤 SHAKER · 1× / JOUR</div>
+      <div class="ing">
+        <div class="ing-icon">🥛</div>
+        <div class="ing-name">Lait entier ou demi-écrémé</div>
+        <div class="ing-qty">400 ml</div>
+      </div>
+      <div class="ing">
+        <div class="ing-icon">🌾</div>
+        <div class="ing-name">Flocons d'avoine</div>
+        <div class="ing-qty">80 g</div>
+      </div>
+      <div class="ing">
+        <div class="ing-icon">🍌</div>
+        <div class="ing-name">Banane</div>
+        <div class="ing-qty">1 grosse</div>
+      </div>
+      <div class="ing">
+        <div class="ing-icon">🥜</div>
+        <div class="ing-name">Beurre de cacahuète <span class="micro">(si dispo)</span></div>
+        <div class="ing-qty">1 càs</div>
+      </div>
+      <div style="margin-top:10px;padding:8px;background:rgba(0,255,136,0.05);border-radius:3px;">
+        <div class="micro green">~700 kcal · ~25g protéines</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--dim);margin-top:2px;">Tout mixer 30 secondes. Boire dans les 30min post-entraînement ou au petit déj.</div>
+      </div>
+    </div>
+
+    <!-- Œufs -->
+    <div class="card">
+      <div style="font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;color:var(--c);margin-bottom:12px;letter-spacing:0.08em;">🥚 ŒUFS · CHAQUE JOUR</div>
+      <div class="ing">
+        <div class="ing-icon">🥚</div>
+        <div class="ing-name">Matin : 3 œufs brouillés</div>
+        <div class="ing-qty">~25g prot</div>
+      </div>
+      <div class="ing">
+        <div class="ing-icon">🥚</div>
+        <div class="ing-name">Jour muscu : +1 œuf</div>
+        <div class="ing-qty">4 total</div>
+      </div>
+      <div style="margin-top:10px;font-size:0.7rem;line-height:1.7;color:var(--text);">
+        Source de protéines complètes, graisses saines, cholestérol utile à la testostérone. Ne jamais sauter les œufs.
+      </div>
+      <div style="margin-top:10px;padding:8px;background:rgba(0,200,255,0.04);border-radius:3px;">
+        <div class="micro cyan">~25-35g protéines · Quasi-zéro effort à préparer</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card">
+    <div class="micro" style="margin-bottom:10px;">AJUSTEMENTS SELON RÉSULTATS</div>
+    <div class="alert green" style="margin-bottom:6px;">
+      <div class="alert-icon">📈</div>
+      <div class="alert-body">
+        <span class="alert-label">PAS DE PRISE DE POIDS</span>
+        → Ajouter une banane le soir + 1 tartine pain complet avec beurre de cacahuète.
+      </div>
+    </div>
+    <div class="alert red" style="margin-bottom:6px;">
+      <div class="alert-icon">📉</div>
+      <div class="alert-body">
+        <span class="alert-label">PRISE TROP RAPIDE (trop de gras)</span>
+        → Retirer le beurre de cacahuète du shaker. Garder le reste intact.
+      </div>
+    </div>
+    <div class="alert cyan" style="margin-bottom:0;">
+      <div class="alert-icon">🔄</div>
+      <div class="alert-body">
+        <span class="alert-label">RÉCUPÉRATION LENTE · COURBATURES LONGUES</span>
+        → Ajouter 1 yaourt grec le soir (protéines à libération lente pendant le sommeil).
+      </div>
+    </div>
+  </div>
+
+  <div class="card dim">
+    <div class="micro" style="margin-bottom:8px;">RESTE DES REPAS</div>
+    <div style="font-size:0.75rem;line-height:1.8;color:var(--text);">
+      Mange ce qu'il y a à la maison, normalement. <strong style="color:#fff;">Aucune restriction. Aucune pesée. Aucun calcul.</strong><br>
+      Priorité naturelle : <strong style="color:var(--green);">protéines à chaque repas</strong> (viande, poisson, légumineuses, fromage).<br>
+      Hydratation : <strong style="color:#fff;">2L d'eau minimum</strong> les jours d'entraînement.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     08 · OBJECTIFS
+════════════════════════════════════════ -->
+<section id="objectifs">
+  <div class="section-header">
+    <div class="section-num">08</div>
+    <div class="section-title cyan">Objectifs · Seuls Ces Chiffres Comptent</div>
+  </div>
+
+  <div class="alert green" style="margin-bottom:20px;">
+    <div class="alert-icon">⬡</div>
+    <div class="alert-body">
+      <span class="alert-label">FILTRE</span>
+      Poids soulevé. Temps de sprint. Poids de corps. <strong>Si ces 3 progressent → tout progresse.</strong> Pas de photos, pas de miroir, pas de commentaires extérieurs.
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div class="micro" style="margin-bottom:14px;">TIMELINE COMPLÈTE 6 MOIS</div>
+    <div class="timeline">
+      <div class="tl-item green">
+        <div class="tl-period">MOIS 1 · SEM 1-4</div>
+        <div class="obj-line"><span class="obj-check">✓</span><span>Dev. couché : <strong>+5 à 7 kg</strong> sur 5RM</span></div>
+        <div class="obj-line"><span class="obj-check">✓</span><span>Squat : <strong>+5 à 10 kg</strong></span></div>
+        <div class="obj-line"><span class="obj-check">✓</span><span>Sprint 30m : <span class="g">−0.2s</span></span></div>
+        <div class="obj-line"><span class="obj-check">✓</span><span>Corps : <strong>+0.5 à 1 kg</strong> net</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-period" style="color:var(--c);">MOIS 2 · SEM 5-8</div>
+        <div class="obj-line"><span class="obj-check">✓</span><span>Dev. couché : <strong>+10 kg</strong> total</span></div>
+        <div class="obj-line"><span class="obj-check">✓</span><span>Squat : <strong>+12 à 15 kg</strong></span></div>
+        <div class="obj-line"><span class="obj-check">✓</span><span>Deadlift : <strong>+12 à 15 kg</strong></span></div>
+        <div class="obj-line"><span class="obj-check">✓</span><span>Corps : <strong>+1 à 1.5 kg</strong></span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-period" style="color:var(--c);">MOIS 3 · SEM 9-12</div>
+        <div class="obj-line"><span class="obj-check">✓</span><span>Dev. couché : <strong>+15 à 18 kg</strong></span></div>
+        <div class="obj-line"><span class="obj-check">✓</span><span>Squat : <strong>+20 à 25 kg</strong></span></div>
+        <div class="obj-line"><span class="obj-check">✓</span><span>Tractions : <span class="g">3 à 5 reps propres</span></span></div>
+        <div class="obj-line"><span class="obj-check">✓</span><span>Sprint : <span class="g">−0.4s</span> perceptible</span></div>
+        <div class="obj-line"><span class="obj-check">✓</span><span>Corps : <strong>+2 kg</strong></span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-period" style="color:var(--c);">MOIS 4 · SEM 13-16</div>
+        <div class="obj-line"><span class="obj-check">✓</span><span>Force en plateau possible → <span class="gold">normale à cette étape</span></span></div>
+        <div class="obj-line"><span class="obj-check">✓</span><span>Maintenir <strong>+2.5 kg / semaine</strong> quand possible</span></div>
+        <div class="obj-line"><span class="obj-check">✓</span><span>Corps : <strong>+3 kg</strong> total</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-period" style="color:var(--c);">MOIS 5 · SEM 17-20</div>
+        <div class="obj-line"><span class="obj-check">✓</span><span>Dev. couché : proche <strong>poids de corps</strong></span></div>
+        <div class="obj-line"><span class="obj-check">✓</span><span>Squat : <span class="gold">1× poids de corps</span></span></div>
+        <div class="obj-line"><span class="obj-check">✓</span><span>Sprint : <span class="g">−0.5 à −0.7s</span></span></div>
+        <div class="obj-line"><span class="obj-check">✓</span><span>Corps : <strong>+4 à 5 kg</strong></span></div>
+      </div>
+      <div class="tl-item gold">
+        <div class="tl-period">MOIS 6 · SEM 21-24 · OBJECTIF FINAL</div>
+        <div class="obj-line"><span class="obj-check" style="color:var(--gold);">★</span><span>Dev. couché : <span class="gold">poids de corps ou plus</span></span></div>
+        <div class="obj-line"><span class="obj-check" style="color:var(--gold);">★</span><span>Squat : <span class="gold">1.2× poids de corps</span></span></div>
+        <div class="obj-line"><span class="obj-check" style="color:var(--gold);">★</span><span>Deadlift : <span class="gold">1.5× poids de corps</span></span></div>
+        <div class="obj-line"><span class="obj-check" style="color:var(--gold);">★</span><span>Tractions : <span class="g">8 à 12 reps propres</span></span></div>
+        <div class="obj-line"><span class="obj-check" style="color:var(--gold);">★</span><span>Sprint : <span class="g">différence nette et visible</span></span></div>
+        <div class="obj-line"><span class="obj-check" style="color:var(--gold);">★</span><span>Corps : <strong>+4 à 6 kg</strong> de masse athlétique</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card green">
+    <div class="micro green" style="margin-bottom:10px;">SIGNAUX QUE ÇA MARCHE</div>
+    <div class="obj-line"><span class="obj-check">✓</span><span>Tu ajoutes du poids chaque semaine ou presque</span></div>
+    <div class="obj-line"><span class="obj-check">✓</span><span>Tu prends +0.5 à 1 kg par mois sur la balance</span></div>
+    <div class="obj-line"><span class="obj-check">✓</span><span>Tes sprints sont plus rapides sur la même distance</span></div>
+    <div class="obj-line"><span class="obj-check">✓</span><span>Tu récupères mieux entre les séries semaine après semaine</span></div>
+    <div class="obj-line"><span class="obj-check">✓</span><span>Tu n'es pas fatigué chroniquement en dehors des entraînements</span></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     09 · SI ÇA BLOQUE
+════════════════════════════════════════ -->
+<section id="bloquage">
+  <div class="section-header">
+    <div class="section-num">09</div>
+    <div class="section-title red" style="color:var(--red);">Si Ça Bloque</div>
+  </div>
+
+  <div class="alert gold" style="margin-bottom:8px;">
+    <div class="alert-icon">💤</div>
+    <div class="alert-body">
+      <span class="alert-label">FORCE STAGNANTE PLUS DE 2 SEMAINES</span>
+      Cause n°1 : <strong>sommeil insuffisant.</strong> 8h minimum — non négociable. Le muscle pousse la nuit, pas à la salle. Avant de changer le programme, dors.
+    </div>
+  </div>
+
+  <div class="alert green" style="margin-bottom:8px;">
+    <div class="alert-icon">🍌</div>
+    <div class="alert-body">
+      <span class="alert-label">PAS DE PRISE DE POIDS DEPUIS 2 SEMAINES</span>
+      Ajouter <strong>banane le soir + tartine pain complet.</strong> Tu ne manges pas assez pour construire. Simple.
+    </div>
+  </div>
+
+  <div class="alert cyan" style="margin-bottom:8px;">
+    <div class="alert-icon">🔋</div>
+    <div class="alert-body">
+      <span class="alert-label">FATIGUE CHRONIQUE · TU DORS MAL · TU RÉCUPÈRES PAS</span>
+      Retirer <strong>1 séance sprint</strong> — passer à 1×/semaine pendant 2-3 semaines. Revenir à 2× quand tu te sens récupéré.
+    </div>
+  </div>
+
+  <div class="alert red" style="margin-bottom:8px;">
+    <div class="alert-icon">🦴</div>
+    <div class="alert-body">
+      <span class="alert-label">DOULEUR ARTICULAIRE (pas courbature)</span>
+      Stop immédiat sur cet exercice. Remplacer par un exercice équivalent sans douleur. <strong>Ne jamais pousser sur une douleur articulaire.</strong> Blessure = semaines perdues.
+    </div>
+  </div>
+
+  <div class="alert gold" style="margin-bottom:8px;">
+    <div class="alert-icon">↻</div>
+    <div class="alert-body">
+      <span class="alert-label">TU RATES 2 SÉANCES DE SUITE SUR UN EXERCICE</span>
+      Baisser le poids de <strong>5%</strong>. Pas 10. Pas 20. 5%. Reprendre la progression depuis là.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="micro" style="margin-bottom:10px;">ORDRE DE PRIORITÉ SI PROBLÈMES</div>
+    <div style="font-size:0.78rem;line-height:2;color:var(--text);">
+      <strong style="color:var(--gold);">1.</strong> Dors 8h → <span style="color:var(--green);">résout 70% des problèmes</span><br>
+      <strong style="color:var(--gold);">2.</strong> Mange plus (banane le soir) → <span style="color:var(--green);">résout les stagnations de force</span><br>
+      <strong style="color:var(--gold);">3.</strong> Retire 1 sprint → <span style="color:var(--green);">résout la fatigue chronique</span><br>
+      <strong style="color:var(--gold);">4.</strong> Baisse le poids de 5% → <span style="color:var(--green);">résout les plateaux sur exercice</span><br>
+      <strong style="color:var(--gold);">5.</strong> Prends une semaine de décharge → <span style="color:var(--green);">résout tout le reste</span>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <div class="big-quote">
+    « La constance bat l'intensité sur le long terme. Un seul système. Pas de choix. Juste l'exécution. »
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="micro" style="margin-bottom:8px;">// FORCE PROTOCOL · v2.0 · CYCLE 6 MOIS COMPLET //</div>
+  <div style="font-size:0.65rem;color:var(--dim);">Lis. Applique. Répète. C'est tout.</div>
+</footer>
+
 </body>
 </html>
